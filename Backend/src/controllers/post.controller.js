@@ -158,7 +158,7 @@ const PostController = {
             });
         }
         if (!post) {
-            return res.status(200).json({
+            return res.status(401).json({
                 status: 'fail',
                 message: 'Could not find post for the provided ID',
             });
@@ -184,7 +184,7 @@ const PostController = {
                     message: 'Post and associated comments deleted successfully',
                 });
             } else {
-                return res.status(200).json({
+                return res.status(404).json({
                     status: 'fail',
                     message: 'Post not found',
                 });
