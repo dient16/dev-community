@@ -10,11 +10,12 @@ const tagSchema = new mongoose.Schema(
             unique: true,
         },
         date: { type: Date, default: Date.now },
-        theme: { type: String },
         posts: [{ type: mongoose.Types.ObjectId, required: true, ref: 'Post' }],
         followers: [{ type: mongoose.Types.ObjectId, ref: 'User' }],
     },
-    { collection: COLLECTION },
+    {
+        timestamps: true,
+    },
 );
 
-module.exports = mongoose.model(DOCUMENT, tagSchema);
+module.exports = mongoose.model(DOCUMENT, tagSchema, COLLECTION);
