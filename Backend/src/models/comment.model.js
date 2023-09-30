@@ -5,7 +5,7 @@ const COLLECTION = 'comments';
 
 const commentSchema = new mongoose.Schema(
     {
-        body: {
+        content: {
             type: String,
             require: true,
         },

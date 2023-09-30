@@ -1,12 +1,14 @@
 const Comment = require('../models/comment.model');
 const Post = require('../models/post.model');
+const User = require('../models/user.model');
 
 const CommentController = {
     createComment: async (req, res, next) => {
         try {
-            const { parentPost, body, author, date, parentId } = req.body;
-            const { _id: userId } = req.user;
-            if (!parentPost || !body || !author || !date || !parentId || !userId) {
+            const { post: parentPost, content, parentId } = req.body;
+            const { _id: author } = req.user;
+
+            if (!parentPost || !content || !author) {
                 return res.status(422).json({
                     status: 'fail',
                     message: 'Invalid inputs passed, please check your data',
@@ -22,7 +24,7 @@ const CommentController = {
                         message: 'Could not find post for provided ID',
                     });
                 }
-            } catch (err) {
+            } catch (error) {
                 return res.status(500).json({
                     status: 'fail',
                     message: 'Creating comment failed, please try again',
@@ -38,7 +40,7 @@ const CommentController = {
                         message: 'Could not find user for provided ID',
                     });
                 }
-            } catch (err) {
+            } catch (error) {
                 return res.status(500).json({
                     status: 'fail',
                     message: 'Creating comment failed, please try again',
@@ -47,43 +49,31 @@ const CommentController = {
 
             let createdComment = new Comment({
                 parentId,
-                parentPost,
-                body,
+                post: parentPost,
+                content,
                 author,
-                date,
             });
 
             try {
-                const session = await mongoose.startSession();
-                session.startTransaction();
                 createdComment = await Comment.populate(createdComment, { path: 'author' });
                 post.comments.push(createdComment);
                 user.comments.push(createdComment);
                 createdComment.likes.push(author);
-                await createdComment.save({ session: session });
-                await post.save({ session: session });
-                await user.save({ session: session });
-                await session.commitTransaction();
 
-                if (post.author.toString() !== userId) {
-                    await commentNotification(
-                        userId, // Sender
-                        post.id,
-                        createdComment.id,
-                        post.author.toString(), // Author => Receiver
-                    );
-                }
-            } catch (err) {
+                await createdComment.save();
+                await post.save();
+                await user.save();
+
+                res.status(201).json({
+                    status: 'success',
+                    comment: createdComment,
+                });
+            } catch (error) {
                 return res.status(500).json({
                     status: 'fail',
-                    message: 'Creating comment failed, please try again',
+                    message: error.message || error,
                 });
             }
-
-            res.status(201).json({
-                status: 'success',
-                comment: createdComment,
-            });
         } catch (error) {
             next(error);
         }
