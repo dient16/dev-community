@@ -1,13 +1,13 @@
 import icons from './icons';
 import path from './path';
-const { AiOutlineHome, LuClipboardList, BsTag, BsLightbulb, BsInfoCircle } = icons;
+const { RiHome4Fill, LuClipboardList, BsTag, BsLightbulb, BsInfoCircle } = icons;
 
 const sidebar = [
     {
         id: 1,
         value: 'Home',
         path: path.HOME,
-        icon: <AiOutlineHome />,
+        icon: <RiHome4Fill />,
     },
     {
         id: 2,

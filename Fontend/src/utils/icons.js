@@ -1,8 +1,9 @@
-import { AiOutlineHome } from 'react-icons/ai';
 import { LuClipboardList } from 'react-icons/lu';
 import { BsTag, BsLightbulb, BsInfoCircle } from 'react-icons/bs';
+import { RiHome4Fill } from 'react-icons/ri';
+
 const icons = {
-    AiOutlineHome,
+    RiHome4Fill,
     LuClipboardList,
     BsTag,
     BsLightbulb,

@@ -14,7 +14,7 @@ const server = require('http').createServer(app);
 const { socketHandler } = require('./socket/socketHandler');
 app.use(
     cors({
-        origin: process.env.SERVER_URI,
+        origin: process.env.CLIENT_URI,
         methods: ['POST', 'GET', 'PUT', 'PATCH', 'DELETE'],
         credentials: true,
     }),
@@ -38,7 +38,7 @@ app.use(
 
 const io = new Server(server, {
     cors: {
-        origin: process.env.SERVER_URI,
+        origin: process.env.CLIENT_URI,
         methods: ['GET', 'POST'],
         credentials: true,
     },

@@ -16,6 +16,8 @@
         padding: 7px;
         gap: 10px;
         border-radius: 7px;
+        color: #161823;
+        font-size: 1.8rem;
         &--active {
             color: $primary-color;
         }
@@ -24,7 +26,8 @@
         }
     }
     &__icon {
-        font-size: 2rem;
+        font-size: 2.2rem;
+        font-weight: bold;
         display: flex;
         justify-content: center;
     }

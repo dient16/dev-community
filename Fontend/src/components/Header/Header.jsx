@@ -2,6 +2,7 @@ import React from 'react';
 import { Search } from '~/components';
 import './Header.scss';
 import Button from '../Buttons/Button';
+import path from '~/utils/path';
 const Header = () => {
     return (
         <div className="header">
@@ -16,8 +17,12 @@ const Header = () => {
                     <Search />
                 </div>
                 <div className="header__actions">
-                    <Button primary>Đăng kí</Button>
-                    <Button outline>Đăng nhập</Button>
+                    <Button primary to={`/${path.REGISTER}`}>
+                        Đăng kí
+                    </Button>
+                    <Button outline to={`/${path.LOGIN}`}>
+                        Đăng nhập
+                    </Button>
                 </div>
             </div>
         </div>

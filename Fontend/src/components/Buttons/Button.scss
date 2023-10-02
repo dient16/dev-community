@@ -52,7 +52,7 @@
     color: $white;
     background-color: $primary-color;
     border-color: $primary-color;
-
+    text-decoration: none;
     &:hover {
         border-color: $primary-color;
         background: linear-gradient(0deg, rgba(0, 0, 0, 0.06), rgba(0, 0, 0, 0.06)), #fe2c55;
@@ -62,7 +62,7 @@
 .outline {
     color: $primary-color;
     border-color: currentColor;
-
+    text-decoration: none;
     &:hover {
         border-color: currentColor;
         background-color: rgba(254, 44, 85, 0.06);

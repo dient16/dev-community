@@ -1,15 +1,19 @@
 const path = {
-    PUBLIC: '',
+    ROOT: '/',
     HOME: '/',
     ALL: '*',
-    LOGIN: '/login',
-    REGISTER: '/register',
-    TAGS: '/tags',
-    FAQS: '/faqs',
-    ABOUT: '/about',
+    LOGIN: 'login',
+    REGISTER: 'register',
+    TAGS: 'tags',
+    FAQS: 'faqs',
+    ABOUT: 'about',
 
     ///User
-    USER: '/user',
-    READING_LIST: '/readinglist',
+    READING_LIST: 'readinglist',
+    POST: 'post/:username/:slug',
+    EDIT_POST: 'post/:username/:slug/edit',
+    NEW_POST: 'new-post',
+    SEARCH_POST: 'search-post',
+    PROFILE: 'profile',
 };
 export default path;
