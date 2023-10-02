@@ -25,6 +25,10 @@
         img {
             width: 50px;
         }
+        padding: 5px 9px 2px 9px;
+        border-radius: 10px;
+        border: 1px solid black;
+        cursor: pointer;
     }
     &__search {
         input {

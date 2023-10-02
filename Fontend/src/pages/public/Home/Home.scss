@@ -3,8 +3,21 @@
     width: $width-main;
     margin: 0 auto;
     display: flex;
+    &__sidebar {
+        width: 25%;
+        .sidebar-container {
+            position: fixed;
+            top: 70px;
+        }
+    }
     &__content {
-        width: 600px;
+        display: flex;
+        width: 50%;
         height: 100%;
+        gap: 10px;
+        flex-direction: column;
+    }
+    &__outstanding {
+        width: 25%;
     }
 }

@@ -5,9 +5,15 @@ const Home = () => {
     return (
         <div className="home">
             <div className="home__sidebar">
-                <SideBar />
+                <div className="sidebar-container">
+                    <SideBar />
+                </div>
             </div>
             <div className="home__content">
+                <PostItem />
+                <PostItem />
+                <PostItem />
+                <PostItem />
                 <PostItem />
                 <PostItem />
             </div>

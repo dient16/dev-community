@@ -10,7 +10,6 @@
         text-decoration: none;
         color: $black;
         font-weight: 600;
-        margin-left: 8px;
         display: flex;
         align-items: center;
         padding: 7px;
@@ -22,7 +21,7 @@
             color: $primary-color;
         }
         &:hover {
-            background: #1618230f;
+            background: #2e386e0f;
         }
     }
     &__icon {

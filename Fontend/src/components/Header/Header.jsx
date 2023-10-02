@@ -3,15 +3,20 @@ import { Search } from '~/components';
 import './Header.scss';
 import Button from '../Buttons/Button';
 import path from '~/utils/path';
+import logo from '~/assets/logo.png';
+import { useNavigate } from 'react-router-dom';
 const Header = () => {
+    const navigate = useNavigate();
     return (
         <div className="header">
             <div className="header__inner">
-                <div className="header__logo">
-                    <img
-                        src="https://dev-to-uploads.s3.amazonaws.com/uploads/logos/resized_logo_UQww2soKuUsjaOGNB38o.png"
-                        alt=""
-                    />
+                <div
+                    className="header__logo"
+                    onClick={() => {
+                        navigate(`${path.HOME}`);
+                    }}
+                >
+                    <img src={logo} alt="" />
                 </div>
                 <div className="header__search">
                     <Search />
