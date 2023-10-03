@@ -1,18 +1,21 @@
 @use '~/styles/' as *;
 .sidebar {
     width: 240px;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    gap: 5px;
+
     padding-top: 20px;
+    &__top {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        gap: 5px;
+    }
     &__item {
         text-decoration: none;
         color: $black;
         font-weight: 600;
         display: flex;
         align-items: center;
-        padding: 7px;
+        padding: 7px 7px 7px 0;
         gap: 10px;
         border-radius: 7px;
         color: #161823;
@@ -32,5 +35,8 @@
     }
     &__title {
         font-size: 2rem;
+    }
+    &__my-tags {
+        height: 350px;
     }
 }

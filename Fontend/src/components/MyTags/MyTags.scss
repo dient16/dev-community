@@ -1,0 +1,38 @@
+@use '~/styles/' as *;
+
+.my-tags {
+    height: 350px;
+    width: 85%;
+    border-top: 1px solid #ccc;
+    ///border-bottom: 1px solid #ccc;
+    float: left;
+    margin-top: 10px;
+    padding-top: 5px;
+
+    display: flex;
+    flex-direction: column;
+    &__header {
+        display: flex;
+        margin-bottom: 10px;
+        justify-content: space-between;
+        .title {
+            font-size: 1.8rem;
+            font-weight: 600;
+        }
+    }
+    &__container {
+        flex-grow: 1;
+        overflow-y: auto;
+        display: flex;
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 7px;
+
+        span {
+            background: #ccc;
+            padding: 3px 6px;
+            cursor: pointer;
+            border-radius: 8px;
+        }
+    }
+}

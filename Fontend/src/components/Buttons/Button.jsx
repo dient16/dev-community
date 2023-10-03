@@ -42,22 +42,22 @@ function Button({
         ButtonType = 'a';
     }
 
-    const buttonClasses = clsx('wrapper', {
+    const buttonClasses = clsx('button__wrapper', {
         [className]: className,
-        primary,
-        outline,
-        text,
-        disabled,
-        rounded,
-        small,
-        large,
+        'button--primary': primary,
+        'button--outline': outline,
+        'button--text': text,
+        'button--disabled': disabled,
+        'button--rounded': rounded,
+        'button--small': small,
+        'button--large': large,
     });
 
     return (
         <ButtonType className={buttonClasses} {...props}>
-            {leftIcon && <span className="icon">{leftIcon}</span>}
-            <span className="title">{children}</span>
-            {rightIcon && <span className="icon">{rightIcon}</span>}
+            {leftIcon && <span className="button__icon">{leftIcon}</span>}
+            <span className="button__title">{children}</span>
+            {rightIcon && <span className="button__icon">{rightIcon}</span>}
         </ButtonType>
     );
 }

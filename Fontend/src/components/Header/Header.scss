@@ -21,16 +21,21 @@
         align-items: center;
         justify-content: space-between;
     }
+    &__left {
+        width: 20%;
+    }
     &__logo {
         img {
             width: 50px;
         }
-        padding: 5px 9px 2px 9px;
-        border-radius: 10px;
+        width: 70px;
+        padding: 5px 9px 1px 9px;
+        border-radius: 5px;
         border: 1px solid black;
         cursor: pointer;
     }
     &__search {
+        width: 60%;
         input {
             width: 500px;
             height: 40px;
@@ -39,6 +44,19 @@
             border: 1px solid black;
             padding: 10px 15px;
             border-radius: 1000px;
+        }
+    }
+    &__right {
+        width: 20%;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+    }
+    &__avatar {
+        img {
+            width: 40px;
+            height: 40px;
+            border-right: 50%;
         }
     }
 }

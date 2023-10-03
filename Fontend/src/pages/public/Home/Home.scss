@@ -4,7 +4,7 @@
     margin: 0 auto;
     display: flex;
     &__sidebar {
-        width: 25%;
+        width: 20%;
         .sidebar-container {
             position: fixed;
             top: 70px;
@@ -12,12 +12,12 @@
     }
     &__content {
         display: flex;
-        width: 50%;
+        width: 60%;
         height: 100%;
         gap: 10px;
         flex-direction: column;
     }
     &__outstanding {
-        width: 25%;
+        width: 20%;
     }
 }
