@@ -1,26 +1,28 @@
 const Tag = require('../models/tag.model');
 const User = require('../models/user.model');
 const Post = require('../models/post.model');
+const to = require('await-to-js').default;
 
 const tagController = {
     createTags: async (tags, post) => {
-        try {
-            for (const tag of tags) {
-                const postTag = await Tag.findOneAndUpdate(
+        for (const tag of tags) {
+            const [error, postTag] = await to(
+                Tag.findOneAndUpdate(
                     { name: tag.toLowerCase() },
                     { $addToSet: { posts: post._id } },
                     { upsert: true, new: true },
-                );
-                await Post.updateOne({ _id: post._id }, { $addToSet: { tags: postTag._id } });
+                ),
+            );
+            if (error) {
+                throw new Error('error creating tag');
             }
-
-            return {
-                result: 'success',
-                message: 'Create tags successfully',
-            };
-        } catch (err) {
-            throw err;
+            await Post.updateOne({ _id: post._id }, { $addToSet: { tags: postTag._id } });
         }
+
+        return {
+            result: 'success',
+            message: 'Create tags successfully',
+        };
     },
     removeTags: async (tags, post) => {
         let i = 0;

@@ -4,6 +4,7 @@ const Post = require('../models/post.model');
 const Tag = require('../models/tag.model');
 const tag = require('./tag.controller');
 const slugify = require('slugify');
+const to = require('await-to-js').default;
 const mongoose = require('mongoose');
 const tagController = require('./tag.controller');
 const cloudinary = require('../config/cloudinary.config');
@@ -38,7 +39,6 @@ const PostController = {
             const page = req.query.page || 1;
             const limit = req.query.limit || 10;
             const skip = (page - 1) * limit;
-
             query.skip(skip).limit(limit);
 
             const posts = await query.exec();
@@ -59,8 +59,10 @@ const PostController = {
     createPost: async (req, res, next) => {
         try {
             const { path: imageUrl } = req.file;
+
             const { title, body, tags } = req.body;
             const author = req.user._id;
+
             if (!title || !body || !tags || !imageUrl) {
                 return res.status(400).json({
                     status: 'fail',
@@ -68,35 +70,52 @@ const PostController = {
                 });
             }
 
-            const createdPost = await Post.create({
-                title,
-                image: imageUrl,
-                body,
-                slug: slugify(title),
-                author,
-            });
-            await tag.createTags(JSON.parse(tags), createdPost);
-            let user = await User.findById(author);
+            const [postCreateErr, newPost] = await to(
+                Post.create({
+                    title,
+                    image: imageUrl,
+                    body,
+                    slug: slugify(title),
+                    author,
+                }),
+            );
+            if (postCreateErr) {
+                return next(postCreateErr);
+            }
+
+            await tag.createTags(JSON.parse(tags), newPost);
+            // if (tagCreateErr) {
+            //     return next(tagCreateErr);
+            // }
+
+            const [userFindErr, user] = await to(User.findById(author));
+            if (userFindErr) {
+                return next(userFindErr);
+            }
 
             if (!user) {
                 return res.status(404).json({
                     status: 'fail',
-                    message: 'Could not find user for provided ID',
+                    message: 'User not found!',
                 });
             }
 
-            user.posts.push(createdPost);
-            await user.save();
+            await user.posts.push(newPost);
+
+            const [saveUserErr] = await to(user.save());
+            if (saveUserErr) {
+                return next(saveUserErr);
+            }
 
             return res.status(200).json({
                 status: 'success',
-                post: await createdPost.populate({
+                post: await newPost.populate({
                     path: 'author',
                     select: '-refreshToken -password -posts',
                 }),
             });
-        } catch (err) {
-            next(err);
+        } catch (error) {
+            return next(error);
         }
     },
     ////////////////////////////////

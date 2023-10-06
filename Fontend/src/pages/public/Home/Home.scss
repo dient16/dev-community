@@ -1,6 +1,6 @@
 @use '~/styles/' as *;
 .home {
-    width: $width-main;
+    max-width: $width-main;
     margin: 0 auto;
     display: flex;
     &__sidebar {

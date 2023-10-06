@@ -1,0 +1,126 @@
+@use '~/styles/' as *;
+.notification {
+    width: 400px;
+    height: 500px;
+    background: $white;
+    padding: 15px;
+    border-radius: 8px;
+    box-shadow: rgba(0, 0, 0, 0.12) 0px -4px 32px;
+    transition: all 200ms linear 0s;
+    user-select: none;
+    position: relative;
+    &::before {
+        content: '';
+        position: absolute;
+        width: 0;
+        height: 0;
+        border-left: 15px solid transparent;
+        border-right: 15px solid transparent;
+        border-bottom: 15px solid $white;
+        box-shadow: rgba(0, 0, 0, 0.12) 0px -4px 32px;
+        top: -15px;
+        right: calc(50% - 15px);
+    }
+    &__top {
+        margin-top: 5px;
+        display: flex;
+        flex-direction: column;
+        align-items: flex-start;
+        .title {
+            color: $black;
+            font-weight: 600;
+            font-size: 2.4rem;
+            line-height: 3rem;
+        }
+    }
+}
+.header-notify {
+    margin-top: 20px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    width: 100%;
+    &__item {
+        color: $black;
+        background: rgba(22, 24, 35, 0.2);
+        border: none;
+        padding: 2px 8px;
+        margin-bottom: 12px;
+        text-align: center;
+        cursor: pointer;
+        border-radius: 12px;
+        transition: all 300ms ease 0s;
+        &--active {
+            color: $white;
+            background: $black;
+            font-weight: 500;
+        }
+    }
+}
+.notification-item {
+    margin-top: 10px;
+    display: flex;
+    gap: 15px;
+    align-items: center;
+    font-size: 1.6rem;
+    &__sender-avatar {
+        flex: 1;
+        width: 50px;
+        height: 50px;
+        border-radius: 50%;
+    }
+    &__content {
+        flex: 7;
+        flex-direction: column;
+        display: flex;
+    }
+    &__sender-name {
+        display: -webkit-box;
+        overflow: hidden;
+        text-decoration: none;
+        text-overflow: ellipsis;
+        -webkit-line-clamp: 1;
+        -webkit-box-orient: vertical;
+        font-weight: 600;
+        word-break: break-all;
+        color: $black;
+        &:hover {
+            text-decoration: underline;
+        }
+    }
+    &__message {
+        display: -webkit-box;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        -webkit-line-clamp: 2;
+        -webkit-box-orient: vertical;
+        color: rgba(22, 24, 35, 0.7);
+        max-height: 130px;
+        word-break: break-word;
+    }
+    &__action {
+        flex: 2;
+        button {
+            border-radius: 9px;
+            border: none;
+            color: rgb(255, 255, 255);
+            background-color: $primary-color;
+            min-width: 40px;
+            min-height: 30px;
+            font-size: 14px;
+            line-height: 17px;
+            font-weight: 500;
+            display: flex;
+            position: relative;
+            -webkit-box-align: center;
+            align-items: center;
+            -webkit-box-pack: center;
+            justify-content: center;
+            padding: 6px 8px;
+            user-select: none;
+            cursor: pointer;
+            align-self: center;
+            flex: 0 0 auto;
+        }
+    }
+}

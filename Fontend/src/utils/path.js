@@ -12,7 +12,7 @@ const path = {
     READING_LIST: 'readinglist',
     POST: 'post/:username/:slug',
     EDIT_POST: 'post/:username/:slug/edit',
-    NEW_POST: 'new-post',
+    NEW_POST: 'post/new-post',
     SEARCH_POST: 'search-post',
     PROFILE: 'profile',
 };

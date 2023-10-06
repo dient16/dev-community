@@ -1,4 +1,5 @@
 const User = require('../models/user.model');
+const to = require('await-to-js').default;
 
 const userController = {
     getCurrentUser: async (req, res, next) => {
@@ -9,14 +10,20 @@ const userController = {
                 message: 'Missing input',
             });
         }
-        const user = await User.findById(uid).select('-refreshToken -password');
+        const [err, user] = await to(User.findById(uid).select('-refreshToken -password'));
+        if (err) {
+            return res.status(500).json({
+                status: 'fail',
+                message: 'Error getting user',
+            });
+        }
         if (user) {
             return res.status(200).json({
                 status: 'success',
                 userData: user,
             });
         } else {
-            return res.status(500).json({
+            return res.status(401).json({
                 status: 'fail',
                 message: 'User not found',
             });

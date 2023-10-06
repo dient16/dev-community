@@ -1,6 +1,7 @@
 const Comment = require('../models/comment.model');
 const Post = require('../models/post.model');
 const User = require('../models/user.model');
+const to = require('await-to-js').default;
 
 const CommentController = {
     createComment: async (req, res, next) => {
@@ -17,7 +18,7 @@ const CommentController = {
 
             let post;
             try {
-                post = await Post.findById(parentPost); // Check if the post ID exists
+                post = await Post.findById(parentPost);
                 if (!post) {
                     return res.status(404).json({
                         status: 'fail',

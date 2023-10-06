@@ -14,19 +14,34 @@ const MyTags = () => {
             </div>
             <div className="my-tags__container">
                 <span>
-                    <span className="tag-item">#reactjs</span>
+                    <span className="my-tags__tag-item">#reactjs</span>
                 </span>
                 <span>
-                    <span className="tag-item">#nodejs</span>
+                    <span className="my-tags__tag-item">#nodejs</span>
                 </span>
                 <span>
-                    <span className="tag-item">#html</span>
+                    <span className="my-tags__tag-item">#html</span>
                 </span>
                 <span>
-                    <span className="tag-item">#javascript</span>
+                    <span className="my-tags__tag-item">#javascript</span>
                 </span>
                 <span>
-                    <span className="tag-item">#reactjs</span>
+                    <span className="my-tags__tag-item">#reactjs</span>
+                </span>
+                <span>
+                    <span className="my-tags__tag-item">#reactjs</span>
+                </span>{' '}
+                <span>
+                    <span className="my-tags__tag-item">#reactjs</span>
+                </span>{' '}
+                <span>
+                    <span className="my-tags__tag-item">#reactjs</span>
+                </span>{' '}
+                <span>
+                    <span className="my-tags__tag-item">#reactjs</span>
+                </span>{' '}
+                <span>
+                    <span className="my-tags__tag-item">#reactjs</span>
                 </span>
             </div>
         </div>

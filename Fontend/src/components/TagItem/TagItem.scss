@@ -1,0 +1,27 @@
+@use '~/styles/' as *;
+.tag-item {
+    display: flex;
+    flex-direction: column;
+    width: 300px;
+    border: 1px solid black;
+    padding: 8px;
+    gap: 10px;
+    border-radius: 10px;
+    &__top {
+        display: flex;
+        justify-content: space-between;
+    }
+    &__name {
+        background: #ccc;
+        padding: 2px 5px;
+        cursor: pointer;
+        border-radius: 8px;
+        margin-left: 5px;
+        font-size: 1.6rem;
+        font-weight: 500;
+    }
+    &__count-post {
+        font-size: 1.6rem;
+        font-weight: 400;
+    }
+}
