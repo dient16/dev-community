@@ -1,0 +1,26 @@
+@use '~/styles/' as *;
+.container-markdown-post {
+    .w-md-editor-text-pre > code,
+    .w-md-editor-text-input {
+        font-size: 1.8rem !important;
+        line-height: 2rem !important;
+    }
+    .w-md-editor-toolbar {
+        background: #f9f9f9;
+        border: none;
+    }
+    .w-md-editor-toolbar ul {
+        display: flex;
+        gap: 7px;
+        list-style-type: none;
+        padding: 0;
+        margin-left: 20px;
+    }
+    .w-md-editor {
+        border: none;
+        box-shadow: none;
+    }
+    .w-md-editor-content {
+        //margin-top: 15px;
+    }
+}

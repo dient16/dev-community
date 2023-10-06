@@ -60,6 +60,8 @@ const Header = () => {
                                 )}
                             >
                                 <span
+                                    className="header__notify-icon"
+                                    count-notification="3"
                                     onClick={(e) => {
                                         e.stopPropagation();
                                         setIsShowNotify((prev) => !prev);

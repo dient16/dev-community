@@ -26,10 +26,10 @@ const MyTags = () => {
                     <span className="my-tags__tag-item">#javascript</span>
                 </span>
                 <span>
-                    <span className="my-tags__tag-item">#reactjs</span>
+                    <span className="my-tags__tag-item">#reactjs dasasa</span>
                 </span>
                 <span>
-                    <span className="my-tags__tag-item">#reactjs</span>
+                    <span className="my-tags__tag-item">#reactjsas</span>
                 </span>{' '}
                 <span>
                     <span className="my-tags__tag-item">#reactjs</span>
