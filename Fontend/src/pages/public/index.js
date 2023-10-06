@@ -6,3 +6,4 @@ export { default as Register } from './Auth/Register/Register';
 export { default as About } from './About/About';
 export { default as SearchResult } from './SearchResult/SearchResult';
 export { default as Faqs } from './Faqs/Faqs';
+export { default as Post } from './Post/Post';

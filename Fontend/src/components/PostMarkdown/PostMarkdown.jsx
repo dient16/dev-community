@@ -51,6 +51,13 @@ const customMarkIcon = {
     image: {
         ...commands.image,
         icon: <BsImage size={22} />,
+        execute: (state, api) => {
+            let modifyText = `![image](${state.selectedText})\n`;
+            if (!state.selectedText) {
+                modifyText = `![image](adada)`;
+            }
+            api.replaceSelection(modifyText);
+        },
     },
 };
 

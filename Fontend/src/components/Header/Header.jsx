@@ -1,5 +1,4 @@
 import React, { useState, useEffect } from 'react';
-import Tippy from '@tippyjs/react';
 import HeadlessTippy from '@tippyjs/react/headless';
 import 'tippy.js/dist/tippy.css';
 import { Notification, Search } from '~/components';

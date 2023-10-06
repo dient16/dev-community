@@ -1,7 +1,7 @@
 import React from 'react';
 import { Route, Routes, useNavigate } from 'react-router-dom';
 import { EditPost, NewPost, Profile, ReadingList } from '~/pages/user';
-import { Home, Login, Register, Tags, About, Faqs } from '~/pages/public';
+import { Home, Login, Register, Tags, About, Faqs, Post } from '~/pages/public';
 import RootLayout from '~/pages/RootLayout/RootLayout';
 import path from '~/utils/path';
 
@@ -16,6 +16,7 @@ const Router = () => {
                 <Route path={path.READING_LIST} element={<ReadingList />}></Route>
                 <Route path={path.PROFILE} element={<Profile />}></Route>
                 <Route path={path.NEW_POST} element={<NewPost />}></Route>
+                <Route path={path.POST} element={<Post />}></Route>
                 <Route path={path.EDIT_POST} element={<EditPost />}></Route>
             </Route>
             <Route path={path.LOGIN} element={<Login />}></Route>

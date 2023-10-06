@@ -16,7 +16,7 @@ const Notification = () => {
                 <div className="notification-item">
                     <img
                         className="notification-item__sender-avatar"
-                        src="https://p16-sign-va.tiktokcdn.com/tos-maliva-avt-0068/417103baec9a6ede5ac41b66289dc691~c5_100x100.jpeg?x-expires=1696611600&x-signature=eD43LhMCD2hS9zJt8ChZp90DlTs%3D"
+                        src="https://pgddttieucan.edu.vn/wp-content/uploads/2022/09/1663047926_941_Bo-suu-tap-31-anh-anime-avt-moi-cap-nhat.jpeg"
                         alt=""
                     />
                     <div className="notification-item__content">
@@ -32,7 +32,7 @@ const Notification = () => {
                 <div className="notification-item">
                     <img
                         className="notification-item__sender-avatar"
-                        src="https://p16-sign-va.tiktokcdn.com/tos-maliva-avt-0068/417103baec9a6ede5ac41b66289dc691~c5_100x100.jpeg?x-expires=1696611600&x-signature=eD43LhMCD2hS9zJt8ChZp90DlTs%3D"
+                        src="https://pgddttieucan.edu.vn/wp-content/uploads/2022/09/1663047926_941_Bo-suu-tap-31-anh-anime-avt-moi-cap-nhat.jpeg"
                         alt=""
                     />
                     <div className="notification-item__content">

@@ -14,7 +14,7 @@ const NewPost = () => {
                         </Button>
                     </div>
                     <textarea className="add-new-title" placeholder="New post title here..." />
-                    <input className="add-new-tag" placeholder="add to tag" />
+                    <input className="add-new-tag" placeholder="Add to tags" />
                 </div>
                 <div className="new-post__bottom">
                     <div className="new-post__markdown">

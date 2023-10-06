@@ -16,7 +16,8 @@
     z-index: 10;
     padding: 10px;
     &__inner {
-        width: $width-main;
+        max-width: $width-main;
+        width: $width-full;
         display: flex;
         align-items: center;
         justify-content: space-between;
@@ -64,8 +65,8 @@
     }
     &__notify-icon:after {
         content: attr(count-notification);
-        background-color: red;
-        color: white;
+        background-color: $primary-color;
+        color: $white;
         border-radius: 50%;
         padding: 2px 8px;
         position: absolute;

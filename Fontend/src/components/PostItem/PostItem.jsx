@@ -1,15 +1,20 @@
 import React from 'react';
 import './PostItem.scss';
 import icons from '~/utils/icons';
+import { useNavigate } from 'react-router-dom';
+import path from '~/utils/path';
 const { FaRegHeart, FaRegBookmark, RiChat1Line } = icons;
 const PostItem = () => {
+    const navigate = useNavigate();
     return (
         <div className="post-item">
-            <img
-                className="post-item__image"
-                src="https://res.cloudinary.com/practicaldev/image/fetch/s--RmY6Zrlb--/c_imagga_scale,f_auto,fl_progressive,h_420,q_auto,w_1000/https://dev-to-uploads.s3.amazonaws.com/uploads/articles/hpa62sv1woh39hd65bcs.jpg"
-                alt=""
-            />
+            <div className="post-item__image" onClick={() => navigate(`/${path.POST}`)}>
+                <img
+                    src="https://res.cloudinary.com/practicaldev/image/fetch/s--RmY6Zrlb--/c_imagga_scale,f_auto,fl_progressive,h_420,q_auto,w_1000/https://dev-to-uploads.s3.amazonaws.com/uploads/articles/hpa62sv1woh39hd65bcs.jpg"
+                    alt=""
+                />
+            </div>
+
             <div className="post-item__body">
                 <div className="post-item__content">
                     <div className="post-item__author">

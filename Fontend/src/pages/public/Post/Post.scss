@@ -1,0 +1,39 @@
+@use '~/styles/' as *;
+.post-detail {
+    width: $width-full;
+    &__wrapper {
+        max-width: $width-main;
+        width: $width-full;
+        margin: 0 auto;
+        display: flex;
+        align-items: flex-start;
+    }
+    &__actions {
+        flex: 1;
+        margin: 30px;
+        margin-top: 65px;
+        display: flex;
+        flex-direction: column;
+        gap: 30px;
+    }
+    &__body {
+        flex: 7;
+    }
+    &__author {
+        flex: 2;
+    }
+    &__body-author {
+        display: flex;
+        gap: 10px;
+        .author-avatar {
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            object-fit: cover;
+        }
+        .author-wrap {
+            display: flex;
+            flex-direction: column;
+        }
+    }
+}

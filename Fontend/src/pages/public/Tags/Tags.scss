@@ -2,7 +2,7 @@
 .tags {
     height: 100%;
     &__wrap {
-        width: $width-main;
+        max-width: $width-main;
         margin: 0 auto;
     }
     &__header {
