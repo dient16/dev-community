@@ -26,7 +26,7 @@ const PostController = {
             const finalQuery = { ...postQueryObject, ...formattedFilters };
             let query = Post.find(finalQuery).populate({ path: 'tags', select: '_id name' }).populate({
                 path: 'author',
-                select: 'firstname lastname avatar',
+                select: 'firstname lastname avatar username',
             });
 
             if (req.query.fields) {
@@ -57,6 +57,27 @@ const PostController = {
                 message: 'Can not get posts',
             });
         }
+    },
+    getPost: async (req, res, next) => {
+        const { pid } = req.params;
+        const post = await Post.findById(pid)
+            .populate({ path: 'tags', select: 'name' })
+            .populate({
+                path: 'author',
+                select: 'firstname lastname avatar',
+            })
+            .populate({
+                path: 'comments',
+                populate: {
+                    path: 'author',
+                    select: 'firstname lastname avatar',
+                },
+            });
+
+        return res.status(200).json({
+            status: post ? 'success' : 'fail',
+            data: post ? post : 'Cannot get post',
+        });
     },
     ////////////////////////////////
     createPost: async (req, res, next) => {

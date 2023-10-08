@@ -1,37 +1,35 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Button, InputTags, PostMarkdown } from '~/components';
-import { useDispatch, useSelector } from 'react-redux';
+import { useDispatch } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
-import './NewPost.scss';
 import { apiCreatePost } from '~/apiServices/post';
 import { toast } from 'react-toastify';
+import './NewPost.scss';
 
 const NewPost = () => {
     const navigate = useNavigate();
     const dispatch = useDispatch();
-    const [selectedFile, setSelectedFile] = useState(null);
+
+    const [selectedImage, setSelectedImage] = useState(null);
     const [previewImage, setPreviewImage] = useState(null);
-    const [body, setBody] = useState('');
-    const [title, setTitle] = useState('');
-    const [tags, setTags] = useState([]);
-    const handleFileChange = (event) => {
-        setSelectedFile(event.target.files[0]);
-        console.log(event.target.files[0]);
+    const [postBody, setPostBody] = useState('');
+    const [postTitle, setPostTitle] = useState('');
+    const [postTags, setPostTags] = useState([]);
+
+    const handleImageChange = (event) => {
+        setSelectedImage(event.target.files[0]);
         setPreviewImage(URL.createObjectURL(event.target.files[0]));
     };
     const addTag = (event) => {
         const tag = event.target.value;
-        if (event.code === 'Enter' && tag !== '') {
-            setTags((tags) => [...tags, tag]);
+        if ((event.code === 'Enter' || event.code === 'Space') && tag.trim() !== '') {
+            setPostTags((tags) => [...tags, tag.trim()]);
             event.target.value = '';
         }
-        console.log(tags);
     };
 
     const removeTag = (indexToRemove) => {
-        const removedTag = tags[indexToRemove];
-        const updatedTags = tags.filter((tag) => tag !== removedTag);
-        setTags(updatedTags);
+        setPostTags((tags) => tags.filter((_, index) => index !== indexToRemove));
     };
 
     const handleKeyDown = (event) => {
@@ -39,29 +37,28 @@ const NewPost = () => {
             event.preventDefault();
         }
     };
+
     const handleCreatePost = async () => {
-        if (selectedFile && body && title && tags.length >= 1) {
+        if (selectedImage && postBody && postTitle && postTags.length >= 1) {
             try {
                 const formData = new FormData();
-                formData.append('image', selectedFile);
-                formData.append('body', body);
-                formData.append('title', title);
-                formData.append('tags', tags);
-                //dispatch(startLoading());
+                formData.append('image', selectedImage);
+                formData.append('body', postBody);
+                formData.append('title', postTitle);
+                formData.append('tags', postTags);
+
                 const response = await apiCreatePost(formData);
                 if (response.status === 'success') {
                     toast.success('Created successfully');
+                    navigate('/');
                 } else {
                     toast.error('Create failed');
                 }
-                //dispatch(finishLoading());
-
-                navigate('/');
             } catch (error) {
-                console.log(error);
+                console.error(error);
             }
         } else {
-            dispatch(setMessage('This form needs to be filled out'));
+            dispatch(setMessage('Please fill out all fields'));
             dispatch(setError());
             setTimeout(() => {
                 dispatch(resetError());
@@ -69,35 +66,52 @@ const NewPost = () => {
             }, 3000);
         }
     };
+
     return (
         <div className="new-post">
             <div className="new-post__wrapper">
-                <div className="new-post__top">
-                    <div>
-                        <input type="file" accept="image/*" name="image" id="image-input" onChange={handleFileChange} />
-                        {previewImage && (
-                            <img
-                                src={previewImage}
-                                alt="Preview"
-                                width={150}
-                                height={150}
-                                style={{ marginRight: '1rem' }}
-                            />
-                        )}
-                    </div>
-                    <textarea
-                        className="add-new-title"
-                        placeholder="New post title here..."
-                        value={title}
-                        onChange={(e) => setTitle(e.target.value)}
+                <div className="new-post__add-image">
+                    <label htmlFor="image-input" className="new-post__custom-input">
+                        Add banner image
+                    </label>
+                    <input
+                        type="file"
+                        accept="image/*"
+                        id="image-input"
+                        onChange={handleImageChange}
+                        className="new-post__input-file"
                     />
-                    <InputTags tags={tags} addTag={addTag} removeTag={removeTag} handleKeyDown={handleKeyDown} />
+                    {previewImage && (
+                        <img
+                            src={previewImage}
+                            alt="Preview"
+                            width={150}
+                            height={150}
+                            className="new-post__preview-image"
+                        />
+                    )}
+                </div>
+                <div className="new-post__top">
+                    <textarea
+                        className="new-post__title"
+                        placeholder="New post title here..."
+                        value={postTitle}
+                        onChange={(e) => setPostTitle(e.target.value)}
+                    />
+                    <div className="add-new-tag ">
+                        <InputTags
+                            tags={postTags}
+                            addTag={addTag}
+                            removeTag={removeTag}
+                            handleKeyDown={handleKeyDown}
+                        />
+                    </div>
                 </div>
                 <div className="new-post__bottom">
                     <div className="new-post__markdown">
-                        <PostMarkdown content={body} setContent={setBody} />
+                        <PostMarkdown content={postBody} setContent={setPostBody} />
                     </div>
-                    <Button primary onClick={() => handleCreatePost()}>
+                    <Button primary onClick={handleCreatePost}>
                         Post now
                     </Button>
                 </div>

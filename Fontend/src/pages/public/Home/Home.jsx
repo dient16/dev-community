@@ -1,11 +1,11 @@
 import React, { useEffect, useState } from 'react';
 import './Home.scss';
 import { SideBar, PostItem } from '~/components';
-import { apiGetPost } from '~/apiServices/post';
+import { apiGetPosts } from '~/apiServices/post';
 const Home = () => {
     const [posts, setPosts] = useState([]);
     const getPostsOnHome = async () => {
-        const response = await apiGetPost();
+        const response = await apiGetPosts();
         if (response.status === 'success') {
             setPosts(response);
         }

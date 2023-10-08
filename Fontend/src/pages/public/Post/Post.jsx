@@ -1,16 +1,28 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import './Post.scss';
 import icons from '~/utils/icons';
 import MDEditor from '@uiw/react-md-editor';
+import moment from 'moment';
 import { Button } from '~/components';
+import { useParams } from 'react-router-dom';
+import { apiGetPost } from '~/apiServices/post';
 
 const Post = () => {
     const { FaRegHeart, RiChat1Line, FaRegBookmark } = icons;
-    const [content, setContent] = useState('');
+    const [post, setPost] = useState(null);
+    const { slug: pid } = useParams();
+    const getPostDetail = async () => {
+        const response = await apiGetPost(pid);
+        if (response.status === 'success') {
+            setPost(response.data);
+        }
+    };
+    useEffect(() => {
+        getPostDetail();
+    }, []);
     //document.documentElement.setAttribute('data-color-mode', 'dark');
     return (
         <div className="post-detail">
-            <textarea onChange={(e) => setContent(e.target.value)} />
             <div className="post-detail__wrapper">
                 <div className="post-detail__actions">
                     <span className="action-like">
@@ -24,41 +36,32 @@ const Post = () => {
                     </span>
                 </div>
                 <div className="post-detail__body">
-                    <img
-                        className="post-detail__body-image"
-                        src="https://res.cloudinary.com/practicaldev/image/fetch/s--mB1WYDBO--/c_imagga_scale,f_auto,fl_progressive,h_420,q_auto,w_1000/https://dev-to-uploads.s3.amazonaws.com/uploads/articles/y4n8dnw0gh3vsn76ugh6.png"
-                        alt=""
-                    />
+                    <img className="post-detail__body-image" src={post?.image} alt="" />
                     <div className="post-detail__body-author">
-                        <img
-                            className="author-avatar"
-                            src="https://pgddttieucan.edu.vn/wp-content/uploads/2022/09/1663047926_941_Bo-suu-tap-31-anh-anime-avt-moi-cap-nhat.jpeg"
-                            alt=""
-                        />
+                        <img className="author-avatar" src={post?.author.avatar} alt="" />
                         <div className="author-wrap">
-                            <span className="author-name">Dien tc</span>
-                            <span className="author-post-time">Posted on Oct 6</span>
+                            <span className="author-name">{`${post?.author?.firstname} ${post?.author?.lastname}`}</span>
+                            <span className="author-post-time">{moment(post?.updatedAt).fromNow()}</span>
                         </div>
                     </div>
-                    <h3 className="post-detail__body-title">07 Website's you will love as a dev.</h3>
+                    <h3 className="post-detail__body-title">{post?.title}</h3>
                     <div className="post-detail__body-tags">
                         <span>#web dev</span>
                         <span>#web dev</span>
                     </div>
                     <div className="post-detail__content">
-                        <MDEditor.Markdown source={content} style={{ whiteSpace: 'pre-wrap' }} />
+                        <MDEditor.Markdown
+                            source={post?.body}
+                            //style={{ whiteSpace: 'pre-wrap' }}
+                        />
                     </div>
                 </div>
                 <div className="post-detail__author">
                     <div className="post-detail__author-top">
                         <div className="author-background">
                             <div className="avatar-info">
-                                <img
-                                    className="author-avatar"
-                                    src="https://pgddttieucan.edu.vn/wp-content/uploads/2022/09/1663047926_941_Bo-suu-tap-31-anh-anime-avt-moi-cap-nhat.jpeg"
-                                    alt=""
-                                />
-                                <h3>Dien tc</h3>
+                                <img className="author-avatar" src={post?.author.avatar} alt="" />
+                                <h3>{`${post?.author?.firstname} ${post?.author?.lastname}`}</h3>
                             </div>
                         </div>
                         <Button primary className={'btn-follow'}>

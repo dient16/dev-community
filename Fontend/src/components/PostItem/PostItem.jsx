@@ -9,7 +9,7 @@ const PostItem = ({ post }) => {
     const navigate = useNavigate();
     return (
         <div className="post-item">
-            <div className="post-item__image" onClick={() => navigate(`/${path.POST}`)}>
+            <div className="post-item__image" onClick={() => navigate(`/post/${post.author.username}/${post._id}`)}>
                 <img src={post.image} alt="" />
             </div>
             <div className="post-item__body">
@@ -22,7 +22,7 @@ const PostItem = ({ post }) => {
                         </div>
                     </div>
                     <div className="post-item__wrap-detail">
-                        <p className="post-title">Meme Monday</p>
+                        <p className="post-title">{post.title}</p>
                         <div className="post-item__tags">
                             {post?.tags.map((tag) => (
                                 <span key={tag._id}>{`#${tag.name}`}</span>
