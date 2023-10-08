@@ -1,11 +1,16 @@
-import React from 'react';
+import React, { useState } from 'react';
 import './Post.scss';
 import icons from '~/utils/icons';
+import MDEditor from '@uiw/react-md-editor';
+import { Button } from '~/components';
 
 const Post = () => {
     const { FaRegHeart, RiChat1Line, FaRegBookmark } = icons;
+    const [content, setContent] = useState('');
+    //document.documentElement.setAttribute('data-color-mode', 'dark');
     return (
         <div className="post-detail">
+            <textarea onChange={(e) => setContent(e.target.value)} />
             <div className="post-detail__wrapper">
                 <div className="post-detail__actions">
                     <span className="action-like">
@@ -40,43 +45,27 @@ const Post = () => {
                         <span>#web dev</span>
                         <span>#web dev</span>
                     </div>
-                    <div className="post-content">
-                        In this article In this article Introduction What is a Micro Frontend? Module Federation Why
-                        Vite? Creating a Micro Frontend using Vite + React Setting Up the Host App Setting Up the Remote
-                        App Creating Components in the Remote App Previewing the Remote App Adding Module Federation to
-                        the Remote App Serving the Remote App Adding Module Federation to the Host App Using Remote
-                        Components in the Host App Serving the Host App Conclusion Introduction Micro Frontends:
-                        Enhancing Web Development with Vite and Module Federation In this article, we'll explore the
-                        concept of Micro Frontends—a powerful architectural approach for web applications. Micro
-                        Frontends allow you to divide your front-end code into smaller, independently developed and
-                        deployable units. These units, known as micro frontends, offer numerous benefits, including
-                        increased development speed, scalability, and flexibility. By enabling different teams to work
-                        on separate parts of the front end while maintaining integration through an isolation layer,
-                        Micro Frontends help manage complexity and promote autonomy in front-end development. What is a
-                        Micro Frontend? A Micro Frontend is an architectural approach for web applications where the
-                        front-end code is divided into smaller, independently developed and deployable units called
-                        micro frontends. This approach enhances development speed, scalability, and flexibility by
-                        allowing different teams to work on separate parts of the front end while maintaining
-                        integration through an isolation layer. It's a way to manage complexity and promote autonomy in
-                        front-end development. Module Federation Module Federation is a key technology that enables a
-                        JavaScript application to load code dynamically from another application while sharing
-                        dependencies. When an application consuming a federated module lacks a required dependency,
-                        Webpack (the underlying technology) automatically fetches the missing dependency from the
-                        federated build source. This allows for efficient sharing and use of common libraries across
-                        multiple micro frontends. Why Vite? While Module Federation was initially introduced in Webpack,
-                        the landscape of JavaScript development has evolved. Vite has emerged as a game-changer by
-                        providing lightning-fast build times. Combining Vite and Module Federation can unlock immense
-                        capabilities for developing micro frontends quickly and efficiently. Creating a Micro Frontend
-                        using Vite + React Creating a micro frontend typically involves two main parts: Host
-                        Application: This is the primary application that users interact with. It serves as the
-                        container for the micro frontends. Remote Application: These are the micro frontends themselves,
-                        which act as building blocks for the host application. Now that we have an understanding of the
-                        technologies we'll be using, let's dive into the practical implementation. Setting Up the Host
-                        App To create a host application using Vite and React, run the following command:
+                    <div className="post-detail__content">
+                        <MDEditor.Markdown source={content} style={{ whiteSpace: 'pre-wrap' }} />
                     </div>
                 </div>
                 <div className="post-detail__author">
-                    <div className="author-top"></div>
+                    <div className="post-detail__author-top">
+                        <div className="author-background">
+                            <div className="avatar-info">
+                                <img
+                                    className="author-avatar"
+                                    src="https://pgddttieucan.edu.vn/wp-content/uploads/2022/09/1663047926_941_Bo-suu-tap-31-anh-anime-avt-moi-cap-nhat.jpeg"
+                                    alt=""
+                                />
+                                <h3>Dien tc</h3>
+                            </div>
+                        </div>
+                        <Button primary className={'btn-follow'}>
+                            Follow
+                        </Button>
+                        <div className="author-bio">LOCATION Seoul, South Korea PRONOUNS he/him JOINED Jun 6, 2023</div>
+                    </div>
                     <div className="author-info"></div>
                 </div>
             </div>

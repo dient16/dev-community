@@ -11,10 +11,11 @@ import clsx from 'clsx';
 
 const { HiPlus, FaRegBell, FaBell } = icons;
 import { useNavigate } from 'react-router-dom';
+import { useSelector } from 'react-redux';
 const Header = () => {
     const navigate = useNavigate();
     const [isShowNotify, setIsShowNotify] = useState(false);
-    const isLogging = true;
+    const { isLoggedIn } = useSelector((state) => state.user);
     useEffect(() => {
         document.addEventListener('click', () => {
             setIsShowNotify(false);
@@ -41,7 +42,7 @@ const Header = () => {
                 <div className="header__search">
                     <Search />
                 </div>
-                {isLogging ? (
+                {isLoggedIn ? (
                     <div className="header__right">
                         <Button leftIcon={<HiPlus size={21} />} outline small to={`/${path.NEW_POST}`}>
                             Post

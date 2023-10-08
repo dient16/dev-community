@@ -84,7 +84,6 @@ const PostMarkdown = ({ content, setContent }) => {
                     customMarkIcon.image,
                 ]}
             />
-            {/* <MDEditor.Markdown source={value} style={{ whiteSpace: 'pre-wrap' }} /> */}
         </div>
     );
 };

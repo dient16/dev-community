@@ -1,0 +1,55 @@
+@use '~/styles/' as *;
+
+.tags__input {
+    display: flex;
+    align-items: flex-start;
+    flex-wrap: wrap;
+    margin: 1.2rem 0;
+}
+
+// .tags__input:focus-within {
+//   border: 1px solid $primary-color;
+// }
+
+.tags__input input {
+    border: none;
+    padding: 0.4rem 0 0 0.4rem;
+    font-size: 1rem;
+}
+
+.tags__input input:focus {
+    outline: transparent;
+}
+
+.input__list {
+    list-style: none;
+    display: flex;
+    gap: 1rem;
+    flex-wrap: wrap;
+}
+
+.input__item {
+    height: 2.4rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    align-items: center;
+    color: white;
+    padding: 1rem;
+    border-radius: 6px;
+    background: $primary-color;
+    gap: 0.8rem;
+}
+
+.input__item i {
+    width: 1.6rem;
+    height: 1.6rem;
+    line-height: 1.6rem;
+    color: $primary-color;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: white;
+    cursor: pointer;
+}

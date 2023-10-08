@@ -24,7 +24,10 @@ const PostController = {
             if (filters?.title) formattedFilters.title = { $regex: filters.title, $options: 'i' };
             if (filters?.author) formattedFilters.author = { $regex: filters.author, $options: 'i' };
             const finalQuery = { ...postQueryObject, ...formattedFilters };
-            let query = Post.find(finalQuery);
+            let query = Post.find(finalQuery).populate({ path: 'tags', select: '_id name' }).populate({
+                path: 'author',
+                select: 'firstname lastname avatar',
+            });
 
             if (req.query.fields) {
                 const selectedFields = req.query.fields.split(',').join(' ');
@@ -57,6 +60,7 @@ const PostController = {
     },
     ////////////////////////////////
     createPost: async (req, res, next) => {
+        console.log(req.body.tags.split(','));
         try {
             const { path: imageUrl } = req.file;
 
@@ -83,7 +87,7 @@ const PostController = {
                 return next(postCreateErr);
             }
 
-            await tag.createTags(JSON.parse(tags), newPost);
+            await tag.createTags(tags.split(','), newPost);
             // if (tagCreateErr) {
             //     return next(tagCreateErr);
             // }

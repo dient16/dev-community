@@ -1,11 +1,11 @@
 const express = require('express');
 require('dotenv').config();
 const helmet = require('helmet');
+var morgan = require('morgan');
 const cors = require('cors');
 const compression = require('compression');
 const session = require('express-session');
 const cookieParser = require('cookie-parser');
-//const { socketHandler } = require('./utils/socket');
 const app = express();
 const { Server } = require('socket.io');
 const dbConnect = require('./config/db.config');
@@ -25,6 +25,7 @@ app.use(express.urlencoded({ extended: true }));
 app.use(helmet());
 app.use(compression());
 dbConnect();
+app.use(morgan('dev'));
 initRoutes(app);
 app.use(
     session({
@@ -33,9 +34,12 @@ app.use(
         saveUninitialized: true,
     }),
 );
+
 //app.use(passport.initialize());
 //app.use(passport.session());
-
+app.get('/run', (req, res) => {
+    res.send('SERVER IS RUNNING');
+});
 const io = new Server(server, {
     cors: {
         origin: process.env.CLIENT_URI,

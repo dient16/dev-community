@@ -2,38 +2,31 @@ import React from 'react';
 import './PostItem.scss';
 import icons from '~/utils/icons';
 import { useNavigate } from 'react-router-dom';
+import moment from 'moment';
 import path from '~/utils/path';
 const { FaRegHeart, FaRegBookmark, RiChat1Line } = icons;
-const PostItem = () => {
+const PostItem = ({ post }) => {
     const navigate = useNavigate();
     return (
         <div className="post-item">
             <div className="post-item__image" onClick={() => navigate(`/${path.POST}`)}>
-                <img
-                    src="https://res.cloudinary.com/practicaldev/image/fetch/s--RmY6Zrlb--/c_imagga_scale,f_auto,fl_progressive,h_420,q_auto,w_1000/https://dev-to-uploads.s3.amazonaws.com/uploads/articles/hpa62sv1woh39hd65bcs.jpg"
-                    alt=""
-                />
+                <img src={post.image} alt="" />
             </div>
-
             <div className="post-item__body">
                 <div className="post-item__content">
                     <div className="post-item__author">
-                        <img
-                            src="https://res.cloudinary.com/practicaldev/image/fetch/s--d7-icDZB--/c_fill,f_auto,fl_progressive,h_90,q_auto,w_90/https://dev-to-uploads.s3.amazonaws.com/uploads/user/profile_image/1168717/1fe46d48-beee-4dfc-ae8a-697de0470ef0.jpg"
-                            alt=""
-                            className="author-avatar"
-                        />
+                        <img src={post.author.avatar} alt="" className="author-avatar" />
                         <div className="post-author">
-                            <span className="author-name">Dien t</span>
-                            <span className="post-time">Oct 1 (21 hours ago)</span>
+                            <span className="author-name">{`${post?.author?.firstname} ${post?.author?.lastname}`}</span>
+                            <span className="post-time">{moment(post.updatedAt).fromNow()}</span>
                         </div>
                     </div>
                     <div className="post-item__wrap-detail">
                         <p className="post-title">Meme Monday</p>
                         <div className="post-item__tags">
-                            <span>#nextjs</span>
-                            <span>#nextjs</span>
-                            <span>#nextjs</span>
+                            {post?.tags.map((tag) => (
+                                <span key={tag._id}>{`#${tag.name}`}</span>
+                            ))}
                         </div>
                     </div>
                 </div>
