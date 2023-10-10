@@ -238,7 +238,15 @@ const PostController = {
                 });
             }
             const [updateErr, updatedPost] = await to(
-                Post.findByIdAndUpdate(postId, { $addToSet: { likes: userId } }, { new: true }),
+                Post.findByIdAndUpdate(postId, { $addToSet: { likes: userId } }, { new: true })
+                    .populate({
+                        path: 'tags',
+                        select: 'name',
+                    })
+                    .populate({
+                        path: 'author',
+                        select: 'firstname lastname avatar',
+                    }),
             );
 
             if (updateErr) {
@@ -268,7 +276,12 @@ const PostController = {
             const { postId } = req.params;
             const { _id: userId } = req.user;
 
-            const [findError, postToUnlike] = await to(Post.findOne({ _id: postId, likes: userId }));
+            const [findError, postToUnlike] = await to(
+                Post.findOne({ _id: postId, likes: userId }).populate({ path: 'tags', select: 'name' }).populate({
+                    path: 'author',
+                    select: 'firstname lastname avatar',
+                }),
+            );
 
             if (findError) {
                 return next(findError);
@@ -291,6 +304,7 @@ const PostController = {
             return res.status(200).json({
                 status: 'success',
                 message: 'Unlike post successfully',
+                post: postToUnlike,
             });
         } catch (error) {
             next(error);

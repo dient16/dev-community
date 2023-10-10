@@ -21,7 +21,7 @@ const Home = () => {
                 </div>
             </div>
             <div className="home__content">
-                {posts.count > 0 && posts.posts.map((post, index) => <PostItem post={post} key={index} />)}
+                {posts.count > 0 && posts.posts.map((post) => <PostItem postItemOnHome={post} key={post._id} />)}
             </div>
             <div className="home__outstanding"></div>
         </div>

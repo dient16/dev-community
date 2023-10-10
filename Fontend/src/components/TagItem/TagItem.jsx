@@ -25,11 +25,9 @@ const TagItem = ({ tag }) => {
 
     useEffect(() => {
         const userFollowTag = tag?.followers.some((userId) => {
-            console.log(userId);
             return userId === user?._id;
         });
         setIsFollowTag(userFollowTag);
-        console.log(userFollowTag);
     }, []);
     return (
         <div className="tag-item">

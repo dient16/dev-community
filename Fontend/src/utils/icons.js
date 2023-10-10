@@ -1,7 +1,7 @@
 import { LuClipboardList } from 'react-icons/lu';
 import { BsTag, BsLightbulb, BsInfoCircle, BsCodeSquare, BsCodeSlash, BsImage } from 'react-icons/bs';
 import { RiHome4Fill, RiChat1Line, RiSettingsLine } from 'react-icons/ri';
-import { FaRegHeart, FaRegBookmark, FaRegBell, FaBell } from 'react-icons/fa';
+import { FaRegHeart, FaHeart, FaRegBookmark, FaRegBell, FaBell } from 'react-icons/fa';
 import { HiPlus } from 'react-icons/hi';
 import { LuBold, LuItalic } from 'react-icons/lu';
 import { BiLink, BiSolidQuoteAltLeft } from 'react-icons/Bi';
@@ -13,6 +13,7 @@ const icons = {
     BsLightbulb,
     BsInfoCircle,
     FaRegHeart,
+    FaHeart,
     FaRegBookmark,
     RiChat1Line,
     RiSettingsLine,
