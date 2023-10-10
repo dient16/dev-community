@@ -7,5 +7,9 @@ router.get('/:pid', controller.getPost);
 router.post('/', verifyAccessToken, uploader.single('image'), controller.createPost);
 router.delete('/:postId', [verifyAccessToken], controller.deletePost);
 router.put('/:postId', verifyAccessToken, controller.updatePost);
-
+router.put('/upload-image', verifyAccessToken, controller.updatePost);
+router.put('/like/:postId', verifyAccessToken, controller.likePost);
+router.put('/unlike/:postId', verifyAccessToken, controller.unlikePost);
+router.put('/bookmark/:postId', verifyAccessToken, controller.bookmarkPost);
+router.put('/unbookmark/:postId', verifyAccessToken, controller.unbookmarkPost);
 module.exports = router;

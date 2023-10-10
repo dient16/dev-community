@@ -3,15 +3,17 @@ import './PostItem.scss';
 import icons from '~/utils/icons';
 import { useNavigate } from 'react-router-dom';
 import moment from 'moment';
-import path from '~/utils/path';
 const { FaRegHeart, FaRegBookmark, RiChat1Line } = icons;
+
 const PostItem = ({ post }) => {
     const navigate = useNavigate();
     return (
-        <div className="post-item">
-            <div className="post-item__image" onClick={() => navigate(`/post/${post.author.username}/${post._id}`)}>
-                <img src={post.image} alt="" />
-            </div>
+        <div className="post-item" onClick={() => navigate(`/post/${post.author.username}/${post._id}`)}>
+            {post?.image && (
+                <div className="post-item__image">
+                    <img src={post.image} alt="" />
+                </div>
+            )}
             <div className="post-item__body">
                 <div className="post-item__content">
                     <div className="post-item__author">

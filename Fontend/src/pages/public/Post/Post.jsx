@@ -19,8 +19,8 @@ const Post = () => {
     };
     useEffect(() => {
         getPostDetail();
+        document.documentElement.setAttribute('data-color-mode', 'dark');
     }, []);
-    //document.documentElement.setAttribute('data-color-mode', 'dark');
     return (
         <div className="post-detail">
             <div className="post-detail__wrapper">

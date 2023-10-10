@@ -15,7 +15,9 @@ const NewPost = () => {
     const [postBody, setPostBody] = useState('');
     const [postTitle, setPostTitle] = useState('');
     const [postTags, setPostTags] = useState([]);
-
+    useEffect(() => {
+        document.documentElement.setAttribute('data-color-mode', 'light');
+    }, []);
     const handleImageChange = (event) => {
         setSelectedImage(event.target.files[0]);
         setPreviewImage(URL.createObjectURL(event.target.files[0]));
@@ -46,7 +48,6 @@ const NewPost = () => {
                 formData.append('body', postBody);
                 formData.append('title', postTitle);
                 formData.append('tags', postTags);
-
                 const response = await apiCreatePost(formData);
                 if (response.status === 'success') {
                     toast.success('Created successfully');

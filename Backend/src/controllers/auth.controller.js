@@ -111,7 +111,7 @@ const authController = {
             const cookie = req.cookies;
             if (!cookie || !cookie.refreshToken) {
                 return res.status(200).json({
-                    result: 'fail',
+                    status: 'fail',
                     message: 'No refresh token in cookies',
                 });
             }

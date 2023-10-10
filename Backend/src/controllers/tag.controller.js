@@ -4,6 +4,43 @@ const Post = require('../models/post.model');
 const to = require('await-to-js').default;
 
 const tagController = {
+    getTags: async (req, res, next) => {
+        try {
+            const [tagsError, tags] = await to(Tag.find({}));
+
+            if (tagsError) {
+                throw new Error('Could not fetch tags, please try again');
+            }
+            return res.status(200).json({
+                status: 'success',
+                message: 'Get tags successfully',
+                tags: tags,
+            });
+        } catch (error) {
+            next(error);
+        }
+    },
+    getTagsUser: async (req, res, next) => {
+        try {
+            const { _id: uid } = req.user;
+            const [tagsError, tagsUser] = await to(
+                User.findById(uid).select('followedTags').populate({
+                    path: 'followedTags',
+                }),
+            );
+
+            if (tagsError) {
+                throw new Error('Could not fetch tags, please try again');
+            }
+            return res.status(200).json({
+                status: 'success',
+                message: 'Get tags successfully',
+                tags: tagsUser,
+            });
+        } catch (error) {
+            next(error);
+        }
+    },
     createTags: async (tags, post) => {
         for (const tag of tags) {
             const [error, postTag] = await to(
@@ -20,18 +57,17 @@ const tagController = {
         }
 
         return {
-            result: 'success',
+            status: 'success',
             message: 'Create tags successfully',
         };
     },
     removeTags: async (tags, post) => {
-        let i = 0;
-        for (const tag of post.tags) {
+        for (const index in post.tags) {
+            const tag = post.tags[index];
             if (!tags.includes(tag.name)) {
-                await Tag.updateOne({ _id: post.tags[i]._id }, { $pull: { posts: post._id } });
-                await Post.updateOne({ _id: post._id }, { $pull: { tags: post.tags[i]._id } });
+                await Tag.updateOne({ _id: tag._id }, { $pull: { posts: post._id } });
+                await Post.updateOne({ _id: post._id }, { $pull: { tags: tag._id } });
             }
-            i++;
         }
     },
 
@@ -40,45 +76,65 @@ const tagController = {
         await removeTags(tags, post);
     },
     followTag: async (req, res, next) => {
-        const { tagId, userId } = req.body;
-        let tag;
-        let user;
         try {
-            tag = await Tag.findByIdAndUpdate(tagId, { $addToSet: { followers: userId } }, { new: true });
-            user = await User.findByIdAndUpdate(userId, { $addToSet: { followedTags: tagId } }, { new: true }).populate(
-                'followedTags',
+            const { tagId } = req.params;
+            const { _id: userId } = req.user;
+            const [tagUpdateError, updatedTag] = await to(
+                Tag.findByIdAndUpdate(tagId, { $addToSet: { followers: userId } }, { new: true }),
             );
-        } catch (err) {
-            return res.status(500).json({
-                result: 'fail',
+
+            const [userUpdateError, updatedUser] = await to(
+                User.findByIdAndUpdate(userId, { $addToSet: { followedTags: tagId } }, { new: true }).populate(
+                    'followedTags',
+                ),
+            );
+
+            if (tagUpdateError || userUpdateError) {
+                throw new Error('Could not follow tag');
+            }
+
+            res.status(200).json({
+                status: 'success',
+                tag: updatedTag,
+                user: updatedUser,
+            });
+        } catch (error) {
+            res.status(500).json({
+                status: 'fail',
                 message: 'Could not follow tag',
             });
         }
-        res.status(200).json({
-            tag: tag.toObject({ getters: true }),
-            user: user.toObject({ getters: true }),
-        });
     },
 
     unfollowTag: async (req, res, next) => {
-        const { tagId, userId } = req.body;
-        let tag;
-        let user;
         try {
-            tag = await Tag.findByIdAndUpdate(tagId, { $pull: { followers: userId } }, { new: true });
-            user = await User.findByIdAndUpdate(userId, { $pull: { followedTags: tagId } }, { new: true }).populate(
-                'followedTags',
+            const { tagId } = req.params;
+            const { _id: userId } = req.user;
+            const [tagUpdateError, updatedTag] = await to(
+                Tag.findByIdAndUpdate(tagId, { $pull: { followers: userId } }, { new: true }),
             );
-        } catch (err) {
-            return res.status(500).json({
-                result: 'fail',
+
+            const [userUpdateError, updatedUser] = await to(
+                User.findByIdAndUpdate(userId, { $pull: { followedTags: tagId } }, { new: true }).populate(
+                    'followedTags',
+                ),
+            );
+
+            if (tagUpdateError || userUpdateError) {
+                throw new Error('Could not unfollow tag');
+            }
+
+            res.status(200).json({
+                status: 'success',
+                tag: updatedTag.toObject({ getters: true }),
+                user: updatedUser.toObject({ getters: true }),
+            });
+        } catch (error) {
+            res.status(500).json({
+                status: 'fail',
                 message: 'Could not unfollow tag',
             });
         }
-        res.status(200).json({
-            tag: tag.toObject({ getters: true }),
-            user: user.toObject({ getters: true }),
-        });
     },
 };
 

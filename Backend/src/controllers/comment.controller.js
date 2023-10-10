@@ -31,7 +31,6 @@ const CommentController = {
                     message: 'Creating comment failed, please try again',
                 });
             }
-
             let user;
             try {
                 user = await User.findById(author);

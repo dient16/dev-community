@@ -17,7 +17,7 @@ const Login = () => {
         const payload = { email: email, password: password };
         const response = await apiLogin(payload);
         if (response?.status === 'success') {
-            dispatch(login({ isLoggedIn: true, token: response.accessToken, userData: response.userData }));
+            dispatch(login({ isLoggedIn: true, token: response.accessToken, currentUser: response.userData }));
             toast.success('Login successful');
             navigate(`/${path.HOME}`);
         } else {

@@ -88,7 +88,7 @@ const PostController = {
             const { title, body, tags } = req.body;
             const author = req.user._id;
 
-            if (!title || !body || !tags || !imageUrl) {
+            if (!title || !body || !tags) {
                 return res.status(400).json({
                     status: 'fail',
                     message: 'Title, body, and tags are required fields.',
@@ -177,19 +177,6 @@ const PostController = {
         }
     },
     ////////////////////////////////
-    getAllPosts: async (req, res) => {
-        let posts;
-        try {
-            posts = await Post.find().sort({ date: 'desc' }).populate('author').populate('tags');
-        } catch (err) {
-            return res.status(500).json({
-                status: 'fail',
-                message: 'Could not fetch posts, please try again',
-            });
-        }
-        res.json({ posts: posts.map((post) => post.toObject({ getters: true })) });
-    },
-    ////////////////////////////////
     getPostById: async (req, res, next) => {
         const { postId } = req.params;
         let post;
@@ -238,6 +225,181 @@ const PostController = {
                 status: 'fail',
                 message: err.message,
             });
+        }
+    },
+    likePost: async (req, res, next) => {
+        try {
+            const { postId } = req.params;
+            const { _id: userId } = req.user;
+            if (!postId || !userId) {
+                return res.status(400).json({
+                    status: 'fail',
+                    message: 'Missing input',
+                });
+            }
+            const [updateErr, updatedPost] = await to(
+                Post.findByIdAndUpdate(postId, { $addToSet: { likes: userId } }, { new: true }),
+            );
+
+            if (updateErr) {
+                return res.status(500).json({
+                    status: 'fail',
+                    message: 'Like post failed',
+                });
+            }
+
+            // Uncomment the following block if you want to send notifications
+            // const authorId = updatedPost.author.toString();
+            // if (authorId !== userId) {
+            //     await NotificationService.likeNotification(userId, postId, authorId, next);
+            // }
+
+            return res.status(200).json({
+                status: 'success',
+                message: 'Like post successfully',
+                post: updatedPost,
+            });
+        } catch (error) {
+            next(error);
+        }
+    },
+    unlikePost: async (req, res, next) => {
+        try {
+            const { postId } = req.params;
+            const { _id: userId } = req.user;
+
+            const [findError, postToUnlike] = await to(Post.findOne({ _id: postId, likes: userId }));
+
+            if (findError) {
+                return next(findError);
+            }
+
+            if (!postToUnlike) {
+                return res.status(404).json({
+                    status: 'fail',
+                    message: 'Post not found',
+                });
+            }
+
+            postToUnlike.likes = postToUnlike.likes.filter((likedUser) => !likedUser.equals(userId));
+            await postToUnlike.save();
+
+            // if (!postToUnlike.author.equals(userId)) {
+            //     await NotificationService.removeLikeNotification(userId, postToUnlike.author, postId);
+            // }
+
+            return res.status(200).json({
+                status: 'success',
+                message: 'Unlike post successfully',
+            });
+        } catch (error) {
+            next(error);
+        }
+    },
+    bookmarkPost: async (req, res, next) => {
+        try {
+            const { postId } = req.params;
+            const { _id: userId } = req.user;
+
+            const [updateError, updatedPost] = await to(
+                Post.findByIdAndUpdate(
+                    postId,
+                    {
+                        $addToSet: { bookmarks: userId },
+                    },
+                    { new: true },
+                ),
+            );
+
+            if (updateError) {
+                return res.status(500).json({
+                    status: 'fail',
+                    message: 'Could not bookmark post',
+                });
+            }
+            const [userUpdateError, updatedUser] = await to(
+                User.findByIdAndUpdate(
+                    userId,
+                    {
+                        $addToSet: { bookmarked: postId },
+                    },
+                    { new: true },
+                ),
+            );
+
+            if (userUpdateError) {
+                return res.status(500).json({
+                    status: 'fail',
+                    message: 'Could not update user bookmarks',
+                });
+            }
+            if (!updatedPost) {
+                return res.status(404).json({
+                    status: 'fail',
+                    message: 'Post not found',
+                });
+            }
+
+            return res.status(200).json({
+                status: 'success',
+                post: updatedPost,
+            });
+        } catch (error) {
+            next(error);
+        }
+    },
+    unbookmarkPost: async (req, res, next) => {
+        try {
+            const { postId } = req.params;
+            const { _id: userId } = req.user;
+
+            const [updateError, updatedPost] = await to(
+                Post.findByIdAndUpdate(
+                    postId,
+                    {
+                        $pull: { bookmarks: userId },
+                    },
+                    { new: true },
+                ),
+            );
+
+            if (updateError) {
+                return res.status(500).json({
+                    status: 'fail',
+                    message: 'Could not unbookmark post',
+                });
+            }
+
+            const [userUpdateError, updatedUser] = await to(
+                User.findByIdAndUpdate(
+                    userId,
+                    {
+                        $pull: { bookmarked: postId },
+                    },
+                    { new: true },
+                ),
+            );
+
+            if (userUpdateError) {
+                return res.status(500).json({
+                    status: 'fail',
+                    message: 'Could not update user bookmarks',
+                });
+            }
+
+            if (!updatedPost) {
+                return res.status(404).json({
+                    status: 'fail',
+                    message: 'Post not found',
+                });
+            }
+
+            return res.status(200).json({
+                status: 'success',
+                post: updatedPost,
+            });
+        } catch (error) {
+            next(error);
         }
     },
 };

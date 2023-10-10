@@ -1,9 +1,24 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import './MyTags.scss';
 import icons from '~/utils/icons';
+import { apiGetMyTags } from '~/apiServices';
+import { useSelector } from 'react-redux';
 
-const { RiSettingsLine } = icons;
 const MyTags = () => {
+    const { RiSettingsLine } = icons;
+    const [myTags, setMyTags] = useState(null);
+    const { currentUser } = useSelector((state) => state.user);
+    const getMyTags = async () => {
+        const response = await apiGetMyTags();
+        if (response.status === 'success') {
+            setMyTags(response.tags.followedTags);
+        }
+    };
+    useEffect(() => {
+        if (currentUser) {
+            getMyTags();
+        }
+    }, []);
     return (
         <div className="my-tags">
             <div className="my-tags__header">
@@ -13,36 +28,14 @@ const MyTags = () => {
                 </span>
             </div>
             <div className="my-tags__container">
-                <span>
-                    <span className="my-tags__tag-item">#reactjs</span>
-                </span>
-                <span>
-                    <span className="my-tags__tag-item">#nodejs</span>
-                </span>
-                <span>
-                    <span className="my-tags__tag-item">#html</span>
-                </span>
-                <span>
-                    <span className="my-tags__tag-item">#javascript</span>
-                </span>
-                <span>
-                    <span className="my-tags__tag-item">#reactjs dasasa</span>
-                </span>
-                <span>
-                    <span className="my-tags__tag-item">#reactjsas</span>
-                </span>{' '}
-                <span>
-                    <span className="my-tags__tag-item">#reactjs</span>
-                </span>{' '}
-                <span>
-                    <span className="my-tags__tag-item">#reactjs</span>
-                </span>{' '}
-                <span>
-                    <span className="my-tags__tag-item">#reactjs</span>
-                </span>{' '}
-                <span>
-                    <span className="my-tags__tag-item">#reactjs</span>
-                </span>
+                {myTags &&
+                    myTags.map((tag) => {
+                        return (
+                            <span key={tag._id}>
+                                <span className="my-tags__tag-item">{`#${tag.name}`}</span>
+                            </span>
+                        );
+                    })}
             </div>
         </div>
     );

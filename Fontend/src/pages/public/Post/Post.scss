@@ -8,6 +8,7 @@
         display: flex;
         align-items: flex-start;
         gap: 10px;
+        border-radius: 10px;
     }
     &__actions {
         margin: 30px;
@@ -64,14 +65,21 @@
             font-size: 1.8rem;
             padding: 10px;
             background: transparent;
+            color: $black;
         }
         .code-highlight {
-            background: #ccc;
+            //background: #ccc;
+            color: $white;
         }
         code {
-            background: #ccc;
+            //background: #ccc;
+            //background: $black;
+            filter: brightness(1.1);
+            mix-blend-mode: difference;
+            color: $white;
         }
         pre {
+            color: $white;
             display: -webkit-box;
             overflow: hidden;
             text-overflow: ellipsis;

@@ -9,7 +9,6 @@ const tagSchema = new mongoose.Schema(
             required: true,
             unique: true,
         },
-        date: { type: Date, default: Date.now },
         posts: [{ type: mongoose.Types.ObjectId, required: true, ref: 'Post' }],
         followers: [{ type: mongoose.Types.ObjectId, ref: 'User' }],
     },
