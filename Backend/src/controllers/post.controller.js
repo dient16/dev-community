@@ -58,6 +58,7 @@ const PostController = {
             });
         }
     },
+    ////////////////////////////////
     getPost: async (req, res, next) => {
         const { pid } = req.params;
         const post = await Post.findById(pid)
@@ -227,6 +228,7 @@ const PostController = {
             });
         }
     },
+    ////////////////////////////////
     likePost: async (req, res, next) => {
         try {
             const { postId } = req.params;
@@ -271,6 +273,7 @@ const PostController = {
             next(error);
         }
     },
+    ////////////////////////////////
     unlikePost: async (req, res, next) => {
         try {
             const { postId } = req.params;
@@ -310,6 +313,7 @@ const PostController = {
             next(error);
         }
     },
+    ////////////////////////////////
     bookmarkPost: async (req, res, next) => {
         try {
             const { postId } = req.params;
@@ -362,6 +366,7 @@ const PostController = {
             next(error);
         }
     },
+    ////////////////////////////////
     unbookmarkPost: async (req, res, next) => {
         try {
             const { postId } = req.params;
