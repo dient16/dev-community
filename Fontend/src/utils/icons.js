@@ -1,4 +1,4 @@
-import { LuClipboardList } from 'react-icons/lu';
+import { LuClipboardList, LuHash } from 'react-icons/lu';
 import { BsTag, BsLightbulb, BsInfoCircle, BsCodeSquare, BsCodeSlash, BsImage } from 'react-icons/bs';
 import { RiHome4Fill, RiChat1Line, RiSettingsLine } from 'react-icons/ri';
 import { FaRegHeart, FaHeart, FaRegBookmark, FaRegBell, FaBell } from 'react-icons/fa';
@@ -29,5 +29,6 @@ const icons = {
     BiSolidQuoteAltLeft,
     AiOutlineOrderedList,
     BsImage,
+    LuHash,
 };
 export default icons;

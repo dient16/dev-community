@@ -3,6 +3,7 @@ import './MyTags.scss';
 import icons from '~/utils/icons';
 import { apiGetMyTags } from '~/apiServices';
 import { useSelector } from 'react-redux';
+import { TagChildren } from '~/components';
 
 const MyTags = () => {
     const { RiSettingsLine } = icons;
@@ -30,11 +31,7 @@ const MyTags = () => {
             <div className="my-tags__container">
                 {myTags &&
                     myTags.map((tag) => {
-                        return (
-                            <span key={tag._id}>
-                                <span className="my-tags__tag-item">{`#${tag.name}`}</span>
-                            </span>
-                        );
+                        return <TagChildren key={tag._id} tagName={tag.name} color={tag.theme} />;
                     })}
             </div>
         </div>

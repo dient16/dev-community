@@ -5,6 +5,7 @@
     flex-direction: column;
     &__wrapper {
         max-width: $width-main;
+        min-width: 830px;
         margin: 0 auto;
         .btn-add-banner {
             margin: 0;

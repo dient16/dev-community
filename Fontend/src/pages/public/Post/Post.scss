@@ -55,6 +55,10 @@
         padding: 0 30px;
     }
     &__body-tags {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        flex-wrap: wrap;
         padding: 0 30px;
         font-size: 2rem;
     }

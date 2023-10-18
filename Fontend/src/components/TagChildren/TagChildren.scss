@@ -1,0 +1,17 @@
+.tag-children {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 2px 5px;
+    border-radius: 5px;
+    gap: 2px;
+    user-select: none;
+    cursor: pointer;
+    width: fit-content;
+    // &__icon {
+    // }
+    &__name {
+        font-size: 1.7rem;
+        font-weight: 400;
+    }
+}

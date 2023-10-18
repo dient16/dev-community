@@ -5,6 +5,7 @@ import { useNavigate } from 'react-router-dom';
 import moment from 'moment';
 import { apiLikePost, apiUnlikePost } from '~/apiServices';
 import { useSelector } from 'react-redux';
+import { TagChildren } from '~/components';
 const { FaRegHeart, FaHeart, FaRegBookmark, RiChat1Line } = icons;
 
 const PostItem = ({ postItemOnHome }) => {
@@ -54,24 +55,29 @@ const PostItem = ({ postItemOnHome }) => {
                     <div className="post-item__wrap-detail">
                         <p className="post-title">{post.title}</p>
                         <div className="post-item__tags">
-                            {post?.tags.map((tag) => (
-                                <span key={tag._id}>{`#${tag.name}`}</span>
-                            ))}
+                            {post &&
+                                post?.tags.map((tag) => (
+                                    <TagChildren key={tag._id} tagName={tag?.name} color={tag?.theme} />
+                                ))}
                         </div>
                     </div>
                 </div>
                 <div className="post-item__actions">
-                    <span className="post-item__action-like" onClick={(e) => handleToggleLike(e)}>
-                        {isLiked ? <FaHeart size={24} /> : <FaRegHeart size={21} />}
-                        <span className="like-title">{`${post?.likes?.length} Likes`}</span>
-                    </span>
-                    <div className="post-item__action-comment">
-                        <span className="comment-icon">
-                            <RiChat1Line size={24} />
+                    <div className="post-item__action-like">
+                        <span onClick={(e) => handleToggleLike(e)} className="like-inner">
+                            {isLiked ? <FaHeart color="#D71313" size={24} /> : <FaRegHeart size={21} />}
+                            <span className="like-title">{`${post?.likes?.length} Likes`}</span>
                         </span>
-                        <span className="comment-title">{`${post?.comments?.length} Comments`}</span>
                     </div>
-                    <span className="action-bookmark">
+                    <div className="post-item__action-comment">
+                        <span className="comment-inner">
+                            <span className="comment-icon">
+                                <RiChat1Line size={24} />
+                            </span>
+                            <span className="comment-title">{`${post?.comments?.length} Comments`}</span>
+                        </span>
+                    </div>
+                    <span className="post-item__action-bookmark">
                         <FaRegBookmark size={21} />
                     </span>
                 </div>

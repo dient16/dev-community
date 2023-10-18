@@ -41,7 +41,7 @@ const NewPost = () => {
     };
 
     const handleCreatePost = async () => {
-        if (selectedImage && postBody && postTitle && postTags.length >= 1) {
+        if (postBody && postTitle && postTags.length >= 1) {
             try {
                 const formData = new FormData();
                 formData.append('image', selectedImage);
@@ -59,12 +59,7 @@ const NewPost = () => {
                 console.error(error);
             }
         } else {
-            dispatch(setMessage('Please fill out all fields'));
-            dispatch(setError());
-            setTimeout(() => {
-                dispatch(resetError());
-                setMessage('');
-            }, 3000);
+            toast.error('Please fill out all fields');
         }
     };
 

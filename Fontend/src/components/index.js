@@ -10,3 +10,4 @@ export { default as Wrapper } from './Popper/Wrapper';
 export { default as TagItem } from './TagItem/TagItem';
 export { default as PostMarkdown } from './PostMarkdown/PostMarkdown';
 export { default as InputTags } from './InputTags/InputTags';
+export { default as TagChildren } from './TagChildren/TagChildren';

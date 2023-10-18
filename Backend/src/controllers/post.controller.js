@@ -24,10 +24,13 @@ const PostController = {
             if (filters?.title) formattedFilters.title = { $regex: filters.title, $options: 'i' };
             if (filters?.author) formattedFilters.author = { $regex: filters.author, $options: 'i' };
             const finalQuery = { ...postQueryObject, ...formattedFilters };
-            let query = Post.find(finalQuery).populate({ path: 'tags', select: '_id name' }).populate({
-                path: 'author',
-                select: 'firstname lastname avatar username',
-            });
+            let query = Post.find(finalQuery)
+                .select('-body')
+                .populate({ path: 'tags', select: '_id name theme' })
+                .populate({
+                    path: 'author',
+                    select: 'firstname lastname avatar username',
+                });
 
             if (req.query.fields) {
                 const selectedFields = req.query.fields.split(',').join(' ');
@@ -43,7 +46,6 @@ const PostController = {
             const limit = req.query.limit || 10;
             const skip = (page - 1) * limit;
             query.skip(skip).limit(limit);
-
             const posts = await query.exec();
             const postCount = await Post.find(finalQuery).countDocuments();
             return res.status(200).json({
@@ -61,7 +63,7 @@ const PostController = {
     getPost: async (req, res, next) => {
         const { pid } = req.params;
         const post = await Post.findById(pid)
-            .populate({ path: 'tags', select: 'name' })
+            .populate({ path: 'tags', select: 'name theme' })
             .populate({
                 path: 'author',
                 select: 'firstname lastname avatar',
@@ -239,9 +241,10 @@ const PostController = {
             }
             const [updateErr, updatedPost] = await to(
                 Post.findByIdAndUpdate(postId, { $addToSet: { likes: userId } }, { new: true })
+                    .select('-body')
                     .populate({
                         path: 'tags',
-                        select: 'name',
+                        select: 'name theme',
                     })
                     .populate({
                         path: 'author',
@@ -277,10 +280,13 @@ const PostController = {
             const { _id: userId } = req.user;
 
             const [findError, postToUnlike] = await to(
-                Post.findOne({ _id: postId, likes: userId }).populate({ path: 'tags', select: 'name' }).populate({
-                    path: 'author',
-                    select: 'firstname lastname avatar',
-                }),
+                Post.findOne({ _id: postId, likes: userId })
+                    .select('-body')
+                    .populate({ path: 'tags', select: 'name theme' })
+                    .populate({
+                        path: 'author',
+                        select: 'firstname lastname avatar',
+                    }),
             );
 
             if (findError) {

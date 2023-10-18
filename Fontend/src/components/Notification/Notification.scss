@@ -3,12 +3,13 @@
     width: 400px;
     height: 500px;
     background: $white;
-    padding: 15px;
     border-radius: 8px;
     box-shadow: rgba(0, 0, 0, 0.12) 0px -4px 32px;
     transition: all 200ms linear 0s;
     user-select: none;
     position: relative;
+    display: flex;
+    flex-direction: column;
     // &::before {
     //     content: '';
     //     position: absolute;
@@ -26,12 +27,19 @@
         display: flex;
         flex-direction: column;
         align-items: flex-start;
+        padding: 15px;
         .title {
             color: $black;
             font-weight: 600;
             font-size: 2.4rem;
             line-height: 3rem;
         }
+    }
+    &__body {
+        display: flex;
+        flex-direction: column;
+        padding: 15px;
+        overflow-y: auto;
     }
 }
 .header-notify {

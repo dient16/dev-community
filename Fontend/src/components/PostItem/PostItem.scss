@@ -56,18 +56,12 @@
     &__tags {
         display: flex;
         gap: 5px;
-        span {
-            padding: 2px 5px;
-            background: #bbbaba;
-            border-radius: 5px;
-        }
     }
     &__actions {
         margin-top: 10px;
         width: 100%;
         display: flex;
         align-items: center;
-        justify-content: space-around;
         margin-bottom: 15px;
 
         .action-bookmark {
@@ -76,21 +70,39 @@
     }
     &__action-comment,
     &__action-like {
+        width: 37%;
         display: flex;
         align-items: center;
         justify-content: center;
-        gap: 5px;
-        cursor: pointer;
-        padding: 5px;
-        border-radius: 5px;
-        height: 30px;
-        &:hover {
-            background: #ccc;
+    }
+    &__action-comment,
+    &__action-like {
+        > .comment-inner,
+        > .like-inner {
+            user-select: none;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 5px;
+            cursor: pointer;
+            border-radius: 10px;
+            height: 35px;
+            padding: 5px 15px;
+            &:hover {
+                background: #ccc;
+            }
         }
     }
+
     &__action-comment {
         .comment-icon {
             margin-top: 5px;
         }
+    }
+    &__action-bookmark {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        width: 26%;
     }
 }

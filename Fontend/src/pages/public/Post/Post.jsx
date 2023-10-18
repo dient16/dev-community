@@ -3,7 +3,7 @@ import './Post.scss';
 import icons from '~/utils/icons';
 import MDEditor from '@uiw/react-md-editor';
 import moment from 'moment';
-import { Button } from '~/components';
+import { Button, TagChildren } from '~/components';
 import { useParams } from 'react-router-dom';
 import { apiGetPost } from '~/apiServices/post';
 
@@ -46,8 +46,9 @@ const Post = () => {
                     </div>
                     <h3 className="post-detail__body-title">{post?.title}</h3>
                     <div className="post-detail__body-tags">
-                        <span>#web dev</span>
-                        <span>#web dev</span>
+                        {post?.tags.map((tag) => (
+                            <TagChildren key={tag._id} tagName={tag.name} color={tag.theme} />
+                        ))}
                     </div>
                     <div className="post-detail__content">
                         <MDEditor.Markdown

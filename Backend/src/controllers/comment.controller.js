@@ -6,10 +6,12 @@ const to = require('await-to-js').default;
 const CommentController = {
     createComment: async (req, res, next) => {
         try {
-            const { post: parentPost, content, parentId } = req.body;
+            const { postId } = req.params;
+            const { parentId, content } = req.body;
+
             const { _id: author } = req.user;
 
-            if (!parentPost || !content || !author) {
+            if (!postId || !content || !author) {
                 return res.status(422).json({
                     status: 'fail',
                     message: 'Invalid inputs passed, please check your data',
@@ -18,7 +20,7 @@ const CommentController = {
 
             let post;
             try {
-                post = await Post.findById(parentPost);
+                post = await Post.findById(postId);
                 if (!post) {
                     return res.status(404).json({
                         status: 'fail',
@@ -49,7 +51,7 @@ const CommentController = {
 
             let createdComment = new Comment({
                 parentId,
-                post: parentPost,
+                post: postId,
                 content,
                 author,
             });
