@@ -1,7 +1,7 @@
 import React from 'react';
 import { Outlet } from 'react-router-dom';
 import { Header } from '~/components';
-import './RootLayout.scss';
+import './MainLayout.scss';
 const DefaultLayout = () => {
     return (
         <div className="default-layout">

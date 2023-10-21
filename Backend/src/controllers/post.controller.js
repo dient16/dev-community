@@ -8,6 +8,9 @@ const to = require('await-to-js').default;
 const mongoose = require('mongoose');
 const tagController = require('./tag.controller');
 const cloudinary = require('../config/cloudinary.config');
+function delay(ms) {
+    return new Promise((resolve) => setTimeout(resolve, ms));
+}
 const PostController = {
     ////////////////////////////////
     getPosts: async (req, res, next) => {
@@ -61,6 +64,26 @@ const PostController = {
         }
     },
     ////////////////////////////////
+    uploadImage: async (req, res, next) => {
+        try {
+            const { path: imageUrl } = req.file;
+            if (imageUrl) {
+                return res.status(200).json({
+                    status: 'success',
+                    message: 'Upload image successfully',
+                    imageUrl,
+                });
+            } else {
+                return res.status(500).json({
+                    status: 'fail',
+                    message: 'Upload image fail',
+                });
+            }
+        } catch (error) {
+            next(error);
+        }
+    },
+    ////////////////////////////////
     getPost: async (req, res, next) => {
         const { pid } = req.params;
         const post = await Post.findById(pid)
@@ -84,7 +107,6 @@ const PostController = {
     },
     ////////////////////////////////
     createPost: async (req, res, next) => {
-        console.log(req.body.tags.split(','));
         try {
             const { path: imageUrl } = req.file;
 

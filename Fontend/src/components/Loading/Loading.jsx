@@ -1,8 +1,8 @@
 import React, { memo } from 'react';
-import { HashLoader } from 'react-spinners';
+import { ClipLoader } from 'react-spinners';
 
 const Loading = () => {
-    return <HashLoader color="#ee3131" />;
+    return <ClipLoader color="#eee" size={60} cssOverride={{ borderWidth: '5px' }} />;
 };
 
 export default memo(Loading);

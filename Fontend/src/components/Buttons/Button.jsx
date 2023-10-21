@@ -23,6 +23,7 @@ function Button({
     let ButtonType = 'button';
     const props = {
         onClick,
+
         ...additionalProps,
     };
 

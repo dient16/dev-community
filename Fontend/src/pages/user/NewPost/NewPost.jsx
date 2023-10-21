@@ -3,6 +3,7 @@ import { Button, InputTags, PostMarkdown } from '~/components';
 import { useDispatch } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 import { apiCreatePost } from '~/apiServices/post';
+import { LoadingApp } from '~/store/app/appSlice';
 import { toast } from 'react-toastify';
 import './NewPost.scss';
 
@@ -48,6 +49,7 @@ const NewPost = () => {
                 formData.append('body', postBody);
                 formData.append('title', postTitle);
                 formData.append('tags', postTags);
+                dispatch(LoadingApp({ isLoading: true }));
                 const response = await apiCreatePost(formData);
                 if (response.status === 'success') {
                     toast.success('Created successfully');
@@ -57,6 +59,8 @@ const NewPost = () => {
                 }
             } catch (error) {
                 console.error(error);
+            } finally {
+                dispatch(LoadingApp({ isLoading: false }));
             }
         } else {
             toast.error('Please fill out all fields');

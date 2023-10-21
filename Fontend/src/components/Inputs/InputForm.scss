@@ -1,0 +1,45 @@
+.input-container {
+    position: relative;
+    margin-bottom: 20px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: flex-start;
+    gap: 5px;
+    margin-top: 20px;
+    &__text {
+        font-size: 1.4rem;
+        display: block;
+        width: 100%;
+        outline: none;
+        height: 50px;
+        padding: 0 20px;
+        background: #fff;
+        border: 1px solid black;
+        border-radius: 10px;
+
+        &:not(:placeholder-shown) ~ .input-container__label,
+        &:focus ~ .input-container__label {
+            opacity: 1;
+            top: -9px;
+            font-size: 1.5rem;
+        }
+    }
+
+    &__label {
+        font-size: 1.6rem;
+        font-weight: normal;
+        position: absolute;
+        pointer-events: none;
+        left: 15px;
+        top: 13px;
+        padding: 0 5px;
+        background: #fff;
+        transition: 0.2s ease all;
+        opacity: 0.6;
+    }
+
+    &__message {
+        color: red;
+    }
+}

@@ -3,26 +3,20 @@ import * as actions from './actionThunk';
 export const appSlice = createSlice({
     name: 'app',
     initialState: {
-        posts: null,
         isLoading: false,
+        isShowModal: false,
+        modalChildren: null,
     },
     reducers: {
-        showLoading: (state) => (state.isLoading = true),
-        hideLoading: (state) => (state.isLoading = false),
+        showModal: (state, action) => {
+            state.isShowModal = action.payload.isShowModal;
+            state.modalChildren = action.payload.modalChildren;
+        },
+        LoadingApp: (state, action) => {
+            state.isLoading = action.payload.isLoading;
+        },
     },
-    extraReducers: (builder) => {
-        builder.addCase(actions.getPost.pending, (state) => {
-            state.isLoading = true;
-        });
-        builder.addCase(actions.getPost.fulfilled, (state, action) => {
-            state.isLoading = false;
-            state.posts = action.payload;
-        });
-        builder.addCase(actions.getPost.rejected, (state, action) => {
-            state.isLoading = false;
-            state.errorMessage = action.payload.message;
-        });
-    },
+    extraReducers: (builder) => {},
 });
-export const { showLoading, hideLoading } = appSlice.actions;
+export const { showModal, LoadingApp } = appSlice.actions;
 export default appSlice.reducer;

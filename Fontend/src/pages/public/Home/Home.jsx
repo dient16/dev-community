@@ -1,18 +1,20 @@
 import React, { useEffect, useState } from 'react';
 import './Home.scss';
-import { SideBar, PostItem } from '~/components';
+import { SideBar, PostItem, Loading } from '~/components';
 import { apiGetPosts } from '~/apiServices/post';
-import Loading from '~/components/Loading/Loading';
+import { useDispatch } from 'react-redux';
+import { LoadingApp } from '~/store/app/appSlice';
+
 const Home = () => {
     const [posts, setPosts] = useState([]);
-    const [isLoading, setIsLoading] = useState(false);
+    const dispatch = useDispatch();
     const getPostsOnHome = async () => {
-        setIsLoading(true);
+        dispatch(LoadingApp({ isLoading: true }));
         const response = await apiGetPosts();
         if (response?.status === 'success') {
             setPosts(response);
-            setIsLoading(false);
-        } else setIsLoading(false);
+            dispatch(LoadingApp({ isLoading: false }));
+        } else dispatch(LoadingApp({ isLoading: false }));
     };
     useEffect(() => {
         getPostsOnHome();
@@ -24,13 +26,10 @@ const Home = () => {
                     <SideBar />
                 </div>
             </div>
-            {isLoading ? (
-                <Loading />
-            ) : (
-                <div className="home__content">
-                    {posts.count > 0 && posts.posts.map((post) => <PostItem postItemOnHome={post} key={post._id} />)}
-                </div>
-            )}
+            <div className="home__content">
+                {posts.count > 0 && posts.posts.map((post) => <PostItem postItemOnHome={post} key={post._id} />)}
+            </div>
+
             <div className="home__outstanding"></div>
         </div>
     );

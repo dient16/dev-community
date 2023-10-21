@@ -7,6 +7,13 @@ export const apiCreatePost = (data) =>
         data,
         withCredentials: true,
     });
+export const apiUploadImage = (data) =>
+    axios({
+        url: `/post/upload-image`,
+        method: 'post',
+        data,
+        withCredentials: true,
+    });
 
 export const apiGetPosts = () =>
     axios({

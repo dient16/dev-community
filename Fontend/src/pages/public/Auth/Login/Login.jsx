@@ -1,61 +1,78 @@
 // src/Login.js
-import React, { useState } from 'react';
+import React from 'react';
 import './Login.scss';
 import { apiLogin } from '~/apiServices';
 import { useDispatch } from 'react-redux';
 import { login } from '~/store/user/userSlice';
 import { useNavigate } from 'react-router-dom';
 import { toast } from 'react-toastify';
+import { useForm } from 'react-hook-form';
 import path from '~/utils/path';
+import { Button, InputForm } from '~/components';
 
 const Login = () => {
-    const [email, setEmail] = useState('');
-    const [password, setPassword] = useState('');
+    const {
+        handleSubmit,
+        register,
+        formState: { errors },
+        reset,
+    } = useForm({
+        defaultValues: {
+            username: '',
+            password: '',
+        },
+    });
     const dispatch = useDispatch();
     const navigate = useNavigate();
-    const handleLogin = async (e) => {
-        const payload = { email: email, password: password };
+
+    const handleLogin = async (payload) => {
         const response = await apiLogin(payload);
         if (response?.status === 'success') {
             dispatch(login({ isLoggedIn: true, token: response.accessToken, currentUser: response.userData }));
             toast.success('Login successful');
             navigate(`/${path.HOME}`);
+            reset();
         } else {
             toast.error(response.message);
         }
     };
 
     return (
-        <div className="login">
-            <div className="login__form">
-                <label className="login__label" htmlFor="email">
-                    Email:
-                </label>
-                <input
-                    className="login__input"
+        <div className="login" onSubmit={handleSubmit(handleLogin)}>
+            <form className="login__form">
+                <h3 className="login__title">Login</h3>
+                <InputForm
+                    id={'email'}
+                    label="Email"
                     type="text"
-                    id="email"
-                    name="email"
-                    value={email}
-                    onChange={(e) => setEmail(e.target.value)}
+                    register={register}
+                    errors={errors}
+                    validate={{
+                        required: 'Email is required',
+                        pattern: {
+                            value: /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i,
+                            message: 'Invalid email address',
+                        },
+                    }}
                 />
-
-                <label className="login__label" htmlFor="password">
-                    Password:
-                </label>
-                <input
-                    className="login__input"
+                <InputForm
+                    id={'password'}
+                    label="Password"
+                    register={register}
+                    errors={errors}
                     type="password"
-                    id="password"
-                    name="password"
-                    value={password}
-                    onChange={(e) => setPassword(e.target.value)}
+                    validate={{
+                        required: 'Password is required',
+                        minLength: {
+                            value: 3,
+                            message: 'Password must be at least 6 characters',
+                        },
+                    }}
                 />
-
-                <button className="login__button" onClick={() => handleLogin()}>
+                <Button type="submit" primary style={{ margin: '0' }}>
                     Login
-                </button>
-            </div>
+                </Button>
+            </form>
         </div>
     );
 };

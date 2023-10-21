@@ -2,13 +2,13 @@ import React from 'react';
 import { Route, Routes, useNavigate } from 'react-router-dom';
 import { EditPost, NewPost, Profile, ReadingList } from '~/pages/user';
 import { Home, Login, Register, Tags, About, Faqs, Post } from '~/pages/public';
-import RootLayout from '~/pages/RootLayout/RootLayout';
+import MainLayout from '~/pages/MainLayout/MainLayout';
 import path from '~/utils/path';
 
 const Router = () => {
     return (
         <Routes>
-            <Route path={path.ROOT} element={<RootLayout />}>
+            <Route path={path.ROOT} element={<MainLayout />}>
                 <Route path={path.HOME} element={<Home />}></Route>
                 <Route path={path.TAGS} element={<Tags />}></Route>
                 <Route path={path.ABOUT} element={<About />}></Route>
