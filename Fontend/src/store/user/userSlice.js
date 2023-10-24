@@ -10,11 +10,6 @@ export const userSlice = createSlice({
         message: null,
     },
     reducers: {
-        login: (state, action) => {
-            state.isLoggedIn = action.payload.isLoggedIn;
-            state.token = action.payload.token;
-            state.currentUser = action.payload.currentUser;
-        },
         logout: (state, action) => {
             state.isLoggedIn = false;
             state.token = null;
@@ -39,9 +34,25 @@ export const userSlice = createSlice({
             state.isLoading = false;
             state.currentUser = null;
             state.token = null;
-            state.message = 'Login status has expired, Please login again!';
+            state.message = action.payload.message || 'Error from server';
+        });
+        /////Login
+        builder.addCase(actions.login.pending, (state) => {
+            state.isLoading = true;
+        });
+        builder.addCase(actions.login.fulfilled, (state, action) => {
+            state.isLoading = false;
+            state.isLoggedIn = true;
+            state.token = action.payload.accessToken;
+            state.currentUser = action.payload.userData;
+        });
+        builder.addCase(actions.login.rejected, (state, action) => {
+            state.isLoading = false;
+            state.currentUser = null;
+            state.token = null;
+            state.message = action.payload.message || 'Error from server';
         });
     },
 });
-export const { login, logout, clearMessage, message } = userSlice.actions;
+export const { login, logout, clearMessage } = userSlice.actions;
 export default userSlice.reducer;

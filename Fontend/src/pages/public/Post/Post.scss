@@ -1,6 +1,7 @@
 @use '~/styles/' as *;
 .post-detail {
     width: $width-full;
+    margin-bottom: 30px;
     &__wrapper {
         max-width: $width-main;
         width: $width-full;
@@ -16,6 +17,23 @@
         display: flex;
         flex-direction: column;
         gap: 30px;
+    }
+    &__action-like,
+    &__action-comment,
+    &__action-bookmark {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        padding: 7px;
+        border-radius: 50%;
+    }
+    &__action-like {
+        &:hover {
+            border: 1px solid red;
+        }
+    }
+    &__action-like--active {
+        border: 1px solid red;
     }
     &__body {
         max-width: 850px;

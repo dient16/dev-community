@@ -1,24 +1,19 @@
 import React, { useEffect, useState } from 'react';
 import './Home.scss';
 import { SideBar, PostItem, Loading } from '~/components';
-import { apiGetPosts } from '~/apiServices/post';
-import { useDispatch } from 'react-redux';
-import { LoadingApp } from '~/store/app/appSlice';
+import { useDispatch, useSelector } from 'react-redux';
+import { Spin } from 'antd';
+import { getPosts } from '~/store/post/actionThunk';
 
 const Home = () => {
-    const [posts, setPosts] = useState([]);
     const dispatch = useDispatch();
-    const getPostsOnHome = async () => {
-        dispatch(LoadingApp({ isLoading: true }));
-        const response = await apiGetPosts();
-        if (response?.status === 'success') {
-            setPosts(response);
-            dispatch(LoadingApp({ isLoading: false }));
-        } else dispatch(LoadingApp({ isLoading: false }));
-    };
+    const isLoading = useSelector((state) => state.post.isLoading);
+    const posts = useSelector((state) => state.post.posts);
+
     useEffect(() => {
-        getPostsOnHome();
-    }, []);
+        dispatch(getPosts());
+    }, [dispatch]);
+
     return (
         <div className="home">
             <div className="home__sidebar">
@@ -27,7 +22,11 @@ const Home = () => {
                 </div>
             </div>
             <div className="home__content">
-                {posts.count > 0 && posts.posts.map((post) => <PostItem postItemOnHome={post} key={post._id} />)}
+                <Spin indicator={<Loading />} spinning={isLoading} className="loading">
+                    {posts &&
+                        posts.count > 0 &&
+                        posts.posts.map((post) => <PostItem postItemOnHome={post} key={post._id} />)}
+                </Spin>
             </div>
 
             <div className="home__outstanding"></div>

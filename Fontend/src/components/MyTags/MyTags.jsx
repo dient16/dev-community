@@ -19,7 +19,7 @@ const MyTags = () => {
         if (currentUser) {
             getMyTags();
         }
-    }, []);
+    }, [currentUser]);
     return (
         <div className="my-tags">
             <div className="my-tags__header">

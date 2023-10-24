@@ -1,0 +1,25 @@
+.comment-post {
+    padding: 0 30px;
+    margin-bottom: 20px;
+    &__add-comment {
+        display: flex;
+        align-items: flex-start;
+        gap: 10px;
+    }
+    &__container {
+        margin-top: 10px;
+        .comment-body {
+            .author {
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                gap: 5px;
+            }
+            .comment-content {
+                margin: 5px 10px;
+                font-size: 1.6rem;
+                font-weight: 500;
+            }
+        }
+    }
+}

@@ -5,6 +5,7 @@ import { useNavigate } from 'react-router-dom';
 import { apiCreatePost } from '~/apiServices/post';
 import { LoadingApp } from '~/store/app/appSlice';
 import { toast } from 'react-toastify';
+import { Image } from 'antd';
 import './NewPost.scss';
 
 const NewPost = () => {
@@ -81,15 +82,7 @@ const NewPost = () => {
                         onChange={handleImageChange}
                         className="new-post__input-file"
                     />
-                    {previewImage && (
-                        <img
-                            src={previewImage}
-                            alt="Preview"
-                            width={150}
-                            height={150}
-                            className="new-post__preview-image"
-                        />
-                    )}
+                    {previewImage && <Image src={previewImage} alt="Preview" width={200} height={100} />}
                 </div>
                 <div className="new-post__top">
                     <textarea

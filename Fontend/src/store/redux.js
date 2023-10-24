@@ -1,6 +1,7 @@
 import { configureStore } from '@reduxjs/toolkit';
 import appSlice from './app/appSlice';
 import userSlice from './user/userSlice';
+import postSlice from './post/postSlice';
 import storage from 'redux-persist/lib/storage';
 import { persistStore, persistReducer, FLUSH, REHYDRATE, PAUSE, PERSIST, PURGE, REGISTER } from 'redux-persist';
 const commonConfig = {
@@ -15,6 +16,7 @@ export const store = configureStore({
     reducer: {
         app: appSlice,
         user: persistReducer(userConfig, userSlice),
+        post: postSlice,
     },
     middleware: (getDefaultMiddleware) =>
         getDefaultMiddleware({

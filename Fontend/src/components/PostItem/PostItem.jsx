@@ -10,8 +10,12 @@ const { FaRegHeart, FaHeart, FaRegBookmark, RiChat1Line } = icons;
 
 const PostItem = ({ postItemOnHome }) => {
     const navigate = useNavigate();
-    const [isLiked, setIsLiked] = useState(false);
     const { currentUser: user } = useSelector((state) => state.user);
+    const [isLiked, setIsLiked] = useState(() =>
+        postItemOnHome?.likes.some((userId) => {
+            return userId === user?._id;
+        }),
+    );
     const [post, setPost] = useState(postItemOnHome);
     const handleToggleLike = async (e) => {
         e.stopPropagation();
@@ -34,7 +38,7 @@ const PostItem = ({ postItemOnHome }) => {
             return userId === user?._id;
         });
         setIsLiked(userLikePost);
-    }, []);
+    }, [post]);
 
     return (
         <div className="post-item" onClick={() => navigate(`/post/${post.author.username}/${post._id}`)}>

@@ -1,9 +1,19 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import MDEditor, { commands } from '@uiw/react-md-editor';
 import './PostMarkdown.scss';
 import icons from '~/utils/icons';
-import { apiUploadImage } from '~/apiServices';
+import { Spin } from 'antd';
+import { useDispatch, useSelector } from 'react-redux';
+import { uploadImage } from '~/store/post/actionThunk';
 const PostMarkdown = ({ content, setContent }) => {
+    const dispatch = useDispatch();
+    const { imageUrl, isLoading } = useSelector((state) => state.post);
+    useEffect(() => {
+        if (imageUrl) {
+            const modifyText = `![image](${imageUrl})\n`;
+            setContent((prevContent) => prevContent + modifyText);
+        }
+    }, [imageUrl]);
     const {
         BsCodeSquare,
         LuBold,
@@ -65,46 +75,46 @@ const PostMarkdown = ({ content, setContent }) => {
                             if (img) {
                                 const formData = new FormData();
                                 formData.append('image', img);
-                                try {
-                                    const response = await apiUploadImage(formData);
-                                    if (response.status === 'success') {
-                                        const imageUrl = response.imageUrl;
-                                        const modifyText = `![image](${imageUrl})\n`;
-                                        setContent((prevContent) => prevContent + modifyText);
-                                    }
-                                } catch (error) {
-                                    console.error('Error uploading image:', error);
-                                }
+                                dispatch(uploadImage(formData));
                             }
                         }}
                         style={{ display: 'none' }}
                     />
                 </span>
             ),
+            execute: async (state, api) => {
+                let modifyText = '';
+                if (state.selectedText) {
+                    modifyText = `![image](${state.selectedText})\n`;
+                }
+                api.replaceSelection(modifyText);
+            },
         },
     };
     return (
         <div className="container-markdown-post">
-            <MDEditor
-                value={content}
-                onChange={setContent}
-                preview="edit"
-                height={400}
-                textareaProps={{
-                    placeholder: 'Please your content here...',
-                }}
-                commands={[
-                    customMark.bold,
-                    customMark.italic,
-                    customMark.link,
-                    customMark.quote,
-                    customMark.orderedListCommand,
-                    customMark.unorderedListCommand,
-                    customMark.code,
-                    customMark.codeBlock,
-                    customMark.image,
-                ]}
-            />
+            <Spin tip="Loading" size="large" spinning={isLoading}>
+                <MDEditor
+                    value={content}
+                    onChange={setContent}
+                    preview="edit"
+                    height={400}
+                    textareaProps={{
+                        placeholder: 'Please your content here...',
+                    }}
+                    commands={[
+                        customMark.bold,
+                        customMark.italic,
+                        customMark.link,
+                        customMark.quote,
+                        customMark.orderedListCommand,
+                        customMark.unorderedListCommand,
+                        customMark.code,
+                        customMark.codeBlock,
+                        customMark.image,
+                    ]}
+                />
+            </Spin>
         </div>
     );
 };

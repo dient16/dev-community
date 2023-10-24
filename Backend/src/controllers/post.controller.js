@@ -15,6 +15,7 @@ const PostController = {
     ////////////////////////////////
     getPosts: async (req, res, next) => {
         try {
+            await delay(1000);
             const filters = { ...req.query };
             const excludedFields = ['limit', 'sort', 'page', 'fields'];
             excludedFields.forEach((field) => delete filters[field]);
@@ -34,7 +35,6 @@ const PostController = {
                     path: 'author',
                     select: 'firstname lastname avatar username',
                 });
-
             if (req.query.fields) {
                 const selectedFields = req.query.fields.split(',').join(' ');
                 query = query.select(selectedFields);
@@ -44,7 +44,6 @@ const PostController = {
                 const sortBy = req.query.sort.split(',').join(' ');
                 query = query.sort(sortBy);
             }
-
             const page = req.query.page || 1;
             const limit = req.query.limit || 10;
             const skip = (page - 1) * limit;
@@ -85,26 +84,50 @@ const PostController = {
     },
     ////////////////////////////////
     getPost: async (req, res, next) => {
-        const { pid } = req.params;
-        const post = await Post.findById(pid)
-            .populate({ path: 'tags', select: 'name theme' })
-            .populate({
-                path: 'author',
-                select: 'firstname lastname avatar',
-            })
-            .populate({
-                path: 'comments',
-                populate: {
+        try {
+            const { pid } = req.params;
+            const post = await Post.findById(pid)
+                .populate({
+                    path: 'tags',
+                    select: 'name theme',
+                })
+                .populate({
                     path: 'author',
                     select: 'firstname lastname avatar',
-                },
-            });
+                })
+                .populate({
+                    path: 'comments',
+                    populate: [
+                        {
+                            path: 'author',
+                            select: 'firstname lastname avatar',
+                        },
+                        {
+                            path: 'parentId',
+                        },
+                    ],
+                });
 
-        return res.status(200).json({
-            status: post ? 'success' : 'fail',
-            data: post ? post : 'Cannot get post',
-        });
+            if (!post) {
+                return res.status(404).json({
+                    status: 'fail',
+                    message: 'Post not found',
+                });
+            }
+
+            return res.status(200).json({
+                status: 'success',
+                data: post,
+            });
+        } catch (error) {
+            console.error(error);
+            return res.status(500).json({
+                status: 'error',
+                message: 'Internal server error',
+            });
+        }
     },
+
     ////////////////////////////////
     createPost: async (req, res, next) => {
         try {
@@ -265,7 +288,6 @@ const PostController = {
             }
             const [updateErr, updatedPost] = await to(
                 Post.findByIdAndUpdate(postId, { $addToSet: { likes: userId } }, { new: true })
-                    .select('-body')
                     .populate({
                         path: 'tags',
                         select: 'name theme',
@@ -273,6 +295,18 @@ const PostController = {
                     .populate({
                         path: 'author',
                         select: 'firstname lastname avatar',
+                    })
+                    .populate({
+                        path: 'comments',
+                        populate: [
+                            {
+                                path: 'author',
+                                select: 'firstname lastname avatar',
+                            },
+                            {
+                                path: 'parentId',
+                            },
+                        ],
                     }),
             );
 
@@ -306,11 +340,25 @@ const PostController = {
 
             const [findError, postToUnlike] = await to(
                 Post.findOne({ _id: postId, likes: userId })
-                    .select('-body')
-                    .populate({ path: 'tags', select: 'name theme' })
+                    .populate({
+                        path: 'tags',
+                        select: 'name theme',
+                    })
                     .populate({
                         path: 'author',
                         select: 'firstname lastname avatar',
+                    })
+                    .populate({
+                        path: 'comments',
+                        populate: [
+                            {
+                                path: 'author',
+                                select: 'firstname lastname avatar',
+                            },
+                            {
+                                path: 'parentId',
+                            },
+                        ],
                     }),
             );
 
