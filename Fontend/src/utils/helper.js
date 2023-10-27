@@ -20,11 +20,10 @@ export function getFromLocalStorage(key) {
     try {
         const serializedData = localStorage.getItem(key);
         if (serializedData === null) {
-            return null;
+            return { isLoggedIn: false, token: null, currentUser: null };
         }
         return JSON.parse(serializedData);
     } catch (error) {
-        console.error('Error getting from localStorage:', error);
-        return null;
+        return { isLoggedIn: false, token: null, currentUser: null };
     }
 }
