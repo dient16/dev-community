@@ -20,7 +20,7 @@ const Post = () => {
         return post.data;
     };
     const { data: post } = useQuery({
-        queryKey: [`post/${slug}`],
+        queryKey: ['post', slug],
         queryFn: fetchPost,
     });
     const likeMutation = useMutation({
