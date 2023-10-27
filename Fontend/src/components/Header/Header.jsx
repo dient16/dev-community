@@ -8,14 +8,15 @@ import path from '~/utils/path';
 import logo from '~/assets/logo.png';
 import icons from '~/utils/icons';
 import clsx from 'clsx';
-
-const { HiPlus, FaRegBell, FaBell } = icons;
 import { useNavigate } from 'react-router-dom';
-import { useSelector } from 'react-redux';
+import { getFromLocalStorage } from '~/utils/helper';
+const { HiPlus, FaRegBell, FaBell } = icons;
+
 const Header = () => {
     const navigate = useNavigate();
     const [isShowNotify, setIsShowNotify] = useState(false);
-    const { isLoggedIn } = useSelector((state) => state.user);
+    const { isLoggedIn } = getFromLocalStorage('dev-community');
+
     useEffect(() => {
         document.addEventListener('click', () => {
             setIsShowNotify(false);
@@ -26,6 +27,7 @@ const Header = () => {
             });
         };
     }, []);
+
     return (
         <div className="header">
             <div className="header__inner">

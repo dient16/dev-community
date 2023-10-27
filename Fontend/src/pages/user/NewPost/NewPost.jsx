@@ -1,29 +1,41 @@
 import React, { useState, useEffect } from 'react';
 import { Button, InputTags, PostMarkdown } from '~/components';
-import { useDispatch } from 'react-redux';
+import { useMutation } from '@tanstack/react-query'; // Import useMutation
 import { useNavigate } from 'react-router-dom';
 import { apiCreatePost } from '~/apiServices/post';
-import { LoadingApp } from '~/store/app/appSlice';
 import { toast } from 'react-toastify';
 import { Image } from 'antd';
 import './NewPost.scss';
 
 const NewPost = () => {
     const navigate = useNavigate();
-    const dispatch = useDispatch();
 
     const [selectedImage, setSelectedImage] = useState(null);
     const [previewImage, setPreviewImage] = useState(null);
     const [postBody, setPostBody] = useState('');
     const [postTitle, setPostTitle] = useState('');
     const [postTags, setPostTags] = useState([]);
+
+    const createPostMutation = useMutation({
+        mutationFn: apiCreatePost,
+        onSuccess: () => {
+            toast.success('Created successfully');
+            navigate('/');
+        },
+        onError: () => {
+            toast.error('Create failed');
+        },
+    });
+
     useEffect(() => {
         document.documentElement.setAttribute('data-color-mode', 'light');
     }, []);
+
     const handleImageChange = (event) => {
         setSelectedImage(event.target.files[0]);
         setPreviewImage(URL.createObjectURL(event.target.files[0]));
     };
+
     const addTag = (event) => {
         const tag = event.target.value;
         if ((event.code === 'Enter' || event.code === 'Space') && tag.trim() !== '') {
@@ -42,27 +54,15 @@ const NewPost = () => {
         }
     };
 
-    const handleCreatePost = async () => {
+    const handleCreatePost = () => {
         if (postBody && postTitle && postTags.length >= 1) {
-            try {
-                const formData = new FormData();
-                formData.append('image', selectedImage);
-                formData.append('body', postBody);
-                formData.append('title', postTitle);
-                formData.append('tags', postTags);
-                dispatch(LoadingApp({ isLoading: true }));
-                const response = await apiCreatePost(formData);
-                if (response.status === 'success') {
-                    toast.success('Created successfully');
-                    navigate('/');
-                } else {
-                    toast.error('Create failed');
-                }
-            } catch (error) {
-                console.error(error);
-            } finally {
-                dispatch(LoadingApp({ isLoading: false }));
-            }
+            const formData = new FormData();
+            formData.append('image', selectedImage);
+            formData.append('body', postBody);
+            formData.append('title', postTitle);
+            formData.append('tags', postTags);
+
+            createPostMutation.mutate(formData);
         } else {
             toast.error('Please fill out all fields');
         }
