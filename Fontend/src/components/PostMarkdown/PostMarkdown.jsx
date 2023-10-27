@@ -1,19 +1,17 @@
-import React, { useEffect } from 'react';
+import React, { useState } from 'react';
 import MDEditor, { commands } from '@uiw/react-md-editor';
 import './PostMarkdown.scss';
 import icons from '~/utils/icons';
 import { Spin } from 'antd';
-import { useDispatch, useSelector } from 'react-redux';
-import { uploadImage } from '~/store/post/actionThunk';
+import { useMutation } from '@tanstack/react-query';
+import { apiUploadImage } from '~/apiServices';
+
 const PostMarkdown = ({ content, setContent }) => {
-    const dispatch = useDispatch();
-    const { imageUrl, isLoading } = useSelector((state) => state.post);
-    useEffect(() => {
-        if (imageUrl) {
-            const modifyText = `![image](${imageUrl})\n`;
-            setContent((prevContent) => prevContent + modifyText);
-        }
-    }, [imageUrl]);
+    const [isSelectText, setIsSelectText] = useState(false);
+    const mutation = useMutation({
+        mutationFn: apiUploadImage,
+    });
+
     const {
         BsCodeSquare,
         LuBold,
@@ -75,7 +73,13 @@ const PostMarkdown = ({ content, setContent }) => {
                             if (img) {
                                 const formData = new FormData();
                                 formData.append('image', img);
-                                dispatch(uploadImage(formData));
+                                mutation.mutate(formData, {
+                                    onSuccess: (data) => {
+                                        const modifyText = `![image](${data.imageUrl})\n`;
+                                        setContent((prevContent) => prevContent + modifyText);
+                                    },
+                                    onError: (error) => {},
+                                });
                             }
                         }}
                         style={{ display: 'none' }}
@@ -86,14 +90,16 @@ const PostMarkdown = ({ content, setContent }) => {
                 let modifyText = '';
                 if (state.selectedText) {
                     modifyText = `![image](${state.selectedText})\n`;
+                    setIsSelectText(true);
                 }
                 api.replaceSelection(modifyText);
             },
         },
     };
+
     return (
         <div className="container-markdown-post">
-            <Spin tip="Loading" size="large" spinning={isLoading}>
+            <Spin tip="Loading" size="large" spinning={mutation.isLoading || false}>
                 <MDEditor
                     value={content}
                     onChange={setContent}

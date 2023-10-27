@@ -5,51 +5,52 @@ import MDEditor from '@uiw/react-md-editor';
 import moment from 'moment';
 import { Button, Comment, TagChildren } from '~/components';
 import { useParams } from 'react-router-dom';
-import { apiGetPost } from '~/apiServices/post';
-import { apiLikePost, apiUnlikePost } from '~/apiServices';
-import { useSelector } from 'react-redux';
+import { useQuery, useMutation } from '@tanstack/react-query';
+import { apiGetPost, apiLikePost, apiUnlikePost } from '~/apiServices/post';
 import clsx from 'clsx';
+import { getFromLocalStorage } from '~/utils/helper';
 
 const Post = () => {
     const { FaRegHeart, FaHeart, RiChat1Line, FaRegBookmark } = icons;
     const [isLiked, setIsLiked] = useState(false);
-    const { currentUser: user } = useSelector((state) => state.user);
-    const [post, setPost] = useState(null);
-    const { slug: pid } = useParams();
-    const getPostDetail = async () => {
-        const response = await apiGetPost(pid);
-        if (response.status === 'success') {
-            setPost(response.data);
-        }
+    const { currentUser: user } = getFromLocalStorage('dev-community');
+    const { slug } = useParams();
+    const fetchPost = async () => {
+        const post = await apiGetPost(slug);
+        return post.data;
     };
+    const { data: post } = useQuery({
+        queryKey: [`post/${slug}`],
+        queryFn: fetchPost,
+    });
+    const likeMutation = useMutation({
+        mutationFn: apiLikePost,
+        onSuccess: (data) => {
+            setIsLiked(true);
+        },
+    });
+
+    const unLikeMutation = useMutation({
+        mutationFn: apiUnlikePost,
+        onSuccess: (data) => {
+            setIsLiked(false);
+        },
+    });
+
     const handleToggleLike = async (e) => {
         e.stopPropagation();
+        const postId = post?._id;
         if (!isLiked) {
-            const response = await apiLikePost(post._id);
-            if (response.status === 'success') {
-                setIsLiked(true);
-                setPost(response?.post);
-            }
-        } else if (isLiked) {
-            const response = await apiUnlikePost(post._id);
-            if (response.status === 'success') {
-                setIsLiked(false);
-                setPost(response?.post);
-            }
+            likeMutation.mutate(postId);
+        } else {
+            unLikeMutation.mutate(postId);
         }
     };
+
     useEffect(() => {
-        getPostDetail();
-        document.documentElement.setAttribute('data-color-mode', 'dark');
-    }, []);
-    useEffect(() => {
-        const userLikePost = post?.likes.some((userId) => {
-            console.log(userId);
-            console.log('userId :', user?._id);
-            return userId === user?._id;
-        });
-        console.log(userLikePost);
+        const userLikePost = post?.likes.some((userId) => userId === user?._id);
         setIsLiked(userLikePost);
+        document.documentElement.setAttribute('data-color-mode', 'dark');
     }, [post]);
     return (
         <div className="post-detail">

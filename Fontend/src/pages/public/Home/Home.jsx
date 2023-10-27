@@ -1,19 +1,12 @@
-import React, { useEffect, useState } from 'react';
+import React from 'react';
 import './Home.scss';
 import { SideBar, PostItem, Loading } from '~/components';
-import { useDispatch, useSelector } from 'react-redux';
+import { useQuery } from '@tanstack/react-query';
 import { Spin } from 'antd';
-import { getPosts } from '~/store/post/actionThunk';
+import { apiGetPosts } from '~/apiServices';
 
 const Home = () => {
-    const dispatch = useDispatch();
-    const isLoading = useSelector((state) => state.post.isLoading);
-    const posts = useSelector((state) => state.post.posts);
-
-    useEffect(() => {
-        dispatch(getPosts());
-    }, [dispatch]);
-
+    const { data: posts, isLoading } = useQuery({ queryKey: ['posts'], queryFn: apiGetPosts });
     return (
         <div className="home">
             <div className="home__sidebar">

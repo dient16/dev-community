@@ -10,6 +10,5 @@ export { default as TagItem } from './TagItem/TagItem';
 export { default as PostMarkdown } from './PostMarkdown/PostMarkdown';
 export { default as InputTags } from './InputTags/InputTags';
 export { default as TagChildren } from './TagChildren/TagChildren';
-export { default as Modal } from './Modal/Modal';
 export { default as Loading } from './Loading/Loading';
 export { default as Comment } from './Comment/Comment';

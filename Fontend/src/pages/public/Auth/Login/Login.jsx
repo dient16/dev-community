@@ -1,16 +1,14 @@
-// src/Login.js
 import React, { useEffect } from 'react';
 import './Login.scss';
-import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 import { toast } from 'react-toastify';
 import { useForm } from 'react-hook-form';
 import path from '~/utils/path';
 import { Button, InputForm } from '~/components';
-import { login } from '~/store/user/actionThunk';
+import { useMutation } from '@tanstack/react-query';
 import { Spin } from 'antd';
-import { clearMessage } from '~/store/user/userSlice';
-
+import { apiLogin } from '~/apiServices';
+import { saveToLocalStorage } from '~/utils/helper';
 const Login = () => {
     const {
         handleSubmit,
@@ -23,26 +21,39 @@ const Login = () => {
             password: '',
         },
     });
-    const dispatch = useDispatch();
     const navigate = useNavigate();
-    const { isLoading, message, isLoggedIn } = useSelector((state) => state.user);
-    const handleLogin = async (payload) => {
-        dispatch(login(payload));
-    };
-    useEffect(() => {
-        if (isLoggedIn) {
+
+    const mutation = useMutation({
+        mutationFn: apiLogin,
+        onSuccess: (data) => {
             toast.success('Login success');
+            saveToLocalStorage('dev-community', {
+                isLoggedIn: true,
+                token: data.accessToken,
+                currentUser: data.userData,
+            });
             reset();
             navigate(`/${path.HOME}`);
-        } else {
-            toast.error(message);
-            dispatch(clearMessage());
-        }
-    }, [dispatch, message, isLoggedIn]);
+        },
+        onError: (error) => {
+            toast.error(error.message);
+        },
+    });
+
+    const handleLogin = (data) => {
+        mutation.mutate(data);
+    };
+
+    // useEffect(() => {
+    //     if (mutation.isError) {
+    //         mutation.reset();
+    //     }
+    // }, [mutation.isError]);
+
     return (
-        <Spin tip="Loading" size="large" spinning={isLoading}>
-            <div className="login" onSubmit={handleSubmit(handleLogin)}>
-                <form className="login__form">
+        <Spin tip="Loading" size="large" spinning={mutation.isLoading || false}>
+            <div className="login">
+                <form className="login__form" onSubmit={handleSubmit(handleLogin)}>
                     <h3 className="login__title">Login</h3>
                     <InputForm
                         id={'email'}

@@ -1,40 +1,49 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect } from 'react';
 import './MyTags.scss';
 import icons from '~/utils/icons';
+import { useQuery } from '@tanstack/react-query'; // Import useQuery
 import { apiGetMyTags } from '~/apiServices';
-import { useSelector } from 'react-redux';
-import { TagChildren } from '~/components';
+import { TagChildren, Loading } from '~/components';
+import { Spin } from 'antd';
+import { getFromLocalStorage } from '~/utils/helper';
+
+const { RiSettingsLine } = icons;
 
 const MyTags = () => {
-    const { RiSettingsLine } = icons;
-    const [myTags, setMyTags] = useState(null);
-    const { currentUser } = useSelector((state) => state.user);
-    const getMyTags = async () => {
-        const response = await apiGetMyTags();
-        if (response.status === 'success') {
-            setMyTags(response.tags.followedTags);
-        }
-    };
+    const {
+        data: listMyTags,
+        refetch,
+        isLoading,
+    } = useQuery({
+        queryKey: ['myTags'],
+        queryFn: apiGetMyTags,
+        enabled: false,
+    });
+
+    const { isLoggedIn } = getFromLocalStorage('dev-community');
     useEffect(() => {
-        if (currentUser) {
-            getMyTags();
+        if (isLoggedIn) {
+            refetch();
         }
-    }, [currentUser]);
+    }, [isLoggedIn, refetch]);
+
     return (
-        <div className="my-tags">
-            <div className="my-tags__header">
-                <span className="title">My tags</span>
-                <span className="icon">
-                    <RiSettingsLine />
-                </span>
+        <Spin indicator={<Loading />} spinning={isLoading} className="loading">
+            <div className="my-tags">
+                <div className="my-tags__header">
+                    <span className="title">My tags</span>
+                    <span className="icon">
+                        <RiSettingsLine />
+                    </span>
+                </div>
+                <div className="my-tags__container">
+                    {listMyTags &&
+                        listMyTags?.tags?.followedTags.map((tag) => (
+                            <TagChildren key={tag._id} tagName={tag.name} color={tag.theme} />
+                        ))}
+                </div>
             </div>
-            <div className="my-tags__container">
-                {myTags &&
-                    myTags.map((tag) => {
-                        return <TagChildren key={tag._id} tagName={tag.name} color={tag.theme} />;
-                    })}
-            </div>
-        </div>
+        </Spin>
     );
 };
 

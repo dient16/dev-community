@@ -1,34 +1,43 @@
 import React, { useEffect, useState } from 'react';
 import './TagItem.scss';
 import { Button } from '~/components';
+import { useMutation } from '@tanstack/react-query';
 import { apiFollowTag, apiUnfollowTag } from '~/apiServices';
-import { useSelector } from 'react-redux';
+import { getFromLocalStorage } from '~/utils/helper';
 
 const TagItem = ({ tag }) => {
     const [isFollowTag, setIsFollowTag] = useState(false);
-    const { currentUser: user } = useSelector((state) => state.user);
-    const toggleFollowTag = async () => {
+    const { currentUser: user } = getFromLocalStorage('dev-community');
+
+    const followTagMutation = useMutation({
+        mutationFn: apiFollowTag,
+        onSuccess: () => {
+            setIsFollowTag(true);
+            // Refetch the tags or update the state as needed
+        },
+    });
+
+    const unfollowTagMutation = useMutation({
+        mutationFn: apiUnfollowTag,
+        onSuccess: () => {
+            setIsFollowTag(false);
+            // Refetch the tags or update the state as needed
+        },
+    });
+
+    useEffect(() => {
+        const userFollowTag = tag?.followers.some((userId) => userId === user?._id);
+        setIsFollowTag(userFollowTag);
+    }, []);
+
+    const toggleFollowTag = () => {
         if (!isFollowTag) {
-            const { _id: tagId } = tag;
-            const response = await apiFollowTag(tagId);
-            if (response.status === 'success') {
-                setIsFollowTag(true);
-            }
-        } else if (isFollowTag) {
-            const { _id: tagId } = tag;
-            const response = await apiUnfollowTag(tagId);
-            if (response.status === 'success') {
-                setIsFollowTag(false);
-            }
+            followTagMutation.mutate(tag._id);
+        } else {
+            unfollowTagMutation.mutate(tag._id);
         }
     };
 
-    useEffect(() => {
-        const userFollowTag = tag?.followers.some((userId) => {
-            return userId === user?._id;
-        });
-        setIsFollowTag(userFollowTag);
-    }, []);
     return (
         <div className="tag-item">
             <div className="tag-item__top">
@@ -36,7 +45,7 @@ const TagItem = ({ tag }) => {
                 <span className="tag-item__count-post">{`${tag?.posts?.length} post`}</span>
             </div>
             <div className="tag-item__bottom">
-                <Button primary={!isFollowTag} small outline={isFollowTag} onClick={() => toggleFollowTag()}>
+                <Button primary={!isFollowTag} small outline={isFollowTag} onClick={toggleFollowTag}>
                     {isFollowTag ? 'Following' : 'Follow'}
                 </Button>
             </div>
