@@ -57,7 +57,7 @@ const PostController = {
             });
         } catch (error) {
             return res.status(500).json({
-                status: 'fail',
+                status: 'error',
                 message: 'Can not get posts',
             });
         }
@@ -74,7 +74,7 @@ const PostController = {
                 });
             } else {
                 return res.status(500).json({
-                    status: 'fail',
+                    status: 'error',
                     message: 'Upload image fail',
                 });
             }
@@ -110,7 +110,7 @@ const PostController = {
 
             if (!post) {
                 return res.status(404).json({
-                    status: 'fail',
+                    status: 'error',
                     message: 'Post not found',
                 });
             }
@@ -138,7 +138,7 @@ const PostController = {
 
             if (!title || !body || !tags) {
                 return res.status(400).json({
-                    status: 'fail',
+                    status: 'error',
                     message: 'Title, body, and tags are required fields.',
                 });
             }
@@ -168,7 +168,7 @@ const PostController = {
 
             if (!user) {
                 return res.status(404).json({
-                    status: 'fail',
+                    status: 'error',
                     message: 'User not found!',
                 });
             }
@@ -204,7 +204,7 @@ const PostController = {
 
             if (post.author.toString() !== uid.toString()) {
                 return res.status(401).json({
-                    status: 'fail',
+                    status: 'error',
                     message: 'You are not allowed to update the post',
                 });
             }
@@ -232,13 +232,13 @@ const PostController = {
             post = await Post.findById(postId).populate('author').populate('comments').populate('tags');
         } catch (err) {
             return res.status(500).json({
-                status: 'fail',
+                status: 'error',
                 message: 'Something went wrong with the server',
             });
         }
         if (!post) {
             return res.status(401).json({
-                status: 'fail',
+                status: 'error',
                 message: 'Could not find post for the provided ID',
             });
         }
@@ -264,13 +264,13 @@ const PostController = {
                 });
             } else {
                 return res.status(404).json({
-                    status: 'fail',
+                    status: 'error',
                     message: 'Post not found',
                 });
             }
         } catch (err) {
             return res.status(500).json({
-                status: 'fail',
+                status: 'error',
                 message: err.message,
             });
         }
@@ -282,7 +282,7 @@ const PostController = {
             const { _id: userId } = req.user;
             if (!postId || !userId) {
                 return res.status(400).json({
-                    status: 'fail',
+                    status: 'error',
                     message: 'Missing input',
                 });
             }
@@ -312,7 +312,7 @@ const PostController = {
 
             if (updateErr) {
                 return res.status(500).json({
-                    status: 'fail',
+                    status: 'error',
                     message: 'Like post failed',
                 });
             }
@@ -337,7 +337,6 @@ const PostController = {
         try {
             const { postId } = req.params;
             const { _id: userId } = req.user;
-
             const [findError, postToUnlike] = await to(
                 Post.findOne({ _id: postId, likes: userId })
                     .populate({
@@ -368,7 +367,7 @@ const PostController = {
 
             if (!postToUnlike) {
                 return res.status(404).json({
-                    status: 'fail',
+                    status: 'error',
                     message: 'Post not found',
                 });
             }
@@ -407,7 +406,7 @@ const PostController = {
 
             if (updateError) {
                 return res.status(500).json({
-                    status: 'fail',
+                    status: 'error',
                     message: 'Could not bookmark post',
                 });
             }
@@ -423,13 +422,13 @@ const PostController = {
 
             if (userUpdateError) {
                 return res.status(500).json({
-                    status: 'fail',
+                    status: 'error',
                     message: 'Could not update user bookmarks',
                 });
             }
             if (!updatedPost) {
                 return res.status(404).json({
-                    status: 'fail',
+                    status: 'error',
                     message: 'Post not found',
                 });
             }
@@ -460,7 +459,7 @@ const PostController = {
 
             if (updateError) {
                 return res.status(500).json({
-                    status: 'fail',
+                    status: 'error',
                     message: 'Could not unbookmark post',
                 });
             }
@@ -477,14 +476,14 @@ const PostController = {
 
             if (userUpdateError) {
                 return res.status(500).json({
-                    status: 'fail',
+                    status: 'error',
                     message: 'Could not update user bookmarks',
                 });
             }
 
             if (!updatedPost) {
                 return res.status(404).json({
-                    status: 'fail',
+                    status: 'error',
                     message: 'Post not found',
                 });
             }

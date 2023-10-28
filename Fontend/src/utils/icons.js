@@ -4,7 +4,7 @@ import { RiHome4Fill, RiChat1Line, RiSettingsLine } from 'react-icons/ri';
 import { FaRegHeart, FaHeart, FaRegBookmark, FaRegBell, FaBell } from 'react-icons/fa';
 import { HiPlus } from 'react-icons/hi';
 import { LuBold, LuItalic } from 'react-icons/lu';
-import { BiLink, BiSolidQuoteAltLeft } from 'react-icons/Bi';
+import { BiLink, BiSolidQuoteAltLeft } from 'react-icons/bi';
 import { AiOutlineUnorderedList, AiOutlineOrderedList } from 'react-icons/ai';
 const icons = {
     RiHome4Fill,

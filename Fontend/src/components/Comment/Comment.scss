@@ -1,4 +1,5 @@
-.comment-post {
+@use '~/styles/' as *;
+.comment-detail-post {
     padding: 0 30px;
     margin-bottom: 20px;
     &__add-comment {
@@ -8,18 +9,31 @@
     }
     &__container {
         margin-top: 10px;
-        .comment-body {
-            .author {
-                display: flex;
-                align-items: center;
-                justify-content: center;
-                gap: 5px;
-            }
-            .comment-content {
-                margin: 5px 10px;
-                font-size: 1.6rem;
-                font-weight: 500;
-            }
+    }
+    .ant-tree-treenode {
+        width: 100%;
+        .ant-tree-node-content-wrapper {
+            width: 100%;
         }
+    }
+}
+
+.comment-item {
+    flex: auto;
+    &__inner {
+        width: 100%;
+        display: flex;
+        align-items: flex-start;
+        justify-content: center;
+        flex-direction: column;
+        gap: 5px;
+        border: 1px solid #ccc;
+        padding: 7px 10px;
+        border-radius: 7px;
+    }
+
+    &__content {
+        font-size: 1.6rem;
+        font-weight: 500;
     }
 }

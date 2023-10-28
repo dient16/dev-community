@@ -1,50 +1,20 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import './PostItem.scss';
 import icons from '~/utils/icons';
 import { useNavigate } from 'react-router-dom';
 import moment from 'moment';
-import { useMutation } from '@tanstack/react-query';
-import { apiLikePost, apiUnlikePost } from '~/apiServices';
 import { TagChildren } from '~/components';
-import { getFromLocalStorage } from '~/utils/helper';
 
 const { FaRegHeart, FaHeart, FaRegBookmark, RiChat1Line } = icons;
 
-const PostItem = ({ postItemOnHome }) => {
+const PostItem = ({ postItemOnHome, isLiked: isLikeProp, onToggleLike }) => {
     const navigate = useNavigate();
-    const { currentUser } = getFromLocalStorage('dev-community');
-
-    const [isLiked, setIsLiked] = useState(null);
-
-    const mutation = useMutation({
-        mutationFn: apiLikePost,
-        onSuccess: (data) => {
-            setIsLiked(true);
-        },
-    });
-    const unLikeMutation = useMutation({
-        mutationFn: apiUnlikePost,
-        onSuccess: (data) => {
-            setIsLiked(false);
-        },
-    });
+    const [isLiked, setIsLiked] = useState(isLikeProp);
 
     const handleToggleLike = (e) => {
         e.stopPropagation();
-        const postId = postItemOnHome._id;
-        if (!isLiked) {
-            mutation.mutate(postId);
-        } else {
-            unLikeMutation.mutate(postId);
-        }
+        onToggleLike(postItemOnHome._id, !isLiked, setIsLiked);
     };
-
-    useEffect(() => {
-        const userLikePost = postItemOnHome?.likes.some((userId) => {
-            return userId === currentUser?._id;
-        });
-        setIsLiked(userLikePost);
-    }, []);
 
     return (
         <div
@@ -77,7 +47,7 @@ const PostItem = ({ postItemOnHome }) => {
                 </div>
                 <div className="post-item__actions">
                     <div className="post-item__action-like">
-                        <span onClick={(e) => handleToggleLike(e)} className="like-inner">
+                        <span onClick={handleToggleLike} className="like-inner">
                             {isLiked ? <FaHeart color="#D71313" size={24} /> : <FaRegHeart size={21} />}
                             <span className="like-title">{`${postItemOnHome?.likes?.length} Likes`}</span>
                         </span>

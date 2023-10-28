@@ -44,12 +44,6 @@ const Login = () => {
         mutation.mutate(data);
     };
 
-    // useEffect(() => {
-    //     if (mutation.isError) {
-    //         mutation.reset();
-    //     }
-    // }, [mutation.isError]);
-
     return (
         <Spin tip="Loading" size="large" spinning={mutation.isLoading || false}>
             <div className="login">

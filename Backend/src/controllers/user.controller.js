@@ -6,14 +6,14 @@ const userController = {
         const { _id: uid } = req.user;
         if (!uid) {
             return res.status(400).json({
-                status: 'fail',
+                status: 'error',
                 message: 'Missing input',
             });
         }
         const [err, user] = await to(User.findById(uid).select('-refreshToken -password'));
         if (err) {
             return res.status(500).json({
-                status: 'fail',
+                status: 'error',
                 message: 'Error getting user',
             });
         }
@@ -24,7 +24,7 @@ const userController = {
             });
         } else {
             return res.status(401).json({
-                status: 'fail',
+                status: 'error',
                 message: 'User not found',
             });
         }

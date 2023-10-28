@@ -9,7 +9,7 @@ const verifyToken = {
             jwt.verify(token, process.env.JWT_ACCESS_KEY, (err, decode) => {
                 if (err) {
                     return res.status(401).json({
-                        status: 'fail',
+                        status: 'error',
                         message: 'Invalid access token',
                     });
                 }
@@ -18,7 +18,7 @@ const verifyToken = {
             });
         } else {
             return res.status(401).json({
-                status: 'fail',
+                status: 'error',
                 message: 'Require authentication!!!',
             });
         }
@@ -28,7 +28,7 @@ const verifyToken = {
         const { isAdmin } = req.user;
         if (isAdmin) {
             return res.status(401).json({
-                status: 'fail',
+                status: 'error',
                 message: 'REQUIRE ADMIN ROLE',
             });
         }

@@ -13,7 +13,7 @@ const CommentController = {
 
             if (!postId || !content || !author) {
                 return res.status(422).json({
-                    status: 'fail',
+                    status: 'error',
                     message: 'Invalid inputs passed, please check your data',
                 });
             }
@@ -23,13 +23,13 @@ const CommentController = {
                 post = await Post.findById(postId);
                 if (!post) {
                     return res.status(404).json({
-                        status: 'fail',
+                        status: 'error',
                         message: 'Could not find post for provided ID',
                     });
                 }
             } catch (error) {
                 return res.status(500).json({
-                    status: 'fail',
+                    status: 'error',
                     message: 'Creating comment failed, please try again',
                 });
             }
@@ -38,13 +38,13 @@ const CommentController = {
                 user = await User.findById(author);
                 if (!user) {
                     return res.status(404).json({
-                        status: 'fail',
+                        status: 'error',
                         message: 'Could not find user for provided ID',
                     });
                 }
             } catch (error) {
                 return res.status(500).json({
-                    status: 'fail',
+                    status: 'error',
                     message: 'Creating comment failed, please try again',
                 });
             }
@@ -72,13 +72,37 @@ const CommentController = {
                 });
             } catch (error) {
                 return res.status(500).json({
-                    status: 'fail',
+                    status: 'error',
                     message: error.message || error,
                 });
             }
         } catch (error) {
             next(error);
         }
+    },
+    getRepliedByPostId: async (req, res, next) => {
+        try {
+            const { commentId } = req.params;
+            const { postId } = req.body;
+
+            const repliedComment = await Comment.find({
+                parentId: commentId,
+                postId: postId,
+            }).populate({
+                path: 'author',
+                select: 'firstname lastname avatar',
+            });
+            if (repliedComment) {
+                return res.status(200).json({
+                    status: 'success',
+                    repliedComment,
+                });
+            } else {
+                return res.status(200).json({
+                    status: 'error',
+                });
+            }
+        } catch (error) {}
     },
 };
 module.exports = CommentController;
