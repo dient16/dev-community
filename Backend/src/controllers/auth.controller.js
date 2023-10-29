@@ -9,12 +9,6 @@ const hashPassword = (password) => bcrypt.hashSync(password, bcrypt.genSaltSync(
 const authController = {
     register: async (req, res, next) => {
         const { email, password, firstname, lastname } = req.body;
-        if (!email || !password || !firstname || !lastname) {
-            return res.status(400).json({
-                status: 'error',
-                message: 'All fields are required!',
-            });
-        }
         const [err, existingUser] = await to(User.findOne({ email }));
         if (err) throw err;
         if (existingUser) {
@@ -47,13 +41,6 @@ const authController = {
     login: async (req, res, next) => {
         try {
             const { email, password } = req.body;
-
-            if (!email || !password) {
-                return res.status(400).json({
-                    status: 'error',
-                    message: 'Email and password are required!',
-                });
-            }
             const response = await User.findOne({ email });
             if (!response) {
                 return res.status(500).json({

@@ -2,7 +2,6 @@ const jwt = require('jsonwebtoken');
 
 const verifyToken = {
     verifyAccessToken: (req, res, next) => {
-        // Bearer token
         // headers: { authorization: Bearer token}
         if (req?.headers?.authorization?.startsWith('Bearer')) {
             const token = req.headers.authorization.split(' ')[1];
@@ -22,17 +21,6 @@ const verifyToken = {
                 message: 'Require authentication!!!',
             });
         }
-    },
-
-    verifyIsAdmin: (req, res, next) => {
-        const { isAdmin } = req.user;
-        if (isAdmin) {
-            return res.status(401).json({
-                status: 'error',
-                message: 'REQUIRE ADMIN ROLE',
-            });
-        }
-        next();
     },
 };
 module.exports = verifyToken;

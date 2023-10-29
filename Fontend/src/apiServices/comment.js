@@ -7,3 +7,10 @@ export const apiGetReliedComment = (data, commentId) =>
         data,
         withCredentials: true,
     });
+export const apiAddComment = (postId, data) =>
+    axios({
+        url: '/comment/' + postId,
+        method: 'post',
+        data,
+        withCredentials: true,
+    });

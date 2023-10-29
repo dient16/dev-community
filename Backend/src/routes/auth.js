@@ -1,9 +1,10 @@
 const router = require('express').Router();
 const controller = require('../controllers/auth.controller');
-const { verifyAccessToken } = require('../middlewares/verifyToken');
+const { validateRequest } = require('../middlewares/validation');
+const { userLoginSchema, userSchema } = require('../utils/validation');
 
-router.post('/register', controller.register);
-router.post('/login', controller.login);
+router.post('/register', validateRequest(userSchema), controller.register);
+router.post('/login', validateRequest(userLoginSchema), controller.login);
 router.get('/logout', controller.logout);
 router.post('/refresh-token', controller.refreshAccessToken);
 //router.get('/current-user', verifyAccessToken, controller.getCurrent);

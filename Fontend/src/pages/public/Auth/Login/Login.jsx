@@ -45,7 +45,7 @@ const Login = () => {
     };
 
     return (
-        <Spin tip="Loading" size="large" spinning={mutation.isLoading || false}>
+        <Spin tip="Loading" size="large" spinning={mutation.isPending}>
             <div className="login">
                 <form className="login__form" onSubmit={handleSubmit(handleLogin)}>
                     <h3 className="login__title">Login</h3>

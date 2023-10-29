@@ -6,7 +6,7 @@ import moment from 'moment';
 import { Button, Comments, TagChildren, Loading } from '~/components';
 import { useParams } from 'react-router-dom';
 import { useQuery, useMutation } from '@tanstack/react-query';
-import { Spin } from 'antd';
+import { Flex, Spin } from 'antd';
 import { apiGetPost, apiLikePost, apiUnlikePost } from '~/apiServices/post';
 import clsx from 'clsx';
 import { getFromLocalStorage } from '~/utils/helper';
@@ -53,18 +53,22 @@ const Post = () => {
         <div className="post-detail">
             <div className="post-detail__wrapper">
                 <div className="post-detail__actions">
-                    <span
-                        className={clsx('post-detail__action-like', isLiked && 'post-detail__action-like--active')}
-                        onClick={(e) => handleToggleLike(e)}
-                    >
-                        {isLiked ? <FaHeart color="#D71313" size={28} /> : <FaRegHeart size={28} />}
-                    </span>
-                    <span className="post-detail__action-comment">
-                        <RiChat1Line size={31} />
-                    </span>
-                    <span className="post-detail__action-bookmark">
-                        <FaRegBookmark size={28} />
-                    </span>
+                    <Flex vertical align="center">
+                        <div
+                            className={clsx('post-detail__action-like', isLiked && 'post-detail__action-like--active')}
+                            onClick={(e) => handleToggleLike(e)}
+                        >
+                            {isLiked ? <FaHeart color="#D71313" size={22} /> : <FaRegHeart size={25} />}
+                        </div>
+                        <span>{post?.likes.length}</span>
+                    </Flex>
+                    <div className="post-detail__action-comment">
+                        <RiChat1Line size={27} />
+                        <span>{post?.comments.length}</span>
+                    </div>
+                    <div className="post-detail__action-bookmark">
+                        <FaRegBookmark size={24} />
+                    </div>
                 </div>
                 <div className="post-detail__body">
                     <img className="post-detail__body-image" src={post?.image} alt="" />
@@ -86,7 +90,7 @@ const Post = () => {
                             <MDEditor.Markdown source={post?.body} />
                         </div>
                     </Spin>
-                    <Comments commentList={post?.comments} />
+                    <Comments commentList={post?.comments} postId={post?._id} />
                 </div>
                 <div className="post-detail__author">
                     <div className="post-detail__author-top">

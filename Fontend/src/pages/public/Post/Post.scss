@@ -24,10 +24,15 @@
         display: flex;
         align-items: center;
         justify-content: center;
-        padding: 7px;
+        flex-direction: column;
+        padding: 8px 7px;
         border-radius: 50%;
+        gap: 10px;
+        border: 1px solid transparent;
+        cursor: pointer;
     }
     &__action-like {
+        height: 39px;
         &:hover {
             border: 1px solid red;
         }
