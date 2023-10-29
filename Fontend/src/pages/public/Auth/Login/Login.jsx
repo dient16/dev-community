@@ -44,14 +44,8 @@ const Login = () => {
         mutation.mutate(data);
     };
 
-    // useEffect(() => {
-    //     if (mutation.isError) {
-    //         mutation.reset();
-    //     }
-    // }, [mutation.isError]);
-
     return (
-        <Spin tip="Loading" size="large" spinning={mutation.isLoading || false}>
+        <Spin tip="Loading" size="large" spinning={mutation.isPending}>
             <div className="login">
                 <form className="login__form" onSubmit={handleSubmit(handleLogin)}>
                     <h3 className="login__title">Login</h3>

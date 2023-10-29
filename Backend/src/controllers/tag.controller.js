@@ -100,7 +100,7 @@ const tagController = {
             });
         } catch (error) {
             res.status(500).json({
-                status: 'fail',
+                status: 'error',
                 message: 'Could not follow tag',
             });
         }
@@ -131,7 +131,7 @@ const tagController = {
             });
         } catch (error) {
             res.status(500).json({
-                status: 'fail',
+                status: 'error',
                 message: 'Could not unfollow tag',
             });
         }

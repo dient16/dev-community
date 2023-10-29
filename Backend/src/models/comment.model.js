@@ -13,10 +13,6 @@ const commentSchema = new mongoose.Schema(
             type: mongoose.Schema.Types.ObjectId,
             ref: 'User',
         },
-        date: {
-            type: Date,
-            default: Date.now,
-        },
         parentId: {
             type: mongoose.Schema.Types.ObjectId,
             ref: DOCUMENT,

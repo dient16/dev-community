@@ -4,7 +4,7 @@ import { useMutation } from '@tanstack/react-query'; // Import useMutation
 import { useNavigate } from 'react-router-dom';
 import { apiCreatePost } from '~/apiServices/post';
 import { toast } from 'react-toastify';
-import { Image } from 'antd';
+import { Image, Spin } from 'antd';
 import './NewPost.scss';
 
 const NewPost = () => {
@@ -69,47 +69,49 @@ const NewPost = () => {
     };
 
     return (
-        <div className="new-post">
-            <div className="new-post__wrapper">
-                <div className="new-post__add-image">
-                    <label htmlFor="image-input" className="new-post__custom-input">
-                        Add banner image
-                    </label>
-                    <input
-                        type="file"
-                        accept="image/*"
-                        id="image-input"
-                        onChange={handleImageChange}
-                        className="new-post__input-file"
-                    />
-                    {previewImage && <Image src={previewImage} alt="Preview" width={200} height={100} />}
-                </div>
-                <div className="new-post__top">
-                    <textarea
-                        className="new-post__title"
-                        placeholder="New post title here..."
-                        value={postTitle}
-                        onChange={(e) => setPostTitle(e.target.value)}
-                    />
-                    <div className="add-new-tag ">
-                        <InputTags
-                            tags={postTags}
-                            addTag={addTag}
-                            removeTag={removeTag}
-                            handleKeyDown={handleKeyDown}
+        <Spin tip="Loading" size="large" spinning={createPostMutation.isPending}>
+            <div className="new-post">
+                <div className="new-post__wrapper">
+                    <div className="new-post__add-image">
+                        <label htmlFor="image-input" className="new-post__custom-input">
+                            Add banner image
+                        </label>
+                        <input
+                            type="file"
+                            accept="image/*"
+                            id="image-input"
+                            onChange={handleImageChange}
+                            className="new-post__input-file"
                         />
+                        {previewImage && <Image src={previewImage} alt="Preview" width={200} height={100} />}
                     </div>
-                </div>
-                <div className="new-post__bottom">
-                    <div className="new-post__markdown">
-                        <PostMarkdown content={postBody} setContent={setPostBody} />
+                    <div className="new-post__top">
+                        <textarea
+                            className="new-post__title"
+                            placeholder="New post title here..."
+                            value={postTitle}
+                            onChange={(e) => setPostTitle(e.target.value)}
+                        />
+                        <div className="add-new-tag ">
+                            <InputTags
+                                tags={postTags}
+                                addTag={addTag}
+                                removeTag={removeTag}
+                                handleKeyDown={handleKeyDown}
+                            />
+                        </div>
                     </div>
-                    <Button primary onClick={handleCreatePost}>
-                        Post now
-                    </Button>
+                    <div className="new-post__bottom">
+                        <div className="new-post__markdown">
+                            <PostMarkdown content={postBody} setContent={setPostBody} />
+                        </div>
+                        <Button primary onClick={handleCreatePost}>
+                            Post now
+                        </Button>
+                    </div>
                 </div>
             </div>
-        </div>
+        </Spin>
     );
 };
 

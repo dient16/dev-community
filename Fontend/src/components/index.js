@@ -11,4 +11,5 @@ export { default as PostMarkdown } from './PostMarkdown/PostMarkdown';
 export { default as InputTags } from './InputTags/InputTags';
 export { default as TagChildren } from './TagChildren/TagChildren';
 export { default as Loading } from './Loading/Loading';
-export { default as Comment } from './Comment/Comment';
+export { default as Comments } from './Comment/Comments';
+export { default as CommentItem } from './Comment/CommentItem';

@@ -59,12 +59,6 @@ const userSchema = new mongoose.Schema(
                 ref: 'Post',
             },
         ],
-        comments: [
-            {
-                type: mongoose.Schema.Types.ObjectId,
-                ref: 'Comment',
-            },
-        ],
         followers: [
             {
                 type: mongoose.Schema.Types.ObjectId,
@@ -91,22 +85,6 @@ const userSchema = new mongoose.Schema(
         ],
         refreshToken: {
             type: String,
-        },
-        provider: {
-            type: String,
-            enum: ['Email', 'Google', 'Facebook'],
-            default: 'Email',
-        },
-        googleId: {
-            type: String,
-        },
-        resetPasswordToken: {
-            type: String,
-            allowNull: true,
-        },
-        resetPasswordExpires: {
-            type: Date,
-            allowNull: true,
         },
     },
     {

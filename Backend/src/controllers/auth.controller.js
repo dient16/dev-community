@@ -9,17 +9,11 @@ const hashPassword = (password) => bcrypt.hashSync(password, bcrypt.genSaltSync(
 const authController = {
     register: async (req, res, next) => {
         const { email, password, firstname, lastname } = req.body;
-        if (!email || !password || !firstname || !lastname) {
-            return res.status(400).json({
-                status: 'fail',
-                message: 'All fields are required!',
-            });
-        }
         const [err, existingUser] = await to(User.findOne({ email }));
         if (err) throw err;
         if (existingUser) {
             return res.status(404).json({
-                status: 'fail',
+                status: 'error',
                 message: 'Email has already been used!',
             });
         }
@@ -33,7 +27,7 @@ const authController = {
         );
         if (errCreateUser) {
             return res.status(500).json({
-                status: 'fail',
+                status: 'error',
                 message: 'Register is fail!',
             });
         }
@@ -47,17 +41,10 @@ const authController = {
     login: async (req, res, next) => {
         try {
             const { email, password } = req.body;
-
-            if (!email || !password) {
-                return res.status(400).json({
-                    status: 'fail',
-                    message: 'Email and password are required!',
-                });
-            }
             const response = await User.findOne({ email });
             if (!response) {
                 return res.status(500).json({
-                    status: 'fail',
+                    status: 'error',
                     message: 'Email does not exist!',
                 });
             }
@@ -65,7 +52,7 @@ const authController = {
             const isPasswordCorrect = await bcrypt.compare(password, response.password);
             if (!isPasswordCorrect) {
                 return res.status(200).json({
-                    status: 'fail',
+                    status: 'error',
                     message: 'Password is incorrect!',
                 });
             }
@@ -89,7 +76,7 @@ const authController = {
             const cookie = req.cookies;
             if (!cookie || !cookie.refreshToken) {
                 return res.status(200).json({
-                    status: 'fail',
+                    status: 'error',
                     message: 'No refresh token in cookies',
                 });
             }
@@ -111,7 +98,7 @@ const authController = {
             const cookie = req.cookies;
             if (!cookie || !cookie.refreshToken) {
                 return res.status(200).json({
-                    status: 'fail',
+                    status: 'error',
                     message: 'No refresh token in cookies',
                 });
             }

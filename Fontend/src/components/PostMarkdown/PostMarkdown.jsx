@@ -7,8 +7,7 @@ import { useMutation } from '@tanstack/react-query';
 import { apiUploadImage } from '~/apiServices';
 
 const PostMarkdown = ({ content, setContent }) => {
-    const [isSelectText, setIsSelectText] = useState(false);
-    const mutation = useMutation({
+    const uploadMutation = useMutation({
         mutationFn: apiUploadImage,
     });
 
@@ -59,6 +58,14 @@ const PostMarkdown = ({ content, setContent }) => {
         },
         image: {
             ...commands.image,
+            execute: async (state, api) => {
+                let modifyText = '';
+                if (state.selectedText) {
+                    modifyText = `![image](${state.selectedText})\n`;
+                }
+                api.replaceSelection(modifyText);
+            },
+
             icon: (
                 <span>
                     <label htmlFor="upload-image">
@@ -73,7 +80,7 @@ const PostMarkdown = ({ content, setContent }) => {
                             if (img) {
                                 const formData = new FormData();
                                 formData.append('image', img);
-                                mutation.mutate(formData, {
+                                uploadMutation.mutate(formData, {
                                     onSuccess: (data) => {
                                         const modifyText = `![image](${data.imageUrl})\n`;
                                         setContent((prevContent) => prevContent + modifyText);
@@ -86,20 +93,11 @@ const PostMarkdown = ({ content, setContent }) => {
                     />
                 </span>
             ),
-            execute: async (state, api) => {
-                let modifyText = '';
-                if (state.selectedText) {
-                    modifyText = `![image](${state.selectedText})\n`;
-                    setIsSelectText(true);
-                }
-                api.replaceSelection(modifyText);
-            },
         },
     };
-
     return (
         <div className="container-markdown-post">
-            <Spin tip="Loading" size="large" spinning={mutation.isLoading || false}>
+            <Spin tip="Loading" size="large" spinning={uploadMutation.isPending}>
                 <MDEditor
                     value={content}
                     onChange={setContent}

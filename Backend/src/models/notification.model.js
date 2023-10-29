@@ -13,10 +13,6 @@ const notificationSchema = new mongoose.Schema(
             type: mongoose.Schema.Types.ObjectId,
             ref: 'User',
         },
-        date: {
-            type: Date,
-            default: Date.now,
-        },
         post: {
             type: mongoose.Schema.Types.ObjectId,
             ref: 'Post',
