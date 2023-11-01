@@ -3,6 +3,7 @@
     margin-top: 20px;
     display: flex;
     flex-direction: column;
+    font-family: $font-family;
     &__wrapper {
         max-width: $width-main;
         min-width: 830px;

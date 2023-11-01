@@ -1,8 +1,9 @@
 import React, { useState, useEffect } from 'react';
 import HeadlessTippy from '@tippyjs/react/headless';
 import 'tippy.js/dist/tippy.css';
-import { Notification, Search } from '~/components';
+import { MenuAccount, Notification, Search } from '~/components';
 import './Header.scss';
+import { Avatar, Popover } from 'antd';
 import Button from '../Buttons/Button';
 import path from '~/utils/path';
 import logo from '~/assets/logo.png';
@@ -15,7 +16,7 @@ const { HiPlus, FaRegBell, FaBell } = icons;
 const Header = () => {
     const navigate = useNavigate();
     const [isShowNotify, setIsShowNotify] = useState(false);
-    const { isLoggedIn } = getFromLocalStorage('dev-community');
+    const { isLoggedIn, currentUser } = getFromLocalStorage('dev-community');
 
     useEffect(() => {
         document.addEventListener('click', () => {
@@ -73,11 +74,11 @@ const Header = () => {
                                 </span>
                             </HeadlessTippy>
                         </div>
+
                         <div className="header__avatar">
-                            <img
-                                src="https://vietabinhdinh.edu.vn/wp-content/uploads/Anh-Avatar-Dep-Ngau-Chat-Xi-Khoi-Lam-Hinh-Dai.jpg"
-                                alt=""
-                            />
+                            <Popover content={<MenuAccount user={currentUser} />} trigger="click">
+                                <Avatar size={40} src={currentUser?.avatar} alt="" />
+                            </Popover>
                         </div>
                     </div>
                 ) : (

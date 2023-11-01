@@ -1,6 +1,6 @@
 import React from 'react';
 import { NavLink } from 'react-router-dom';
-import sidebar from '~/utils/constant';
+import { sidebar } from '~/utils/constant';
 import './SideBar.scss';
 import { MyTags } from '~/components';
 const SideBar = () => {

@@ -64,7 +64,7 @@ const Home = () => {
                             <PostItem
                                 key={post._id}
                                 postItemOnHome={post}
-                                isLiked={post.likes.includes(currentUser._id)}
+                                isLiked={post.likes.includes(currentUser?._id)}
                                 onToggleLike={handleToggleLike}
                             />
                         ))}

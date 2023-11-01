@@ -13,3 +13,5 @@ export { default as TagChildren } from './TagChildren/TagChildren';
 export { default as Loading } from './Loading/Loading';
 export { default as Comments } from './Comment/Comments';
 export { default as CommentItem } from './Comment/CommentItem';
+export { default as PostDetailAuthor } from './PostDetailAuthor/PostDetailAuthor';
+export { default as MenuAccount } from './MenuAccount/MenuAccount';
