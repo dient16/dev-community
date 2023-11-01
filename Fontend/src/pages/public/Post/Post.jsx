@@ -1,9 +1,9 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useRef } from 'react';
 import './Post.scss';
 import icons from '~/utils/icons';
 import MDEditor from '@uiw/react-md-editor';
 import moment from 'moment';
-import { Button, Comments, TagChildren, Loading } from '~/components';
+import { Button, Comments, TagChildren, Loading, PostDetailAuthor } from '~/components';
 import { useParams } from 'react-router-dom';
 import { useQuery, useMutation } from '@tanstack/react-query';
 import { Flex, Spin } from 'antd';
@@ -15,9 +15,14 @@ const { FaRegHeart, FaHeart, RiChat1Line, FaRegBookmark } = icons;
 
 const Post = () => {
     const { slug } = useParams();
+    const commentRef = useRef(null);
     const { currentUser } = getFromLocalStorage('dev-community');
 
-    const { data, isLoading } = useQuery({
+    const {
+        data,
+        isLoading,
+        refetch: refetchPost,
+    } = useQuery({
         queryKey: ['post', slug],
         queryFn: () => apiGetPost(slug),
     });
@@ -25,21 +30,23 @@ const Post = () => {
     const [isLiked, setIsLiked] = useState(false);
 
     useEffect(() => {
-        setIsLiked(post?.likes?.includes(currentUser._id));
+        setIsLiked(post?.likes?.includes(currentUser?._id));
         document.documentElement.setAttribute('data-color-mode', 'dark');
-    }, [post, currentUser._id]);
+    }, [post, currentUser?._id]);
 
     const likeMutation = useMutation({
         mutationFn: apiLikePost,
-        onSuccess: (data) => {
+        onSuccess: () => {
             setIsLiked(true);
+            refetchPost();
         },
     });
 
     const unLikeMutation = useMutation({
         mutationFn: apiUnlikePost,
-        onSuccess: (data) => {
+        onSuccess: () => {
             setIsLiked(false);
+            refetchPost();
         },
     });
 
@@ -47,6 +54,12 @@ const Post = () => {
         e.stopPropagation();
         const postId = post?._id;
         isLiked ? unLikeMutation.mutate(postId) : likeMutation.mutate(postId);
+    };
+
+    const handleScrollComment = () => {
+        if (commentRef.current) {
+            commentRef.current.scrollIntoView({ behavior: 'smooth' });
+        }
     };
 
     return (
@@ -63,7 +76,10 @@ const Post = () => {
                         <span>{post?.likes.length}</span>
                     </Flex>
                     <div className="post-detail__action-comment">
-                        <RiChat1Line size={27} />
+                        <i onClick={handleScrollComment}>
+                            <RiChat1Line size={27} />
+                        </i>
+
                         <span>{post?.comments.length}</span>
                     </div>
                     <div className="post-detail__action-bookmark">
@@ -90,23 +106,11 @@ const Post = () => {
                             <MDEditor.Markdown source={post?.body} />
                         </div>
                     </Spin>
-                    <Comments commentList={post?.comments} postId={post?._id} />
-                </div>
-                <div className="post-detail__author">
-                    <div className="post-detail__author-top">
-                        <div className="author-background">
-                            <div className="avatar-info">
-                                <img className="author-avatar" src={post?.author?.avatar} alt="" />
-                                <h3>{`${post?.author?.firstname} ${post?.author?.lastname}`}</h3>
-                            </div>
-                        </div>
-                        <Button primary className={'btn-follow'}>
-                            Follow
-                        </Button>
-                        <div className="author-bio">LOCATION Seoul, South Korea PRONOUNS he/him JOINED Jun 6, 2023</div>
+                    <div ref={commentRef}>
+                        <Comments commentList={post?.comments} postId={post?._id} />
                     </div>
-                    <div className="author-info"></div>
                 </div>
+                <PostDetailAuthor author={post?.author} />
             </div>
         </div>
     );

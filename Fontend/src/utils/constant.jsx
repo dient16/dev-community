@@ -2,7 +2,7 @@ import icons from './icons';
 import path from './path';
 const { RiHome4Fill, LuClipboardList, BsTag, BsLightbulb, BsInfoCircle } = icons;
 
-const sidebar = [
+export const sidebar = [
     {
         id: 1,
         value: 'Home',
@@ -34,5 +34,3 @@ const sidebar = [
         icon: <BsInfoCircle />,
     },
 ];
-
-export default sidebar;

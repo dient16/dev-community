@@ -1,0 +1,12 @@
+@use '~/styles/' as *;
+.menu-account {
+    width: 250px;
+    &__btn {
+        justify-content: flex-start;
+        border: none;
+        margin: 0;
+        padding: 6px;
+        font-weight: 500;
+        color: $txt-color;
+    }
+}

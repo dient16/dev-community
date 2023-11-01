@@ -6,7 +6,7 @@
     &__sidebar {
         width: 20%;
         .sidebar-container {
-            position: fixed;
+            position: sticky;
             top: 70px;
         }
     }

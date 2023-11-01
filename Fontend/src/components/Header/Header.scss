@@ -8,7 +8,7 @@
     width: $width-full;
     top: 0;
     right: 0;
-    position: fixed;
+    position: sticky;
     -webkit-align-items: center;
     -webkit-box-align: center;
     -ms-flex-align: center;
@@ -55,13 +55,6 @@
         display: flex;
         align-items: center;
         justify-content: space-between;
-    }
-    &__avatar {
-        img {
-            width: 40px;
-            height: 40px;
-            border-right: 50%;
-        }
     }
     &__notify-icon {
         position: relative;

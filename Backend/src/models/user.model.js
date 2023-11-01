@@ -49,10 +49,6 @@ const userSchema = new mongoose.Schema(
             type: String,
             default: '',
         },
-        theme: {
-            type: String,
-            default: '#000',
-        },
         posts: [
             {
                 type: mongoose.Schema.Types.ObjectId,

@@ -1,7 +1,15 @@
 import { LuClipboardList, LuHash } from 'react-icons/lu';
-import { BsTag, BsLightbulb, BsInfoCircle, BsCodeSquare, BsCodeSlash, BsImage } from 'react-icons/bs';
+import {
+    BsTag,
+    BsLightbulb,
+    BsInfoCircle,
+    BsCodeSquare,
+    BsCodeSlash,
+    BsImage,
+    BsFillPostcardFill,
+} from 'react-icons/bs';
 import { RiHome4Fill, RiChat1Line, RiSettingsLine, RiHeart2Line, RiHeart2Fill } from 'react-icons/ri';
-import { FaRegHeart, FaHeart, FaRegBookmark, FaRegBell, FaBell } from 'react-icons/fa';
+import { FaRegHeart, FaHeart, FaRegBookmark, FaRegBell, FaBell, FaBirthdayCake } from 'react-icons/fa';
 import { HiPlus } from 'react-icons/hi';
 import { LuBold, LuItalic } from 'react-icons/lu';
 import { BiLink, BiSolidQuoteAltLeft } from 'react-icons/bi';
@@ -35,5 +43,7 @@ const icons = {
     RiHeart2Fill,
     MdOutlineKeyboardArrowDown,
     MdOutlineKeyboardArrowUp,
+    BsFillPostcardFill,
+    FaBirthdayCake,
 };
 export default icons;
