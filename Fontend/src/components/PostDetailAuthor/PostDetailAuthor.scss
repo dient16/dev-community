@@ -1,0 +1,19 @@
+@use '~/styles/' as *;
+.post-detail {
+    &__author-info {
+        display: flex;
+        flex-direction: column;
+        gap: 10px;
+        margin-top: 15px;
+        .info-title {
+            font-family: $width-main;
+            font-size: 1.6rem;
+            font-weight: 600;
+        }
+        .info-detail {
+            font-family: $width-main;
+            font-size: 1.5rem;
+            font-weight: 500;
+        }
+    }
+}

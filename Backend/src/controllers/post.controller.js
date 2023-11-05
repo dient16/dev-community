@@ -90,7 +90,6 @@ const uploadImage = async (req, res, next) => {
         next(error);
     }
 };
-////////////////////////////////
 const getPost = async (req, res, next) => {
     try {
         const { pid } = req.params;
@@ -102,7 +101,7 @@ const getPost = async (req, res, next) => {
                 })
                 .populate({
                     path: 'author',
-                    select: 'firstname lastname avatar',
+                    select: '-password -refreshToken',
                 })
                 .populate({
                     path: 'comments',
@@ -113,16 +112,23 @@ const getPost = async (req, res, next) => {
                         },
                         {
                             path: 'parentId',
+                            match: { parentId: null }, // Chỉ lấy các comment cấp độ cao nhất
+                            populate: {
+                                path: 'author',
+                                select: 'firstname lastname avatar',
+                            },
                         },
                     ],
                 }),
         );
+
         if (err) {
             return res.status(500).json({
                 status: 'error',
                 message: 'Fetch post error',
             });
         }
+
         if (!post) {
             return res.status(404).json({
                 status: 'error',
@@ -130,9 +136,19 @@ const getPost = async (req, res, next) => {
             });
         }
 
+        const comments = await Promise.all(
+            post.comments.map(async (comment) => {
+                const replies = await Comment.find({ parentId: comment._id });
+                return { ...comment.toObject(), replyCount: replies.length };
+            }),
+        );
+
         return res.status(200).json({
             status: 'success',
-            data: post,
+            data: {
+                ...post.toObject(),
+                comments,
+            },
         });
     } catch (error) {
         next(error);

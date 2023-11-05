@@ -1,10 +1,9 @@
 import axios from '../../axios';
 
-export const apiGetReliedComment = (data, commentId) =>
+export const apiGetReliedComment = (commentId) =>
     axios({
         url: '/comment/reply/' + commentId,
         method: 'get',
-        data,
         withCredentials: true,
     });
 export const apiAddComment = (postId, data) =>

@@ -59,12 +59,13 @@
         gap: 5px;
     }
     &__actions {
+        padding-top: 10px;
         margin-top: 10px;
         width: 100%;
         display: flex;
         align-items: center;
         margin-bottom: 15px;
-
+        border-top: 1px solid #686565;
         .action-bookmark {
             cursor: pointer;
         }
