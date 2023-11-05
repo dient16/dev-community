@@ -19,6 +19,7 @@
     &__container {
         margin-top: 10px;
     }
+
     .ant-tree-treenode {
         width: 100%;
         position: relative;
@@ -36,7 +37,7 @@
             position: absolute;
             left: 250px;
             bottom: 20px;
-            z-index: 10;
+            z-index: 5;
             width: 200px;
         }
     }
@@ -60,6 +61,13 @@
         font-family: $font-family;
         font-weight: 600;
         font-size: 1.7rem;
+    }
+    &__contentParent {
+        font-style: italic;
+        display: flex;
+        align-items: center;
+        gap: 5px;
+        font-size: 1.3rem;
     }
     &__content {
         font-size: 1.6rem;

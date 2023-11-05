@@ -11,13 +11,20 @@ import icons from '~/utils/icons';
 import clsx from 'clsx';
 import { useNavigate } from 'react-router-dom';
 import { getFromLocalStorage } from '~/utils/helper';
+import { useQuery } from '@tanstack/react-query';
+import { apiGetCurrentUser } from '~/apiServices';
 const { HiPlus, FaRegBell, FaBell } = icons;
 
 const Header = () => {
     const navigate = useNavigate();
     const [isShowNotify, setIsShowNotify] = useState(false);
-    const { isLoggedIn, currentUser } = getFromLocalStorage('dev-community');
-
+    const [openMenu, setOpenMenu] = useState(false);
+    const { data, isLoading } = useQuery({
+        queryKey: ['currentUser'],
+        queryFn: apiGetCurrentUser,
+    });
+    const { isLoggedIn } = getFromLocalStorage('dev-community');
+    const currentUser = data?.userData;
     useEffect(() => {
         document.addEventListener('click', () => {
             setIsShowNotify(false);
@@ -29,6 +36,12 @@ const Header = () => {
         };
     }, []);
 
+    if (isLoading) {
+        return <div>Loading...</div>;
+    }
+    const handleOpenChange = (newOpen) => {
+        setOpenMenu(newOpen);
+    };
     return (
         <div className="header">
             <div className="header__inner">
@@ -76,7 +89,12 @@ const Header = () => {
                         </div>
 
                         <div className="header__avatar">
-                            <Popover content={<MenuAccount user={currentUser} />} trigger="click">
+                            <Popover
+                                onOpenChange={handleOpenChange}
+                                open={openMenu}
+                                content={<MenuAccount user={currentUser} setOpenMenu={setOpenMenu} />}
+                                trigger="click"
+                            >
                                 <Avatar size={40} src={currentUser?.avatar} alt="" />
                             </Popover>
                         </div>

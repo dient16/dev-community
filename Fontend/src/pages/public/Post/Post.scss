@@ -42,6 +42,8 @@
     }
     &__body {
         max-width: 850px;
+        min-width: 500px;
+        min-height: 500px;
         box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
         background-color: rgba(255, 255, 255, 0.5);
         display: flex;

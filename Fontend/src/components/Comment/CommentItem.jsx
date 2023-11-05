@@ -4,17 +4,24 @@ import './Comment.scss';
 import moment from 'moment';
 import icons from '~/utils/icons';
 
-const Comment = ({ author, content, createdAt }) => {
-    const { RiHeart2Fill, RiHeart2Line, RiChat1Line } = icons;
+const Comment = ({ author, content, createdAt, contentParent }) => {
+    const { RiHeart2Fill, RiHeart2Line, RiChat1Line, BsReplyFill } = icons;
 
     return (
         <div className="comment-item">
             <Flex gap={2}>
                 <Avatar size={30} src={author.avatar} />
                 <div className="comment-item__inner">
-                    <Flex gap="middle">
-                        <span className="comment-item__author-name">{`${author?.firstname} ${author?.lastname}`}</span>
-                        <span>{moment(createdAt).fromNow()}</span>
+                    <Flex gap={30}>
+                        <Flex gap="middle">
+                            <span className="comment-item__author-name">{`${author?.firstname} ${author?.lastname}`}</span>
+                            <span>{moment(createdAt).fromNow()}</span>
+                        </Flex>
+                        {contentParent && (
+                            <span className="comment-item__contentParent">
+                                {`${contentParent}`} <BsReplyFill size={20} />
+                            </span>
+                        )}
                     </Flex>
                     <p className="comment-item__content">{content}</p>
                 </div>

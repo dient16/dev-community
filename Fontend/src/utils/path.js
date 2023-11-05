@@ -15,6 +15,6 @@ const path = {
     NEW_POST: 'post/new-post',
     SEARCH_POST: 'search-post',
     PROFILE: ':userId',
-    SETTING: 'setting',
+    EDIT_PROFILE: 'setting/:userId',
 };
 export default path;

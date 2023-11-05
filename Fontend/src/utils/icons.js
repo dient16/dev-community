@@ -7,6 +7,7 @@ import {
     BsCodeSlash,
     BsImage,
     BsFillPostcardFill,
+    BsReplyFill,
 } from 'react-icons/bs';
 import { RiHome4Fill, RiChat1Line, RiSettingsLine, RiHeart2Line, RiHeart2Fill } from 'react-icons/ri';
 import { FaRegHeart, FaHeart, FaRegBookmark, FaRegBell, FaBell, FaBirthdayCake } from 'react-icons/fa';
@@ -45,5 +46,6 @@ const icons = {
     MdOutlineKeyboardArrowUp,
     BsFillPostcardFill,
     FaBirthdayCake,
+    BsReplyFill,
 };
 export default icons;

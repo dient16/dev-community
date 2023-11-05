@@ -77,17 +77,6 @@ const createComment = async (req, res, next) => {
             });
         }
 
-        post.comments.push(createdComment);
-        createdComment.likes.push(author);
-
-        [err] = await to(createdComment.save());
-        if (err) {
-            return res.status(500).json({
-                status: 'error',
-                message: 'Creating comment failed while saving comment',
-            });
-        }
-
         [err] = await to(post.save());
         if (err) {
             return res.status(500).json({
@@ -98,24 +87,24 @@ const createComment = async (req, res, next) => {
 
         res.status(201).json({
             status: 'success',
-            comment: createdComment,
+            comment: {
+                ...createdComment.toObject(),
+                replyCount: 0,
+            },
         });
     } catch (error) {
         next(error);
     }
 };
-const getRepliedByPostId = async (req, res, next) => {
+const getRepliedByParentId = async (req, res, next) => {
     await delay(1000);
     try {
         const { commentId } = req.params;
-        const { postId } = req.body;
-
         let repliedComment;
 
         [err, repliedComment] = await to(
             Comment.find({
                 parentId: commentId,
-                postId: postId,
             }).populate({
                 path: 'author',
                 select: 'firstname lastname avatar',
@@ -128,11 +117,18 @@ const getRepliedByPostId = async (req, res, next) => {
                 message: 'Fetching replied comments failed',
             });
         }
-
+        const contentParentComment = await Comment.findById(commentId).select('content');
+        const repliedComments = await Promise.all(
+            repliedComment.map(async (comment) => {
+                const replies = await Comment.find({ parentId: comment._id });
+                return { ...comment.toObject(), replyCount: replies.length };
+            }),
+        );
         if (repliedComment) {
             return res.status(200).json({
                 status: 'success',
-                repliedComment,
+                contentParent: contentParentComment.content,
+                repliedComments,
             });
         } else {
             return res.status(404).json({
@@ -147,5 +143,5 @@ const getRepliedByPostId = async (req, res, next) => {
 
 module.exports = {
     createComment,
-    getRepliedByPostId,
+    getRepliedByParentId,
 };

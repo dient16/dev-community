@@ -8,9 +8,6 @@
 
 html {
     font-size: 62.5%;
-    @include mobile {
-        overflow-x: hidden;
-    }
 }
 body {
     scroll-behavior: smooth;
