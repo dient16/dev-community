@@ -30,7 +30,7 @@ const Comment = ({ author, content, createdAt, contentParent }) => {
                 <div className="comment-item__actions">
                     <Flex align="center" gap={5}>
                         <RiHeart2Line size={20} />
-                        <span>5 likes</span>
+                        <span>0 likes</span>
                     </Flex>
                     <Flex align="center" gap={5}>
                         <RiChat1Line size={20} />

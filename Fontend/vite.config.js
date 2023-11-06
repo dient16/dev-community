@@ -8,6 +8,6 @@ export default defineConfig({
         alias: [{ find: '~/', replacement: '/src/' }],
     },
     server: {
-        port: 9999,
+        port: 9000,
     },
 });
