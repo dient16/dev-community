@@ -13,9 +13,11 @@ import { RiHome4Fill, RiChat1Line, RiSettingsLine, RiHeart2Line, RiHeart2Fill } 
 import { FaRegHeart, FaHeart, FaRegBookmark, FaRegBell, FaBell, FaBirthdayCake } from 'react-icons/fa';
 import { HiPlus } from 'react-icons/hi';
 import { LuBold, LuItalic } from 'react-icons/lu';
-import { BiLink, BiSolidQuoteAltLeft } from 'react-icons/bi';
+import { BiLink, BiSolidQuoteAltLeft, BiSearch } from 'react-icons/bi';
 import { AiOutlineUnorderedList, AiOutlineOrderedList } from 'react-icons/ai';
 import { MdOutlineKeyboardArrowDown, MdOutlineKeyboardArrowUp } from 'react-icons/md';
+import { IoIosCloseCircle } from 'react-icons/io';
+import { PiCircleNotchBold } from 'react-icons/pi';
 const icons = {
     RiHome4Fill,
     LuClipboardList,
@@ -47,5 +49,8 @@ const icons = {
     BsFillPostcardFill,
     FaBirthdayCake,
     BsReplyFill,
+    BiSearch,
+    PiCircleNotchBold,
+    IoIosCloseCircle,
 };
 export default icons;
