@@ -1,17 +1,14 @@
 @use '~/styles/' as *;
 .search-header {
-    --search-border-radius: 92px;
-    --search-height: 46px;
-    --search-top-margin: 9px;
-    --search-button-width: 52px;
     position: relative;
-    height: var(--search-height);
+    height: 46px;
     background: rgba(22, 24, 35, 0.06);
-    border-radius: var(--search-border-radius);
+    border-radius: 92px;
     padding-left: 16px;
     display: flex;
     border: 1.5px solid transparent;
     max-width: 400px;
+    padding-right: 1px;
     input {
         flex: 1;
         color: black;
@@ -22,53 +19,86 @@
         outline: none;
         border: none;
     }
+
     input:not(:placeholder-shown) ~ .search-btn {
         background: rgba(22, 24, 35, 0.03);
-    }
-    &::after {
-        content: '';
-        position: absolute;
-        top: var(--search-top-margin);
-        right: var(--search-button-width);
-        width: 1px;
-        height: calc(var(--search-height) - var(--search-top-margin) * 2);
-        background-color: #d7d7d9;
     }
     &:focus-within {
         border-color: rgba(22, 24, 35, 0.2);
     }
+
     &__btn {
-        width: var(--search-button-width);
-        height: 100%;
-        border-top-right-radius: var(--search-border-radius);
-        border-bottom-right-radius: var(--search-border-radius);
-        color: rgba(22, 24, 35, 0.34);
+        width: 45px;
+        height: 45px;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: white;
         font-size: 1.8rem;
         outline: none;
         border: none;
+        background: $primary-color;
         &:hover {
-            background: rgba(22, 24, 35, 0.03);
+            opacity: 0.8;
             cursor: pointer;
         }
+
         &:active {
             background: rgba(22, 24, 35, 0.06);
         }
     }
+
     &__clear,
     &__loading {
         position: absolute;
         top: 50%;
         transform: translateY(-50%);
-        right: calc(var(--search-button-width) + 16px);
+        right: calc(52px + 16px);
         color: rgba(22, 24, 35, 0.34);
+        cursor: pointer;
     }
 }
+
 .search-result {
     width: 400px;
-    border: 1px solid red;
-    height: 50px;
+    padding: 10px 5px;
+
     &__container {
         max-width: 400px;
         width: 100%;
+    }
+}
+
+.result-item {
+    cursor: pointer;
+    border-bottom: 1px solid #ccc;
+    border-top: 1px solid #ccc;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+
+    &__author {
+        display: flex;
+        align-items: center;
+        gap: 1rem;
+
+        .createdAt,
+        .name {
+            font-family: $width-main;
+            font-weight: 500;
+            font-size: 1.4rem;
+        }
+
+        .name {
+            font-weight: 600;
+        }
+    }
+
+    &__content {
+        margin: 0px 5px 5px 40px;
+        font-family: $width-main;
+        font-weight: 600;
+        font-size: 2rem;
     }
 }

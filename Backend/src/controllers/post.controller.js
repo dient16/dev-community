@@ -90,6 +90,34 @@ const uploadImage = async (req, res, next) => {
         next(error);
     }
 };
+const searchPost = async (req, res, next) => {
+    await delay(1000);
+    try {
+        const { q } = req.query;
+        const [err, posts] = await to(
+            Post.find({ title: { $regex: q, $options: 'i' } })
+                .select('title createdAt')
+                .populate({
+                    path: 'author',
+                    select: 'firstname lastname avatar username',
+                }),
+        );
+        if (err) {
+            return res.status(500).json({
+                status: 'error',
+                message: 'Search error',
+            });
+        }
+
+        return res.status(200).json({
+            status: 'success',
+            data: posts.map((post) => post.toObject()),
+        });
+    } catch (error) {
+        next(error);
+    }
+};
+
 const getPost = async (req, res, next) => {
     try {
         const { pid } = req.params;
@@ -112,7 +140,7 @@ const getPost = async (req, res, next) => {
                         },
                         {
                             path: 'parentId',
-                            match: { parentId: null }, // Chỉ lấy các comment cấp độ cao nhất
+                            match: { parentId: null },
                             populate: {
                                 path: 'author',
                                 select: 'firstname lastname avatar',
@@ -585,4 +613,5 @@ module.exports = {
     likePost,
     bookmarkPost,
     unbookmarkPost,
+    searchPost,
 };

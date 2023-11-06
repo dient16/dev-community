@@ -39,3 +39,10 @@ export const apiUnlikePost = (pid) =>
         method: 'put',
         withCredentials: true,
     });
+export const apiSearchPost = (q) =>
+    axios({
+        url: `/post/search`,
+        method: 'get',
+        params: { q },
+        withCredentials: true,
+    });

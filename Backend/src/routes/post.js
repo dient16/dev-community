@@ -5,6 +5,7 @@ const uploader = require('../middlewares/uploadFile');
 const { validateRequest } = require('../middlewares/validation');
 const { postSchema } = require('../utils/validation');
 router.get('/', controller.getPosts);
+router.get('/search', controller.searchPost);
 router.get('/:pid', controller.getPost);
 router.post('/', verifyAccessToken, uploader.single('image'), validateRequest(postSchema), controller.createPost);
 router.delete('/:postId', [verifyAccessToken], controller.deletePost);
@@ -14,4 +15,5 @@ router.put('/like/:postId', verifyAccessToken, controller.likePost);
 router.put('/unlike/:postId', verifyAccessToken, controller.unlikePost);
 router.put('/bookmark/:postId', verifyAccessToken, controller.bookmarkPost);
 router.put('/unbookmark/:postId', verifyAccessToken, controller.unbookmarkPost);
+
 module.exports = router;

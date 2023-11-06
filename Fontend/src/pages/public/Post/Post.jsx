@@ -6,14 +6,13 @@ import moment from 'moment';
 import { Button, Comments, TagChildren, Loading, PostDetailAuthor } from '~/components';
 import { useParams } from 'react-router-dom';
 import { useQuery, useMutation } from '@tanstack/react-query';
-import { Flex, Spin } from 'antd';
+import { Flex, Spin, Tooltip } from 'antd';
 import { apiGetPost, apiLikePost, apiUnlikePost } from '~/apiServices/post';
 import clsx from 'clsx';
 import { getFromLocalStorage } from '~/utils/helper';
 
-const { FaRegHeart, FaHeart, RiChat1Line, FaRegBookmark } = icons;
-
 const Post = () => {
+    const { FaRegHeart, FaHeart, RiChat1Line, FaRegBookmark } = icons;
     const { slug } = useParams();
     const commentRef = useRef(null);
     const { currentUser } = getFromLocalStorage('dev-community');
@@ -67,21 +66,28 @@ const Post = () => {
             <div className="post-detail__wrapper">
                 <div className="post-detail__actions">
                     <Flex vertical align="center">
-                        <div
-                            className={clsx('post-detail__action-like', isLiked && 'post-detail__action-like--active')}
-                            onClick={(e) => handleToggleLike(e)}
-                        >
-                            {isLiked ? <FaHeart color="#D71313" size={22} /> : <FaRegHeart size={25} />}
-                        </div>
+                        <Tooltip title="Like">
+                            <div
+                                className={clsx(
+                                    'post-detail__action-like',
+                                    isLiked && 'post-detail__action-like--active',
+                                )}
+                                onClick={(e) => handleToggleLike(e)}
+                            >
+                                {isLiked ? <FaHeart color="#D71313" size={22} /> : <FaRegHeart size={25} />}
+                            </div>
+                        </Tooltip>
                         <span>{post?.likes.length}</span>
                     </Flex>
-                    <div className="post-detail__action-comment">
-                        <i onClick={handleScrollComment}>
-                            <RiChat1Line size={27} />
-                        </i>
+                    <Tooltip title="Comment">
+                        <div className="post-detail__action-comment">
+                            <i onClick={handleScrollComment}>
+                                <RiChat1Line size={27} />
+                            </i>
 
-                        <span>{post?.comments.length}</span>
-                    </div>
+                            <span>{post?.comments.length}</span>
+                        </div>
+                    </Tooltip>
                     <div className="post-detail__action-bookmark">
                         <FaRegBookmark size={24} />
                     </div>

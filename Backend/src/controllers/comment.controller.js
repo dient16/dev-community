@@ -34,7 +34,7 @@ const createComment = async (req, res, next) => {
         if (!post) {
             return res.status(404).json({
                 status: 'error',
-                message: 'Post not found for the provided ID',
+                message: 'Post not found! Please try again',
             });
         }
 
@@ -76,7 +76,16 @@ const createComment = async (req, res, next) => {
                 message: 'Creating comment failed while populating author',
             });
         }
+        post.comments.push(createdComment);
+        createdComment.likes.push(author);
 
+        [err] = await to(createdComment.save());
+        if (err) {
+            return res.status(500).json({
+                status: 'error',
+                message: 'Creating comment failed while saving comment',
+            });
+        }
         [err] = await to(post.save());
         if (err) {
             return res.status(500).json({

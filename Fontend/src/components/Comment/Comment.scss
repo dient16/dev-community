@@ -46,6 +46,7 @@
 .comment-item {
     flex: auto;
     margin-bottom: 15px;
+    cursor: default;
     &__inner {
         width: 100%;
         display: flex;
@@ -79,6 +80,7 @@
         display: flex;
         gap: 20px;
         margin-left: 45px;
+        cursor: pointer;
     }
     &__show-replied {
         margin-left: 45px;
