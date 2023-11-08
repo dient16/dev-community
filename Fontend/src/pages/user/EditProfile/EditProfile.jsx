@@ -69,7 +69,7 @@ function EditProfile() {
                                     rules={{ required: 'Name is required' }}
                                     render={({ field }) => (
                                         <>
-                                            <Input xid="firstname" placeholder="John Doe" {...field} />
+                                            <Input id="firstname" placeholder="John Doe" {...field} />
                                             {errors.firstname && (
                                                 <span className="error-message">{errors.firstname.message}</span>
                                             )}

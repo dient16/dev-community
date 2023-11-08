@@ -15,10 +15,11 @@ export const apiUploadImage = (data) =>
         withCredentials: true,
     });
 
-export const apiGetPosts = () =>
+export const apiGetPosts = (params) =>
     axios({
         url: '/post',
         method: 'get',
+        params: { ...params },
         withCredentials: true,
     });
 export const apiGetPost = (pid) =>

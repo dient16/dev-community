@@ -9,7 +9,16 @@ import { getFromLocalStorage } from '~/utils/helper';
 const Home = () => {
     const [posts, setPosts] = useState(null);
     const { currentUser } = getFromLocalStorage('dev-community');
-    const { data: fetchedPosts, isLoading } = useQuery({ queryKey: ['posts'], queryFn: apiGetPosts });
+    const {
+        data: fetchedPosts,
+        isLoading,
+        refetch,
+    } = useQuery({
+        queryKey: ['posts'],
+        queryFn: (key, params) => {
+            apiGetPosts(params);
+        },
+    });
     const likeMutation = useMutation({
         mutationFn: apiLikePost,
     });
@@ -58,6 +67,17 @@ const Home = () => {
             </div>
             <div className="home__content">
                 <Spin indicator={<Loading />} spinning={isLoading} className="loading">
+                    <div className="home__navigation">
+                        <span>For you</span>
+                        <span>Top</span>
+                        <span
+                            onClick={() => {
+                                refetch({ sort: 'createdAt' });
+                            }}
+                        >
+                            Latest
+                        </span>
+                    </div>
                     {posts &&
                         posts.count > 0 &&
                         posts.posts.map((post) => (
