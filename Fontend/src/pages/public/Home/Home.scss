@@ -17,6 +17,17 @@
         gap: 10px;
         flex-direction: column;
     }
+    &__navigation {
+        padding: 10px 20px;
+        display: flex;
+        align-items: center;
+        gap: 1.5rem;
+        font-size: 2rem;
+        font-weight: 600;
+        span {
+            cursor: pointer;
+        }
+    }
     &__outstanding {
         width: 20%;
     }
