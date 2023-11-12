@@ -9,22 +9,34 @@ const getCurrentUser = async (req, res, next) => {
             message: 'Missing input',
         });
     }
-    const [err, user] = await to(User.findById(uid).select('-refreshToken -password'));
-    if (err) {
+
+    try {
+        const user = await User.findById(uid)
+            .select('-refreshToken -password')
+            .populate({
+                path: 'posts',
+                select: 'title tags createdAt',
+                populate: {
+                    path: 'tags',
+                    select: 'name theme',
+                },
+            });
+
+        if (user) {
+            return res.status(200).json({
+                status: 'success',
+                userData: user,
+            });
+        } else {
+            return res.status(401).json({
+                status: 'error',
+                message: 'User not found',
+            });
+        }
+    } catch (err) {
         return res.status(500).json({
             status: 'error',
             message: 'Error getting user',
-        });
-    }
-    if (user) {
-        return res.status(200).json({
-            status: 'success',
-            userData: user,
-        });
-    } else {
-        return res.status(401).json({
-            status: 'error',
-            message: 'User not found',
         });
     }
 };

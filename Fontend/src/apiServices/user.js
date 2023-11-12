@@ -7,9 +7,9 @@ export const apiGetCurrentUser = () =>
         withCredentials: true,
     });
 
-export const editUserProfile = (uid, data) =>
+export const editUserProfile = ({ userId, data }) =>
     axios({
-        url: `/user/${uid}`,
+        url: `/user/${userId}`,
         method: 'put',
         data,
         withCredentials: true,

@@ -1,63 +1,61 @@
-import React, { useState } from 'react';
 import './Home.scss';
 import { SideBar, PostItem, Loading } from '~/components';
-import { useQuery, useMutation } from '@tanstack/react-query';
+import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { Spin } from 'antd';
 import { apiGetPosts, apiLikePost, apiUnlikePost } from '~/apiServices';
-import { getFromLocalStorage } from '~/utils/helper';
+import { useAuth } from '~/hooks';
 
 const Home = () => {
-    const [posts, setPosts] = useState(null);
-    const { currentUser } = getFromLocalStorage('dev-community');
-    const {
-        data: fetchedPosts,
-        isLoading,
-        refetch,
-    } = useQuery({
+    const { user: currentUser } = useAuth();
+    const queryClient = useQueryClient();
+
+    const { data: posts, isLoading } = useQuery({
         queryKey: ['posts'],
-        queryFn: (key, params) => {
-            apiGetPosts(params);
-        },
+        queryFn: apiGetPosts,
     });
+
     const likeMutation = useMutation({
         mutationFn: apiLikePost,
+        onSuccess: (data) => {
+            const updatedPost = data.post;
+            queryClient.setQueryData(['posts'], (prevData) => {
+                return {
+                    ...prevData,
+                    posts: prevData.posts.map((post) => (post._id === updatedPost._id ? updatedPost : post)),
+                };
+            });
+        },
     });
+
     const unLikeMutation = useMutation({
         mutationFn: apiUnlikePost,
+        onSuccess: (data) => {
+            const updatedPost = data.post;
+            queryClient.setQueryData(['posts'], (prevData) => {
+                return {
+                    ...prevData,
+                    posts: prevData.posts.map((post) => (post._id === updatedPost._id ? updatedPost : post)),
+                };
+            });
+        },
     });
-    if (fetchedPosts && !posts) {
-        setPosts(fetchedPosts);
-    }
 
     const handleToggleLike = (postId, isLiked, setIsLiked) => {
         if (isLiked) {
             likeMutation.mutate(postId, {
-                onSuccess: (response) => {
+                onSuccess: () => {
                     setIsLiked(true);
-                    updatePostItemOnHome(postId, response.post);
                 },
             });
         } else {
             unLikeMutation.mutate(postId, {
-                onSuccess: (response) => {
+                onSuccess: () => {
                     setIsLiked(false);
-                    updatePostItemOnHome(postId, response.post);
                 },
             });
         }
     };
 
-    const updatePostItemOnHome = (postId, updatedPost) => {
-        if (posts) {
-            const postIndex = posts.posts.findIndex((post) => post._id === postId);
-
-            if (postIndex !== -1) {
-                const updatedPosts = [...posts.posts];
-                updatedPosts[postIndex] = updatedPost;
-                setPosts({ ...posts, posts: updatedPosts });
-            }
-        }
-    };
     return (
         <div className="home">
             <div className="home__sidebar">
@@ -66,17 +64,11 @@ const Home = () => {
                 </div>
             </div>
             <div className="home__content">
-                <Spin indicator={<Loading />} spinning={isLoading} className="loading">
+                <Spin indicator={<Loading />} spinning={isLoading} fullscreen={isLoading}>
                     <div className="home__navigation">
                         <span>For you</span>
                         <span>Top</span>
-                        <span
-                            onClick={() => {
-                                refetch({ sort: 'createdAt' });
-                            }}
-                        >
-                            Latest
-                        </span>
+                        <span>Latest</span>
                     </div>
                     {posts &&
                         posts.count > 0 &&

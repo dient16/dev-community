@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 import './TagChildren.scss';
 import icons from '~/utils/icons';
 import { hexToRgba } from '~/utils/helper';

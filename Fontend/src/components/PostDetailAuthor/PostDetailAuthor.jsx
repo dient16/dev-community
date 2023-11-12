@@ -39,6 +39,12 @@ const PostDetailAuthor = ({ author }) => {
                             <span className="info-detail">{author?.education}</span>
                         </Flex>
                     )}
+                    {author?.education && (
+                        <Flex vertical>
+                            <span className="info-title">Work</span>
+                            <span className="info-detail">{author?.work}</span>
+                        </Flex>
+                    )}
                     <Flex vertical>
                         <span className="info-title">JOINED</span>
                         <span className="info-detail">{moment(author?.createdAt).format('MMM D, YYYY')}</span>

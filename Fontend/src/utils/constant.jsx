@@ -1,6 +1,24 @@
 import icons from './icons';
-import path from './path';
 const { RiHome4Fill, LuClipboardList, BsTag, BsLightbulb, BsInfoCircle } = icons;
+export const path = {
+    ROOT: '',
+    HOME: '',
+    ALL: '*',
+    LOGIN: 'login',
+    REGISTER: 'register',
+    TAGS: 'tags',
+    FAQS: 'faqs',
+    ABOUT: 'about',
+
+    ///User
+    READING_LIST: 'readinglist',
+    POST: 'post/:username/:slug',
+    EDIT_POST: 'post/:username/:slug/edit',
+    NEW_POST: 'post/new-post',
+    SEARCH_POST: 'search-post',
+    PROFILE: ':userId',
+    EDIT_PROFILE: 'setting',
+};
 
 export const sidebar = [
     {

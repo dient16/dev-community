@@ -2,21 +2,19 @@
 .profile-user {
     display: flex;
     flex-direction: column;
+    align-items: center;
+    justify-content: center;
     &__background {
         width: 100%;
         height: 200px;
         background: $primary-color;
-        position: relative;
     }
-    &__float-container {
+    &__container {
         max-width: $width-main;
         width: 100%;
-        position: absolute;
-        top: 100px;
-        left: 50%;
-        transform: translateX(-50%);
     }
     &__top {
+        position: relative;
         box-shadow: 0 3px 10px rgb(0 0 0 / 0.2);
         border-radius: 10px;
         padding: 10px;
@@ -50,11 +48,14 @@
         width: 100%;
         display: flex;
         gap: 15px;
+        margin-top: 5px;
         .slipt-left {
             font-family: $font-family;
             width: 30%;
             box-shadow: 0 3px 10px rgb(0 0 0 / 0.2);
             padding: 20px;
+            height: 150px;
+            border-radius: 10px;
             .content {
                 font-size: 1.9rem;
             }
@@ -67,6 +68,7 @@
             .my-post-item {
                 padding: 20px;
                 box-shadow: 0 3px 10px rgb(0 0 0 / 0.2);
+                border-radius: 10px;
                 .author {
                     display: flex;
                     align-items: center;

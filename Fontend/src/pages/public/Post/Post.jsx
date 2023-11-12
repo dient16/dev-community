@@ -1,21 +1,21 @@
-import React, { useEffect, useState, useRef } from 'react';
+import { useEffect, useState, useRef } from 'react';
 import './Post.scss';
 import icons from '~/utils/icons';
 import MDEditor from '@uiw/react-md-editor';
 import moment from 'moment';
-import { Button, Comments, TagChildren, Loading, PostDetailAuthor } from '~/components';
+import { Comments, TagChildren, PostDetailAuthor } from '~/components';
 import { useParams } from 'react-router-dom';
 import { useQuery, useMutation } from '@tanstack/react-query';
-import { Flex, Spin, Tooltip } from 'antd';
+import { Flex, Image, Spin, Tooltip } from 'antd';
 import { apiGetPost, apiLikePost, apiUnlikePost } from '~/apiServices/post';
 import clsx from 'clsx';
-import { getFromLocalStorage } from '~/utils/helper';
+import { useAuth } from '~/hooks';
 
 const Post = () => {
     const { FaRegHeart, FaHeart, RiChat1Line, FaRegBookmark } = icons;
     const { slug } = useParams();
     const commentRef = useRef(null);
-    const { currentUser } = getFromLocalStorage('dev-community');
+    const { user: currentUser } = useAuth();
 
     const {
         data,
@@ -88,12 +88,14 @@ const Post = () => {
                             <span>{post?.comments.length}</span>
                         </div>
                     </Tooltip>
-                    <div className="post-detail__action-bookmark">
-                        <FaRegBookmark size={24} />
-                    </div>
+                    <Tooltip title="Bookmark">
+                        <div className="post-detail__action-bookmark">
+                            <FaRegBookmark size={24} />
+                        </div>
+                    </Tooltip>
                 </div>
                 <div className="post-detail__body">
-                    <img className="post-detail__body-image" src={post?.image} alt="" />
+                    <Image className="post-detail__body-image" src={post?.image} alt="" />
                     <div className="post-detail__body-author">
                         <img className="author-avatar" src={post?.author?.avatar} alt="" />
                         <div className="author-wrap">
@@ -107,7 +109,7 @@ const Post = () => {
                             <TagChildren key={tag._id} tagName={tag.name} color={tag.theme} />
                         ))}
                     </div>
-                    <Spin indicator={<Loading />} spinning={isLoading} className="loading">
+                    <Spin spinning={isLoading} className="loading" fullscreen={isLoading}>
                         <div className="post-detail__content">
                             <MDEditor.Markdown source={post?.body} />
                         </div>

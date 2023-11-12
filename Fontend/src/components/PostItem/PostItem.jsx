@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 import './PostItem.scss';
 import icons from '~/utils/icons';
 import { useNavigate } from 'react-router-dom';

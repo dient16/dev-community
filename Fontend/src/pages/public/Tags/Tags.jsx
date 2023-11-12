@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { TagItem } from '~/components';
 import './Tags.scss';
 import { apiGetTags } from '~/apiServices';

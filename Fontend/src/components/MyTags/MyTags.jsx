@@ -1,11 +1,11 @@
-import React, { useEffect } from 'react';
+import { useEffect } from 'react';
 import './MyTags.scss';
 import icons from '~/utils/icons';
 import { useQuery } from '@tanstack/react-query'; // Import useQuery
 import { apiGetMyTags } from '~/apiServices';
 import { TagChildren, Loading } from '~/components';
 import { Spin } from 'antd';
-import { getFromLocalStorage } from '~/utils/helper';
+import { useAuth } from '~/hooks';
 
 const { RiSettingsLine } = icons;
 
@@ -20,7 +20,7 @@ const MyTags = () => {
         enabled: false,
     });
 
-    const { isLoggedIn } = getFromLocalStorage('dev-community');
+    const { isLoggedIn } = useAuth();
     useEffect(() => {
         if (isLoggedIn) {
             refetch();

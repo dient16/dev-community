@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 import { Avatar, Flex } from 'antd';
 import './Comment.scss';
 import moment from 'moment';

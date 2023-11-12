@@ -1,14 +1,12 @@
-import React, { useEffect } from 'react';
 import './Login.scss';
 import { useNavigate } from 'react-router-dom';
-import { toast } from 'react-toastify';
 import { useForm } from 'react-hook-form';
-import path from '~/utils/path';
+import { path } from '~/utils/constant';
 import { Button, InputForm } from '~/components';
 import { useMutation } from '@tanstack/react-query';
-import { Spin } from 'antd';
+import { Spin, message } from 'antd';
 import { apiLogin } from '~/apiServices';
-import { saveToLocalStorage } from '~/utils/helper';
+import { useAuth } from '~/hooks';
 const Login = () => {
     const {
         handleSubmit,
@@ -22,21 +20,21 @@ const Login = () => {
         },
     });
     const navigate = useNavigate();
-
+    const { signIn } = useAuth();
     const mutation = useMutation({
         mutationFn: apiLogin,
         onSuccess: (data) => {
-            toast.success('Login success');
-            saveToLocalStorage('dev-community', {
-                isLoggedIn: true,
-                token: data.accessToken,
-                currentUser: data.userData,
-            });
-            reset();
-            navigate(`/${path.HOME}`);
+            if (data.status === 'success') {
+                message.success('Login success');
+                signIn(data.accessToken, data.userData);
+                reset();
+                navigate(`/${path.HOME}`);
+            } else {
+                message.error(data.message);
+            }
         },
-        onError: (error) => {
-            toast.error(error.message);
+        onError: () => {
+            message.error('Login error');
         },
     });
 
@@ -45,7 +43,7 @@ const Login = () => {
     };
 
     return (
-        <Spin tip="Loading" size="large" spinning={mutation.isPending}>
+        <Spin size="large" spinning={mutation.isPending} fullscreen={mutation.isPending}>
             <div className="login">
                 <form className="login__form" onSubmit={handleSubmit(handleLogin)}>
                     <h3 className="login__title">Login</h3>

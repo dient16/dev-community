@@ -1,9 +1,8 @@
-import React from 'react';
 import { Route, Routes } from 'react-router-dom';
 import { EditPost, NewPost, Profile, ReadingList, EditProfile } from '~/pages/user';
 import { Home, Login, Register, Tags, About, Faqs, Post } from '~/pages/public';
 import MainLayout from '~/pages/MainLayout/MainLayout';
-import path from '~/utils/path';
+import { path } from '~/utils/constant';
 
 const Router = () => {
     return (
