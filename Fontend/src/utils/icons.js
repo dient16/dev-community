@@ -18,6 +18,8 @@ import { AiOutlineUnorderedList, AiOutlineOrderedList } from 'react-icons/ai';
 import { MdOutlineKeyboardArrowDown, MdOutlineKeyboardArrowUp } from 'react-icons/md';
 import { IoIosCloseCircle } from 'react-icons/io';
 import { PiCircleNotchBold } from 'react-icons/pi';
+import { FiTrash } from 'react-icons/fi';
+
 const icons = {
     RiHome4Fill,
     LuClipboardList,
@@ -52,5 +54,6 @@ const icons = {
     BiSearch,
     PiCircleNotchBold,
     IoIosCloseCircle,
+    FiTrash,
 };
 export default icons;

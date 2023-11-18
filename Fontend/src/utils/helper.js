@@ -6,22 +6,3 @@ export function hexToRgba(hex, alpha) {
         return `rgba(${r}, ${g}, ${b}, ${alpha})`;
     }
 }
-
-export function saveToLocalStorage(key, data) {
-    try {
-        const serializedData = JSON.stringify(data);
-        localStorage.setItem(key, serializedData);
-    } catch (error) {}
-}
-
-export function getFromLocalStorage(key) {
-    try {
-        const serializedData = localStorage.getItem(key);
-        if (serializedData === null) {
-            return { isLoggedIn: false, token: null, currentUser: null };
-        }
-        return JSON.parse(serializedData);
-    } catch (error) {
-        return { isLoggedIn: false, token: null, currentUser: null };
-    }
-}

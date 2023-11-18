@@ -1,40 +1,34 @@
-import React, { useState, useEffect } from 'react';
-import { Button, InputTags, PostMarkdown } from '~/components';
+import { useState, useEffect } from 'react';
+import { InputTags, PostMarkdown } from '~/components';
 import { useMutation } from '@tanstack/react-query'; // Import useMutation
 import { useNavigate } from 'react-router-dom';
 import { apiCreatePost } from '~/apiServices/post';
-import { toast } from 'react-toastify';
-import { Image, Spin } from 'antd';
+import { UploadOutlined } from '@ant-design/icons';
+import { Image, Spin, message, Upload, Button, Flex } from 'antd';
 import './NewPost.scss';
+import icons from '~/utils/icons';
 
 const NewPost = () => {
     const navigate = useNavigate();
-
+    const { FiTrash } = icons;
     const [selectedImage, setSelectedImage] = useState(null);
-    const [previewImage, setPreviewImage] = useState(null);
     const [postBody, setPostBody] = useState('');
     const [postTitle, setPostTitle] = useState('');
     const [postTags, setPostTags] = useState([]);
-
     const createPostMutation = useMutation({
         mutationFn: apiCreatePost,
         onSuccess: () => {
-            toast.success('Created successfully');
+            message.success('Created successfully');
             navigate('/');
         },
         onError: () => {
-            toast.error('Create failed');
+            message.error('create failed');
         },
     });
 
     useEffect(() => {
         document.documentElement.setAttribute('data-color-mode', 'light');
     }, []);
-
-    const handleImageChange = (event) => {
-        setSelectedImage(event.target.files[0]);
-        setPreviewImage(URL.createObjectURL(event.target.files[0]));
-    };
 
     const addTag = (event) => {
         const tag = event.target.value;
@@ -57,33 +51,46 @@ const NewPost = () => {
     const handleCreatePost = () => {
         if (postBody && postTitle && postTags.length >= 1) {
             const formData = new FormData();
-            formData.append('image', selectedImage);
+            formData.append('image', selectedImage[0].originFileObj);
             formData.append('body', postBody);
             formData.append('title', postTitle);
             formData.append('tags', postTags);
 
             createPostMutation.mutate(formData);
         } else {
-            toast.error('Please fill out all fields');
+            message.error('Please fill out all fields');
         }
     };
 
     return (
-        <Spin tip="Loading" size="large" spinning={createPostMutation.isPending}>
+        <>
+            <Spin size="large" spinning={createPostMutation.isPending} fullscreen={createPostMutation.isPending}></Spin>
             <div className="new-post">
                 <div className="new-post__wrapper">
                     <div className="new-post__add-image">
-                        <label htmlFor="image-input" className="new-post__custom-input">
-                            Add banner image
-                        </label>
-                        <input
-                            type="file"
+                        <Upload
                             accept="image/*"
-                            id="image-input"
-                            onChange={handleImageChange}
-                            className="new-post__input-file"
-                        />
-                        {previewImage && <Image src={previewImage} alt="Preview" width={200} height={100} />}
+                            listType="picture"
+                            customRequest={() => {}}
+                            maxCount={1}
+                            fileList={selectedImage}
+                            onChange={({ fileList }) => {
+                                setSelectedImage(fileList);
+                            }}
+                            itemRender={(originNode, UploadFile, fileList, action) => (
+                                <Flex align="center" gap={15} className="preview-upload">
+                                    <Image src={UploadFile.thumbUrl} height={80} />
+                                    <span>{UploadFile.originFileObj.name}</span>
+                                    <span className="delete-upload" onClick={() => action.remove()}>
+                                        <FiTrash size={18} />
+                                    </span>
+                                </Flex>
+                            )}
+                        >
+                            <Button icon={<UploadOutlined />} size="large" className="upload-btn">
+                                Add banner image
+                            </Button>
+                        </Upload>
                     </div>
                     <div className="new-post__top">
                         <textarea
@@ -105,13 +112,13 @@ const NewPost = () => {
                         <div className="new-post__markdown">
                             <PostMarkdown content={postBody} setContent={setPostBody} />
                         </div>
-                        <Button primary onClick={handleCreatePost}>
+                        <Button className="new-post__btn-create-post" size="large" onClick={handleCreatePost}>
                             Post now
                         </Button>
                     </div>
                 </div>
             </div>
-        </Spin>
+        </>
     );
 };
 

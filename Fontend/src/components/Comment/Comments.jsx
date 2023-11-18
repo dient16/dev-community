@@ -1,12 +1,11 @@
-import React, { useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import './Comment.scss';
 import { UserOutlined } from '@ant-design/icons';
-import { Avatar, Input, Tree, Flex } from 'antd';
+import { Avatar, Input, Tree, Flex, message } from 'antd';
 import { apiAddComment, apiGetReliedComment } from '~/apiServices';
 import { Button, CommentItem } from '~/components';
 import { ClipLoader } from 'react-spinners';
 import icons from '~/utils/icons';
-import { toast } from 'react-toastify';
 const Comments = ({ commentList, postId }) => {
     const [comments, setComments] = useState([]);
     const [textComment, setTextComment] = useState(null);
@@ -87,7 +86,7 @@ const Comments = ({ commentList, postId }) => {
         });
     const handleAddComment = async () => {
         if (!textComment) {
-            toast.error('Comment empty');
+            message.error('Comment empty');
             return;
         }
         const response = await apiAddComment(postId, { content: textComment });
@@ -96,9 +95,7 @@ const Comments = ({ commentList, postId }) => {
             setComments((prev) => [newComment, ...prev]);
             setTextComment(null);
         } else {
-            toast.error(response?.message, {
-                theme: 'colored',
-            });
+            message.error(response?.message);
         }
     };
     useEffect(() => {

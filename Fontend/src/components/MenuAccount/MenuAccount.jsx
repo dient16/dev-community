@@ -2,12 +2,13 @@ import React from 'react';
 import { Flex } from 'antd';
 import './MenuAccount.scss';
 import { Button } from '..';
-import { saveToLocalStorage } from '~/utils/helper';
-import path from '~/utils/path';
+import { path } from '~/utils/constant';
+import { useAuth } from '~/hooks';
 
 const MenuAccount = ({ user, setOpenMenu }) => {
+    const { signOut } = useAuth();
     const handleSignOut = () => {
-        saveToLocalStorage('dev-community', { isLoggedIn: false, token: null, currentUser: null });
+        signOut();
     };
     return (
         <div className="menu-account">
@@ -47,7 +48,7 @@ const MenuAccount = ({ user, setOpenMenu }) => {
                 <Button
                     outline
                     className="menu-account__btn"
-                    to={`/setting/${user?._id}`}
+                    to={`/${path.EDIT_PROFILE}`}
                     onClick={() => {
                         setOpenMenu(false);
                     }}

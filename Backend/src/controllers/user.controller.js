@@ -9,22 +9,64 @@ const getCurrentUser = async (req, res, next) => {
             message: 'Missing input',
         });
     }
-    const [err, user] = await to(User.findById(uid).select('-refreshToken -password'));
-    if (err) {
+
+    try {
+        const user = await User.findById(uid).select('-refreshToken -password');
+
+        if (user) {
+            return res.status(200).json({
+                status: 'success',
+                userData: user,
+            });
+        } else {
+            return res.status(401).json({
+                status: 'error',
+                message: 'User not found',
+            });
+        }
+    } catch (err) {
         return res.status(500).json({
             status: 'error',
             message: 'Error getting user',
         });
     }
-    if (user) {
-        return res.status(200).json({
-            status: 'success',
-            userData: user,
-        });
-    } else {
-        return res.status(401).json({
+};
+
+const getUserByUsername = async (req, res, next) => {
+    const { username } = req.params;
+    if (!username) {
+        return res.status(400).json({
             status: 'error',
-            message: 'User not found',
+            message: 'Missing input',
+        });
+    }
+    try {
+        const user = await User.findOne({ username: username })
+            .select('-refreshToken -password')
+            .populate({
+                path: 'posts',
+                select: 'title tags createdAt',
+                populate: {
+                    path: 'tags',
+                    select: 'name theme',
+                },
+            });
+        console.log(user);
+        if (user) {
+            return res.status(200).json({
+                status: 'success',
+                userData: user,
+            });
+        } else {
+            return res.status(401).json({
+                status: 'error',
+                message: 'User not found',
+            });
+        }
+    } catch (err) {
+        return res.status(500).json({
+            status: 'error',
+            message: 'Error getting user',
         });
     }
 };
@@ -83,4 +125,5 @@ const editUser = async (req, res, next) => {
 module.exports = {
     getCurrentUser,
     editUser,
+    getUserByUsername,
 };

@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 import './PostItem.scss';
 import icons from '~/utils/icons';
 import { useNavigate } from 'react-router-dom';
@@ -29,9 +29,23 @@ const PostItem = ({ postItemOnHome, isLiked: isLikeProp, onToggleLike }) => {
             <div className="post-item__body">
                 <div className="post-item__content">
                     <div className="post-item__author">
-                        <img src={postItemOnHome.author.avatar} alt="" className="author-avatar" />
+                        <img
+                            src={postItemOnHome.author.avatar}
+                            alt=""
+                            className="author-avatar"
+                            onClick={(e) => {
+                                e.stopPropagation();
+                                navigate(`/${postItemOnHome.author.username}`);
+                            }}
+                        />
                         <div className="post-author">
-                            <span className="author-name">{`${postItemOnHome?.author?.firstname} ${postItemOnHome?.author?.lastname}`}</span>
+                            <span
+                                className="author-name"
+                                onClick={(e) => {
+                                    e.stopPropagation();
+                                    navigate(`/${postItemOnHome.author.username}`);
+                                }}
+                            >{`${postItemOnHome?.author?.firstname} ${postItemOnHome?.author?.lastname}`}</span>
                             <span className="post-time">{moment(postItemOnHome.createdAt).fromNow()}</span>
                         </div>
                     </div>

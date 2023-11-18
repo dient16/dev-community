@@ -1,30 +1,23 @@
-import React, { useState, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import HeadlessTippy from '@tippyjs/react/headless';
 import 'tippy.js/dist/tippy.css';
 import { MenuAccount, Notification, Search } from '~/components';
 import './Header.scss';
-import { Avatar, Popover } from 'antd';
+import { Avatar, Popover, Badge } from 'antd';
 import Button from '../Buttons/Button';
-import path from '~/utils/path';
+import { path } from '~/utils/constant';
 import logo from '~/assets/logo.png';
 import icons from '~/utils/icons';
 import clsx from 'clsx';
 import { useNavigate } from 'react-router-dom';
-import { getFromLocalStorage } from '~/utils/helper';
-import { useQuery } from '@tanstack/react-query';
-import { apiGetCurrentUser } from '~/apiServices';
+import { useAuth } from '~/hooks';
 const { HiPlus, FaRegBell, FaBell } = icons;
 
 const Header = () => {
     const navigate = useNavigate();
     const [isShowNotify, setIsShowNotify] = useState(false);
     const [openMenu, setOpenMenu] = useState(false);
-    const { data, isLoading } = useQuery({
-        queryKey: ['currentUser'],
-        queryFn: apiGetCurrentUser,
-    });
-    const { isLoggedIn } = getFromLocalStorage('dev-community');
-    const currentUser = data?.userData;
+    const { isLoggedIn, user: currentUser } = useAuth();
     useEffect(() => {
         document.addEventListener('click', () => {
             setIsShowNotify(false);
@@ -36,9 +29,6 @@ const Header = () => {
         };
     }, []);
 
-    if (isLoading) {
-        return <div>Loading...</div>;
-    }
     const handleOpenChange = (newOpen) => {
         setOpenMenu(newOpen);
     };
@@ -75,16 +65,17 @@ const Header = () => {
                                     </div>
                                 )}
                             >
-                                <span
-                                    className="header__notify-icon"
-                                    count-notification="3"
-                                    onClick={(e) => {
-                                        e.stopPropagation();
-                                        setIsShowNotify((prev) => !prev);
-                                    }}
-                                >
-                                    {isShowNotify ? <FaBell size={25} /> : <FaRegBell size={25} />}
-                                </span>
+                                <Badge count={155} color="#6497b1">
+                                    <span
+                                        className="header__notify-icon"
+                                        onClick={(e) => {
+                                            e.stopPropagation();
+                                            setIsShowNotify((prev) => !prev);
+                                        }}
+                                    >
+                                        {isShowNotify ? <FaBell size={25} /> : <FaRegBell size={25} />}
+                                    </span>
+                                </Badge>
                             </HeadlessTippy>
                         </div>
 

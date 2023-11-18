@@ -1,13 +1,13 @@
-import React, { useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import './TagItem.scss';
 import { Button } from '~/components';
 import { useMutation } from '@tanstack/react-query';
 import { apiFollowTag, apiUnfollowTag } from '~/apiServices';
-import { getFromLocalStorage } from '~/utils/helper';
+import { useAuth } from '~/hooks';
 
 const TagItem = ({ tag }) => {
     const [isFollowTag, setIsFollowTag] = useState(false);
-    const { currentUser: user } = getFromLocalStorage('dev-community');
+    const { user } = useAuth();
 
     const followTagMutation = useMutation({
         mutationFn: apiFollowTag,

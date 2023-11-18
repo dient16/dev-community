@@ -52,19 +52,6 @@
     &__notify-icon {
         position: relative;
     }
-    &__notify-icon:after {
-        content: attr(count-notification);
-        background-color: $primary-color;
-        color: $white;
-        border-radius: 50%;
-        padding: 2px 8px;
-        position: absolute;
-        top: -20px;
-        right: -10px;
-        font-size: 12px;
-        font-weight: bold;
-        transition: all 200ms linear 0s;
-    }
 }
 .notify-wrapper {
     transition: all 200ms linear 0s;

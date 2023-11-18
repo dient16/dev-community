@@ -5,6 +5,6 @@ const { validateRequest } = require('../middlewares/validation');
 const { commentSchema } = require('../utils/validation');
 
 router.post('/:postId', validateRequest(commentSchema), verifyAccessToken, controller.createComment);
-router.get('/reply/:commentId', verifyAccessToken, controller.getRepliedByParentId);
+router.get('/reply/:commentId', controller.getRepliedByParentId);
 
 module.exports = router;

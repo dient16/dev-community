@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 import MDEditor, { commands } from '@uiw/react-md-editor';
 import './PostMarkdown.scss';
 import icons from '~/utils/icons';
