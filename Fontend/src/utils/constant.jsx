@@ -16,7 +16,7 @@ export const path = {
     EDIT_POST: 'post/:username/:slug/edit',
     NEW_POST: 'post/new-post',
     SEARCH_POST: 'search-post',
-    PROFILE: ':userId',
+    PROFILE: ':username',
     EDIT_PROFILE: 'setting',
 };
 

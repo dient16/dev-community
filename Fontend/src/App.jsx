@@ -1,13 +1,12 @@
-import React from 'react';
 import Router from '~/routers/Router';
-import { AuthProvider } from './contexts';
+import { AuthProvider, SocketProvider } from './contexts';
 const App = () => {
     return (
-        <div>
-            <AuthProvider>
+        <AuthProvider>
+            <SocketProvider>
                 <Router />
-            </AuthProvider>
-        </div>
+            </SocketProvider>
+        </AuthProvider>
     );
 };
 

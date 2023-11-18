@@ -3,7 +3,7 @@ import HeadlessTippy from '@tippyjs/react/headless';
 import 'tippy.js/dist/tippy.css';
 import { MenuAccount, Notification, Search } from '~/components';
 import './Header.scss';
-import { Avatar, Popover } from 'antd';
+import { Avatar, Popover, Badge } from 'antd';
 import Button from '../Buttons/Button';
 import { path } from '~/utils/constant';
 import logo from '~/assets/logo.png';
@@ -65,16 +65,17 @@ const Header = () => {
                                     </div>
                                 )}
                             >
-                                <span
-                                    className="header__notify-icon"
-                                    count-notification="3"
-                                    onClick={(e) => {
-                                        e.stopPropagation();
-                                        setIsShowNotify((prev) => !prev);
-                                    }}
-                                >
-                                    {isShowNotify ? <FaBell size={25} /> : <FaRegBell size={25} />}
-                                </span>
+                                <Badge count={155} color="#6497b1">
+                                    <span
+                                        className="header__notify-icon"
+                                        onClick={(e) => {
+                                            e.stopPropagation();
+                                            setIsShowNotify((prev) => !prev);
+                                        }}
+                                    >
+                                        {isShowNotify ? <FaBell size={25} /> : <FaRegBell size={25} />}
+                                    </span>
+                                </Badge>
                             </HeadlessTippy>
                         </div>
 

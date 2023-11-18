@@ -4,7 +4,7 @@ import icons from '~/utils/icons';
 import MDEditor from '@uiw/react-md-editor';
 import moment from 'moment';
 import { Comments, TagChildren, PostDetailAuthor } from '~/components';
-import { useParams } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 import { useQuery, useMutation } from '@tanstack/react-query';
 import { Flex, Image, Spin, Tooltip } from 'antd';
 import { apiGetPost, apiLikePost, apiUnlikePost } from '~/apiServices/post';
@@ -13,6 +13,7 @@ import { useAuth } from '~/hooks';
 
 const Post = () => {
     const { FaRegHeart, FaHeart, RiChat1Line, FaRegBookmark } = icons;
+    const navigate = useNavigate();
     const { slug } = useParams();
     const commentRef = useRef(null);
     const { user: currentUser } = useAuth();
@@ -97,9 +98,23 @@ const Post = () => {
                 <div className="post-detail__body">
                     <Image className="post-detail__body-image" src={post?.image} alt="" />
                     <div className="post-detail__body-author">
-                        <img className="author-avatar" src={post?.author?.avatar} alt="" />
+                        <img
+                            className="author-avatar"
+                            src={post?.author?.avatar}
+                            alt=""
+                            onClick={(e) => {
+                                e.stopPropagation();
+                                navigate(`/${post.author.username}`);
+                            }}
+                        />
                         <div className="author-wrap">
-                            <span className="author-name">{`${post?.author?.firstname} ${post?.author?.lastname}`}</span>
+                            <span
+                                className="author-name"
+                                onClick={(e) => {
+                                    e.stopPropagation();
+                                    navigate(`/${post.author.username}`);
+                                }}
+                            >{`${post?.author?.firstname} ${post?.author?.lastname}`}</span>
                             <span className="author-post-time">{moment(post?.createdAt).fromNow()}</span>
                         </div>
                     </div>

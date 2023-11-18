@@ -2,7 +2,7 @@ import { useState } from 'react';
 import './EditProfile.scss';
 import { Input, Avatar, Flex, message, Spin } from 'antd';
 import { useForm, Controller } from 'react-hook-form';
-import { apiGetCurrentUser, editUserProfile } from '~/apiServices';
+import { apiGetCurrentUser, apiEditUserProfile } from '~/apiServices';
 import { useMutation } from '@tanstack/react-query';
 
 function EditProfile() {
@@ -29,7 +29,7 @@ function EditProfile() {
     const [avatar, setAvatar] = useState(null);
     const [previewAvatar, setPreviewAvatar] = useState(null);
     const mutationEditProfile = useMutation({
-        mutationFn: (userId, data) => editUserProfile(userId, data),
+        mutationFn: (userId, data) => apiEditUserProfile(userId, data),
     });
     const handleAvatarChange = (event) => {
         setAvatar(event.target.files[0]);

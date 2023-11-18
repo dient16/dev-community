@@ -5,5 +5,5 @@ const uploader = require('../middlewares/uploadFile');
 
 router.get('/current-user', verifyAccessToken, controller.getCurrentUser);
 router.put('/:uid', verifyAccessToken, uploader.single('image'), controller.editUser);
-
+router.get('/:username', controller.getUserByUsername);
 module.exports = router;
