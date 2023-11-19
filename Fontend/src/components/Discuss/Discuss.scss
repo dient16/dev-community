@@ -1,0 +1,38 @@
+@use '~/styles/' as *;
+.discuss {
+    box-shadow: 0 0 0 1px rgba(23, 23, 23, 0.05);
+    background-color: #fff;
+    margin-left: 25px;
+    margin-top: 20px;
+    border-radius: 15px;
+    padding: 10px;
+    &__title {
+        padding-bottom: 10px;
+    }
+    &__post-container {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+    }
+    &__post-item {
+        border-top: 1px solid #ccc;
+        padding: 15px 4px;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        gap: 5px;
+        .post-item-title {
+            text-decoration: none;
+            color: $black;
+            font-size: 1.7rem;
+            font-weight: 400;
+            &:hover {
+                color: $primary-color;
+            }
+        }
+        .post-item-comment {
+            font-size: 1.6rem;
+            font-weight: 300;
+        }
+    }
+}

@@ -3,12 +3,15 @@ import './Comment.scss';
 import { UserOutlined } from '@ant-design/icons';
 import { Avatar, Input, Tree, Flex, message } from 'antd';
 import { apiAddComment, apiGetReliedComment } from '~/apiServices';
-import { Button, CommentItem } from '~/components';
+import { Button, CommentItem, ModalRequireLogin } from '~/components';
 import { ClipLoader } from 'react-spinners';
 import icons from '~/utils/icons';
+import { useAuth } from '~/hooks';
 const Comments = ({ commentList, postId }) => {
     const [comments, setComments] = useState([]);
     const [textComment, setTextComment] = useState(null);
+    const [isOpenAuthModal, setIsOpenAuthModal] = useState(false);
+    const { isLoggedIn } = useAuth();
     const { MdOutlineKeyboardArrowUp, MdOutlineKeyboardArrowDown } = icons;
     const renderComments = () =>
         commentList?.filter((comment) => !comment.parentId)?.map((comment) => objectNodeComment(comment));
@@ -89,6 +92,10 @@ const Comments = ({ commentList, postId }) => {
             message.error('Comment empty');
             return;
         }
+        if (!isLoggedIn) {
+            setIsOpenAuthModal(true);
+            return;
+        }
         const response = await apiAddComment(postId, { content: textComment });
         if (response.status === 'success') {
             const newComment = objectNodeComment(response.comment);
@@ -103,28 +110,31 @@ const Comments = ({ commentList, postId }) => {
     }, [commentList]);
 
     return (
-        <div className="comment-detail-post">
-            <h2 className="comment-detail-post__title">Comments ({commentList?.length})</h2>
-            <div className="comment-detail-post__body">
-                <Flex gap={10}>
-                    <Avatar size={30} icon={<UserOutlined />} />
-                    <Input.TextArea
-                        rows={4}
-                        value={textComment}
-                        placeholder="Add new comment"
-                        onChange={(e) => setTextComment(e.target.value)}
-                    />
-                </Flex>
-                <div>
-                    <Button primary className="btn-comment" small onClick={() => handleAddComment()}>
-                        Comment
-                    </Button>
-                </div>
-                <div className="comment-detail-post__container">
-                    <Tree loadData={onLoadReplied} showLine={true} defaultExpandAll={true} treeData={comments} />
+        <>
+            <ModalRequireLogin open={isOpenAuthModal} setOpen={setIsOpenAuthModal} />
+            <div className="comment-detail-post">
+                <h2 className="comment-detail-post__title">Comments ({commentList?.length})</h2>
+                <div className="comment-detail-post__body">
+                    <Flex gap={10}>
+                        <Avatar size={30} icon={<UserOutlined />} />
+                        <Input.TextArea
+                            rows={4}
+                            value={textComment}
+                            placeholder="Add new comment"
+                            onChange={(e) => setTextComment(e.target.value)}
+                        />
+                    </Flex>
+                    <div>
+                        <Button primary className="btn-comment" small onClick={() => handleAddComment()}>
+                            Comment
+                        </Button>
+                    </div>
+                    <div className="comment-detail-post__container">
+                        <Tree loadData={onLoadReplied} showLine={true} defaultExpandAll={true} treeData={comments} />
+                    </div>
                 </div>
             </div>
-        </div>
+        </>
     );
 };
 

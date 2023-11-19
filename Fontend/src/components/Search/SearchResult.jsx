@@ -1,15 +1,14 @@
 import React from 'react';
 import './Search.scss';
-import { Flex } from 'antd';
+import { Empty, Flex } from 'antd';
 import ResultItem from './ResultItem';
 
-const SearchResult = ({ resultList }) => {
+const SearchResult = ({ resultList, setIsOpenResult }) => {
     return (
-        <div className="search-result">
+        <div className="search-result" onClick={(e) => e.stopPropagation()}>
             <div className="search-result__container">
                 <Flex vertical>
-                    {resultList &&
-                        resultList.length > 0 &&
+                    {resultList?.length > 0 ? (
                         resultList.map((result) => (
                             <ResultItem
                                 key={result._id}
@@ -19,8 +18,12 @@ const SearchResult = ({ resultList }) => {
                                 authorName={`${result?.author.firstname} ${result?.author.lastname}`}
                                 username={result?.author.username}
                                 contentPost={result?.title}
+                                setIsOpenResult={setIsOpenResult}
                             />
-                        ))}
+                        ))
+                    ) : (
+                        <Empty />
+                    )}
                 </Flex>
             </div>
         </div>

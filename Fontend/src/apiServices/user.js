@@ -1,4 +1,4 @@
-import axios from '../../axios';
+import axios from './axios';
 
 export const apiGetCurrentUser = () =>
     axios({
@@ -18,5 +18,17 @@ export const apiGetUserByUsername = (username) =>
     axios({
         url: `/user/${username}`,
         method: 'get',
+        withCredentials: true,
+    });
+export const apiFollowUser = (userId) =>
+    axios({
+        url: `/user/follow/${userId}`,
+        method: 'put',
+        withCredentials: true,
+    });
+export const apiUnFollowUser = (userId) =>
+    axios({
+        url: `/user/unfollow/${userId}`,
+        method: 'put',
         withCredentials: true,
     });

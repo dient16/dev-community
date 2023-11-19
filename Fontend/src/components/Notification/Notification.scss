@@ -1,6 +1,6 @@
 @use '~/styles/' as *;
 .notification {
-    width: 400px;
+    width: 420px;
     height: 500px;
     background: $white;
     border-radius: 8px;
@@ -10,18 +10,8 @@
     position: relative;
     display: flex;
     flex-direction: column;
-    // &::before {
-    //     content: '';
-    //     position: absolute;
-    //     width: 0;
-    //     height: 0;
-    //     border-left: 15px solid transparent;
-    //     border-right: 15px solid transparent;
-    //     border-bottom: 15px solid $white;
-    //     box-shadow: rgba(0, 0, 0, 0.12) 0px -4px 32px;
-    //     top: -15px;
-    //     right: calc(50% - 15px);
-    // }
+    font-family: $font-family;
+    margin: -11px;
     &__top {
         margin-top: 5px;
         display: flex;
@@ -71,11 +61,11 @@
     gap: 15px;
     align-items: center;
     font-size: 1.6rem;
-    &__sender-avatar {
-        object-fit: cover;
-        width: 50px;
-        height: 50px;
-        border-radius: 50%;
+    padding: 7px 3px;
+    border-radius: 15px;
+    cursor: pointer;
+    &:hover {
+        background: #f1f1f1;
     }
     &__content {
         flex-grow: 1;
@@ -92,11 +82,14 @@
         font-weight: 600;
         word-break: break-all;
         color: $black;
+        font-size: 1.6rem;
+        line-height: 1.7rem;
         &:hover {
             text-decoration: underline;
         }
     }
     &__message {
+        font-size: 1.4rem;
         display: -webkit-box;
         overflow: hidden;
         text-overflow: ellipsis;
@@ -107,16 +100,17 @@
         word-break: break-word;
     }
     &__action {
-        width: 60px;
+        width: 100px;
         button {
+            font-family: $font-family;
             border-radius: 9px;
             border: none;
             color: rgb(255, 255, 255);
             background-color: $primary-color;
             min-width: 40px;
             min-height: 30px;
-            font-size: 14px;
-            line-height: 17px;
+            font-size: 13px;
+            line-height: 16px;
             font-weight: 500;
             display: flex;
             position: relative;

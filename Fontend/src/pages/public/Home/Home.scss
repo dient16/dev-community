@@ -30,6 +30,8 @@
     }
     &__outstanding {
         width: 20%;
+        position: sticky;
+        top: 70px;
     }
 }
 .loading {

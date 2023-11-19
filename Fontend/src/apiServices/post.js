@@ -1,4 +1,4 @@
-import axios from '../../axios';
+import axios from './axios';
 
 export const apiCreatePost = (data) =>
     axios({
@@ -44,5 +44,30 @@ export const apiSearchPost = (q) =>
         url: `/post/search`,
         method: 'get',
         params: { q },
+        withCredentials: true,
+    });
+export const apiGetPostByTagDiscuss = (q) =>
+    axios({
+        url: `/post/tag-discuss`,
+        method: 'get',
+        withCredentials: true,
+    });
+
+export const apiBookmarkPost = (pid) =>
+    axios({
+        url: `/post/bookmark/${pid}`,
+        method: 'put',
+        withCredentials: true,
+    });
+export const apiUnbookmarkPost = (pid) =>
+    axios({
+        url: `/post/unbookmark/${pid}`,
+        method: 'put',
+        withCredentials: true,
+    });
+export const apiGetBookmarkUser = () =>
+    axios({
+        url: `/post/bookmark`,
+        method: 'get',
         withCredentials: true,
     });

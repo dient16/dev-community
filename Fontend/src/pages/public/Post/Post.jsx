@@ -4,7 +4,7 @@ import icons from '~/utils/icons';
 import MDEditor from '@uiw/react-md-editor';
 import moment from 'moment';
 import { Comments, TagChildren, PostDetailAuthor } from '~/components';
-import { useNavigate, useParams } from 'react-router-dom';
+import { useParams, useNavigate } from 'react-router-dom';
 import { useQuery, useMutation } from '@tanstack/react-query';
 import { Flex, Image, Spin, Tooltip } from 'antd';
 import { apiGetPost, apiLikePost, apiUnlikePost } from '~/apiServices/post';
@@ -17,7 +17,6 @@ const Post = () => {
     const { slug } = useParams();
     const commentRef = useRef(null);
     const { user: currentUser } = useAuth();
-
     const {
         data,
         isLoading,
@@ -85,7 +84,6 @@ const Post = () => {
                             <i onClick={handleScrollComment}>
                                 <RiChat1Line size={27} />
                             </i>
-
                             <span>{post?.comments.length}</span>
                         </div>
                     </Tooltip>
@@ -96,7 +94,7 @@ const Post = () => {
                     </Tooltip>
                 </div>
                 <div className="post-detail__body">
-                    <Image className="post-detail__body-image" src={post?.image} alt="" />
+                    <Image className="post-detail__body-image" src={post?.image} preview={false} />
                     <div className="post-detail__body-author">
                         <img
                             className="author-avatar"

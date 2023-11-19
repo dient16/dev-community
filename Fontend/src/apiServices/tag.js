@@ -1,4 +1,4 @@
-import axios from '../../axios';
+import axios from './axios';
 
 export const apiGetTags = () =>
     axios({
@@ -21,6 +21,12 @@ export const apiUnfollowTag = (tagId) =>
 export const apiGetMyTags = () =>
     axios({
         url: `/tag/user`,
+        method: 'get',
+        withCredentials: true,
+    });
+export const apiGetPopularTags = () =>
+    axios({
+        url: `/tag/popular`,
         method: 'get',
         withCredentials: true,
     });

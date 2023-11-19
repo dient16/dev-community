@@ -6,6 +6,8 @@ const { validateRequest } = require('../middlewares/validation');
 const { postSchema } = require('../utils/validation');
 router.get('/', controller.getPosts);
 router.get('/search', controller.searchPost);
+router.get('/tag-discuss', controller.getPostByTagsDiscuss);
+router.get('/bookmark', verifyAccessToken, controller.getBookmarkUser);
 router.get('/:pid', controller.getPost);
 router.post('/', verifyAccessToken, uploader.single('image'), validateRequest(postSchema), controller.createPost);
 router.delete('/:postId', [verifyAccessToken], controller.deletePost);
