@@ -11,16 +11,25 @@ const Home = () => {
     const { user: currentUser } = useAuth();
     const queryClient = useQueryClient();
     const socket = useContext(SocketContext);
-
     const { data: posts, isLoading } = useQuery({
         queryKey: ['posts'],
         queryFn: apiGetPosts,
+    });
+    const unLikeMutation = useMutation({
+        mutationFn: apiUnlikePost,
+    });
+
+    const bookmarkMutation = useMutation({
+        mutationFn: apiBookmarkPost,
+    });
+
+    const unBookmarkMutation = useMutation({
+        mutationFn: apiUnbookmarkPost,
     });
 
     const likeMutation = useMutation({
         mutationFn: apiLikePost,
         onSuccess: (data) => {
-            updatePostInQuery(data.post);
             if (currentUser._id !== data.post.author._id) {
                 socket.emit('like', {
                     sender: { id: currentUser?._id, username: currentUser?.username, avatar: currentUser?.avatar },
@@ -36,43 +45,21 @@ const Home = () => {
         },
     });
 
-    const unLikeMutation = useMutation({
-        mutationFn: apiUnlikePost,
-        onSuccess: (data) => {
-            updatePostInQuery(data.post);
-        },
-    });
-
-    const bookmarkMutation = useMutation({
-        mutationFn: apiBookmarkPost,
-        onSuccess: (data) => {
-            updatePostInQuery(data.post);
-        },
-    });
-
-    const unBookmarkMutation = useMutation({
-        mutationFn: apiUnbookmarkPost,
-        onSuccess: (data) => {
-            updatePostInQuery(data.post);
-        },
-    });
-
-    const handleToggleLike = (postId, isLiked, setIsLiked) => {
+    const handleToggleLike = (postId, isLiked) => {
         const mutation = isLiked ? unLikeMutation : likeMutation;
-
         mutation.mutate(postId, {
-            onSuccess: () => {
-                setIsLiked(!isLiked);
+            onSuccess: (data) => {
+                updatePostInQuery(data.post);
             },
         });
     };
 
-    const handleToggleBookmark = (postId, isBookmarked, setIsBookmarked) => {
+    const handleToggleBookmark = (postId, isBookmarked) => {
         const mutation = isBookmarked ? unBookmarkMutation : bookmarkMutation;
 
         mutation.mutate(postId, {
-            onSuccess: () => {
-                setIsBookmarked(!isBookmarked);
+            onSuccess: (data) => {
+                updatePostInQuery(data.post);
             },
         });
     };
@@ -105,9 +92,9 @@ const Home = () => {
                             <PostItem
                                 key={post._id}
                                 postItemOnHome={post}
-                                isLiked={post.likes.includes(currentUser?._id)}
+                                isLiked={post?.isLiked || false}
                                 onToggleLike={handleToggleLike}
-                                isBookmarked={post.bookmarks.includes(currentUser?._id)}
+                                isBookmarked={post?.isBookmarked || false}
                                 onToggleBookmark={handleToggleBookmark}
                             />
                         ))}

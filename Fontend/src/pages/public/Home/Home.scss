@@ -5,9 +5,13 @@
     display: flex;
     &__sidebar {
         width: 20%;
-        .sidebar-container {
-            position: sticky;
-            top: 70px;
+        display: none;
+        @include screen-laptop {
+            display: block;
+            .sidebar-container {
+                position: sticky;
+                top: 70px;
+            }
         }
     }
     &__content {
@@ -16,22 +20,52 @@
         height: 100%;
         gap: 10px;
         flex-direction: column;
+        flex: 1;
+        margin-right: 15px;
+        margin: 0 20px 20px 0px;
+        @include screen-mobile {
+            margin: 0 30px 20px 10px;
+        }
+        @include screen-laptop {
+            margin: 0;
+        }
     }
     &__navigation {
+        box-shadow: 0px 1px 1px rgba(0, 0, 0, 0.3);
+        font-family: $font-family;
+        position: sticky;
+        top: 70px;
+        background: #fff;
+        margin-right: -30px;
+        margin-left: -10px;
+        border-bottom-left-radius: 10px;
+        border-bottom-right-radius: 10px;
+        @include screen-laptop {
+            margin-right: -10px;
+            margin-left: 10px;
+        }
         padding: 10px 20px;
         display: flex;
         align-items: center;
-        gap: 3rem;
+        gap: 2.5rem;
         font-size: 2rem;
-        font-weight: 600;
+        font-weight: 500;
         span {
             cursor: pointer;
+            &:hover {
+                color: $primary-color;
+            }
         }
+        margin-bottom: 5px;
     }
     &__outstanding {
         width: 20%;
         position: sticky;
         top: 70px;
+        display: none;
+        @include screen-laptop {
+            display: block;
+        }
     }
 }
 .loading {

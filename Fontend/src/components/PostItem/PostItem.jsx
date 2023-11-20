@@ -9,16 +9,9 @@ import clsx from 'clsx';
 
 const { FaRegHeart, FaHeart, FaRegBookmark, RiChat1Line, FaBookmark } = icons;
 
-const PostItem = ({
-    postItemOnHome,
-    isLiked: isLikeProp,
-    onToggleLike,
-    isBookmarked: isBookmarkProp,
-    onToggleBookmark,
-}) => {
+const PostItem = ({ postItemOnHome, isLiked, onToggleLike, isBookmarked, onToggleBookmark }) => {
     const navigate = useNavigate();
-    const [isLiked, setIsLiked] = useState(isLikeProp);
-    const [isBookmarked, setIsBookmarked] = useState(isBookmarkProp);
+
     const [isOpenAuthModal, setIsOpenAuthModal] = useState(false);
     const { isLoggedIn } = useAuth();
 
@@ -28,7 +21,7 @@ const PostItem = ({
             setIsOpenAuthModal(true);
             return;
         }
-        onToggleLike(postItemOnHome._id, isLiked, setIsLiked);
+        onToggleLike(postItemOnHome._id, isLiked);
     };
 
     const handleToggleBookmark = (e) => {
@@ -37,7 +30,7 @@ const PostItem = ({
             setIsOpenAuthModal(true);
             return;
         }
-        onToggleBookmark(postItemOnHome._id, isBookmarked, setIsBookmarked);
+        onToggleBookmark(postItemOnHome._id, isBookmarked);
     };
 
     return (
@@ -89,7 +82,7 @@ const PostItem = ({
                         <div className="post-item__action-like">
                             <span onClick={handleToggleLike} className="like-inner">
                                 {isLiked ? <FaHeart color="#D71313" size={24} /> : <FaRegHeart size={21} />}
-                                <span className="like-title">{`${postItemOnHome?.likes?.length} Likes`}</span>
+                                <span className="like-title">{`${postItemOnHome?.likeCount} Likes`}</span>
                             </span>
                         </div>
                         <div className="post-item__action-comment">
@@ -97,7 +90,7 @@ const PostItem = ({
                                 <span className="comment-icon">
                                     <RiChat1Line size={24} />
                                 </span>
-                                <span className="comment-title">{`${postItemOnHome?.comments?.length} Comments`}</span>
+                                <span className="comment-title">{`${postItemOnHome?.commentCount} Comments`}</span>
                             </span>
                         </div>
                         <span className="post-item__action-bookmark">

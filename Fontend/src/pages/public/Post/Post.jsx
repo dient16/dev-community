@@ -6,17 +6,15 @@ import moment from 'moment';
 import { Comments, TagChildren, PostDetailAuthor } from '~/components';
 import { useParams, useNavigate } from 'react-router-dom';
 import { useQuery, useMutation } from '@tanstack/react-query';
-import { Flex, Image, Spin, Tooltip } from 'antd';
+import { Avatar, Flex, Image, Spin, Tooltip } from 'antd';
 import { apiGetPost, apiLikePost, apiUnlikePost } from '~/apiServices/post';
 import clsx from 'clsx';
-import { useAuth } from '~/hooks';
 
 const Post = () => {
     const { FaRegHeart, FaHeart, RiChat1Line, FaRegBookmark } = icons;
     const navigate = useNavigate();
     const { slug } = useParams();
     const commentRef = useRef(null);
-    const { user: currentUser } = useAuth();
     const {
         data,
         isLoading,
@@ -26,33 +24,33 @@ const Post = () => {
         queryFn: () => apiGetPost(slug),
     });
     const post = data?.data;
-    const [isLiked, setIsLiked] = useState(false);
 
     useEffect(() => {
-        setIsLiked(post?.likes?.includes(currentUser?._id));
         document.documentElement.setAttribute('data-color-mode', 'dark');
-    }, [post, currentUser?._id]);
+    }, []);
 
     const likeMutation = useMutation({
         mutationFn: apiLikePost,
-        onSuccess: () => {
-            setIsLiked(true);
-            refetchPost();
-        },
     });
 
     const unLikeMutation = useMutation({
         mutationFn: apiUnlikePost,
-        onSuccess: () => {
-            setIsLiked(false);
-            refetchPost();
-        },
     });
 
     const handleToggleLike = (e) => {
         e.stopPropagation();
         const postId = post?._id;
-        isLiked ? unLikeMutation.mutate(postId) : likeMutation.mutate(postId);
+        post?.isLiked
+            ? unLikeMutation.mutate(postId, {
+                  onSuccess: () => {
+                      refetchPost();
+                  },
+              })
+            : likeMutation.mutate(postId, {
+                  onSuccess: () => {
+                      refetchPost();
+                  },
+              });
     };
 
     const handleScrollComment = () => {
@@ -70,14 +68,23 @@ const Post = () => {
                             <div
                                 className={clsx(
                                     'post-detail__action-like',
-                                    isLiked && 'post-detail__action-like--active',
+                                    post?.isLiked && 'post-detail__action-like--active',
                                 )}
                                 onClick={(e) => handleToggleLike(e)}
                             >
-                                {isLiked ? <FaHeart color="#D71313" size={22} /> : <FaRegHeart size={25} />}
+                                {post?.isLiked ? <FaHeart color="#D71313" size={22} /> : <FaRegHeart size={25} />}
                             </div>
                         </Tooltip>
+
                         <span>{post?.likes.length}</span>
+                        <Avatar.Group shape="circle" maxCount={4} size={20}>
+                            {post?.likes &&
+                                post?.likes.map((like) => (
+                                    <Tooltip key={like._id} title={like.username} placement="top">
+                                        <Avatar src={like.avatar} />
+                                    </Tooltip>
+                                ))}
+                        </Avatar.Group>
                     </Flex>
                     <Tooltip title="Comment">
                         <div className="post-detail__action-comment">

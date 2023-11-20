@@ -68,7 +68,7 @@ function EditProfile() {
                         <h1>Settings for @{watch('username')}</h1>
                     </div>
 
-                    <div id="settings-form">
+                    <div className="settings-form">
                         <div className="setting-fields">
                             <Flex align="center" gap={20}>
                                 <div style={{ width: '100%' }}>

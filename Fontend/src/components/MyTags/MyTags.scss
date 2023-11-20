@@ -2,9 +2,11 @@
 
 .my-tags {
     height: 350px;
-    max-width: 85%;
+    width: 100%;
+    @include screen-tablet {
+        max-width: 85%;
+    }
     border-top: 1px solid #ccc;
-    ///border-bottom: 1px solid #ccc;
     float: left;
     margin-top: 10px;
     padding-top: 5px;
@@ -15,12 +17,14 @@
         display: flex;
         margin-bottom: 10px;
         justify-content: space-between;
+        align-items: center;
         .title {
             font-size: 1.8rem;
             font-weight: 600;
         }
     }
     &__container {
+        width: 100%;
         flex-grow: 1;
         overflow-y: auto;
         display: flex;

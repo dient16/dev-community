@@ -1,7 +1,7 @@
 import { useState, useEffect, useContext } from 'react';
-import { MenuAccount, Notification, Search } from '~/components';
+import { MenuAccount, Notification, Search, SideBar } from '~/components';
 import './Header.scss';
-import { Avatar, Popover, Badge } from 'antd';
+import { Avatar, Popover, Badge, Flex, Drawer, Button as BtnAnt, Tooltip, Image } from 'antd';
 import Button from '../Buttons/Button';
 import { path } from '~/utils/constant';
 import logo from '~/assets/logo.png';
@@ -10,7 +10,8 @@ import clsx from 'clsx';
 import { useNavigate } from 'react-router-dom';
 import { useAuth } from '~/hooks';
 import { SocketContext } from '~/contexts/socketContext';
-const { HiPlus, FaRegBell, FaBell } = icons;
+const { HiPlus, FaRegBell, FaBell, MdMenu, SlClose } = icons;
+import { SearchOutlined } from '@ant-design/icons';
 
 const Header = () => {
     const navigate = useNavigate();
@@ -18,6 +19,7 @@ const Header = () => {
     const [isShowNotify, setIsShowNotify] = useState(false);
     const [openMenu, setOpenMenu] = useState(false);
     const { isLoggedIn, user: currentUser } = useAuth();
+    const [openSidebar, setOpenSideBar] = useState(false);
     const [unreadNotifications, setUnreadNotifications] = useState([]);
     useEffect(() => {
         document.addEventListener('click', () => {
@@ -39,28 +41,64 @@ const Header = () => {
     const handleOpenChange = (newOpen) => {
         setOpenMenu(newOpen);
     };
-    console.log(unreadNotifications);
     return (
         <div className="header">
             <div className="header__inner">
                 <div className="header__left">
-                    <div
-                        className="header__logo"
-                        onClick={() => {
-                            navigate(`${path.HOME}`);
-                        }}
-                    >
-                        <img src={logo} alt="" />
-                    </div>
+                    <Flex align="center" gap={15}>
+                        <i className="header__menu" onClick={() => setOpenSideBar(true)}>
+                            <MdMenu size={28} />
+                        </i>
+                        <Drawer
+                            title={
+                                <Flex justify="end">
+                                    <i onClick={() => setOpenSideBar(false)} style={{ cursor: 'pointer' }}>
+                                        <SlClose size={25} />
+                                    </i>
+                                </Flex>
+                            }
+                            placement="left"
+                            closeIcon={null}
+                            open={openSidebar}
+                            onClose={() => setOpenSideBar(false)}
+                            width={290}
+                        >
+                            <SideBar setOpenSideBar={setOpenSideBar} />
+                        </Drawer>
+
+                        <div
+                            className="header__logo"
+                            onClick={() => {
+                                navigate(`${path.HOME}`);
+                            }}
+                        >
+                            <Image src={logo} preview={false} width={80} />
+                        </div>
+                    </Flex>
                 </div>
                 <div className="header__search">
                     <Search />
                 </div>
                 {isLoggedIn ? (
                     <div className="header__right">
-                        <Button leftIcon={<HiPlus size={21} />} outline small to={`/${path.NEW_POST}`}>
+                        <Button
+                            className="btn-post"
+                            leftIcon={<HiPlus size={21} />}
+                            outline
+                            small
+                            to={`/${path.NEW_POST}`}
+                        >
                             Post
                         </Button>
+                        <Tooltip title="search">
+                            <BtnAnt
+                                className="btn-search"
+                                size="large"
+                                type="primary"
+                                shape="circle"
+                                icon={<SearchOutlined />}
+                            />
+                        </Tooltip>
                         <div className="header__notification">
                             <Popover
                                 arrow

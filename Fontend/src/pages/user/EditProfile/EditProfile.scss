@@ -1,10 +1,13 @@
 @use '~/styles/' as *;
 
 .settings-layout {
-    padding: 3rem 12rem;
+    padding: 3rem 2rem;
     width: 100%;
     color: $txt-color;
-
+    max-width: 100%;
+    @include screen-tablet {
+        padding: 3rem 12rem;
+    }
     &__header {
         width: 100%;
         margin-bottom: 1.5rem;
@@ -12,21 +15,9 @@
         padding: 1.5rem;
         border-radius: 10px;
     }
-
-    @include tablet {
-        padding: 1.5rem 4rem;
-    }
-
-    @include mobile {
-        padding: 0.5rem 1rem;
-    }
-
-    @include small-mobile {
-        padding: 2rem;
-    }
 }
 
-#settings-form {
+.settings-form {
     display: grid;
     gap: 2rem;
     width: 100%;
@@ -34,14 +25,6 @@
     background-color: white;
     padding: 2rem;
     font-size: 1.6rem;
-
-    @include tablet {
-        padding: 1.5rem 3rem;
-    }
-
-    @include mobile {
-        padding: 1.25rem;
-    }
 
     .setting-fields {
         display: flex;

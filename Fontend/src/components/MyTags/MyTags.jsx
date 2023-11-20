@@ -34,7 +34,7 @@ const MyTags = () => {
                 <div className="my-tags__header">
                     <span className="title">{isLoggedIn ? 'My tags' : 'Popular Tags'}</span>
                     <span className="icon">
-                        <RiSettingsLine />
+                        <RiSettingsLine size={18} />
                     </span>
                 </div>
                 <div className="my-tags__container">

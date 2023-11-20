@@ -6,7 +6,7 @@ import { MyTags } from '~/components';
 import icons from '~/utils/icons';
 import { Flex } from 'antd';
 import { useAuth } from '~/hooks';
-const SideBar = () => {
+const SideBar = ({ setOpenSideBar }) => {
     const { FaTwitter, BsFacebook, FaGithub, RiInstagramFill, FaYoutube } = icons;
     const { user } = useAuth();
     return (
@@ -19,6 +19,7 @@ const SideBar = () => {
                         className={({ isActive }) =>
                             isActive ? 'sidebar__item sidebar__item--active' : 'sidebar__item'
                         }
+                        onClick={() => setOpenSideBar(false)}
                     >
                         <span className="sidebar__icon">{el.icon}</span>
                         <span className="sidebar__title">
@@ -32,7 +33,7 @@ const SideBar = () => {
                 ))}
             </div>
             <div className="sidebar__social-network">
-                <Flex align="center" gap={10}>
+                <Flex align="center" gap={10} wrap="wrap">
                     <span className="icon">
                         <FaTwitter size={20} />
                     </span>
