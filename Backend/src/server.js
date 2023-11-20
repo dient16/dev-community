@@ -11,7 +11,7 @@ const { Server } = require('socket.io');
 const dbConnect = require('./config/db.config');
 const initRoutes = require('./routes');
 const server = require('http').createServer(app);
-const { socketHandler } = require('./socket/socketHandler');
+const { socketHandler } = require('./socket/socket');
 app.use(
     cors({
         origin: process.env.CLIENT_URI,

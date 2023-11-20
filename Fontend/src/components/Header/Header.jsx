@@ -1,6 +1,4 @@
-import { useState, useEffect } from 'react';
-import HeadlessTippy from '@tippyjs/react/headless';
-import 'tippy.js/dist/tippy.css';
+import { useState, useEffect, useContext } from 'react';
 import { MenuAccount, Notification, Search } from '~/components';
 import './Header.scss';
 import { Avatar, Popover, Badge } from 'antd';
@@ -11,13 +9,16 @@ import icons from '~/utils/icons';
 import clsx from 'clsx';
 import { useNavigate } from 'react-router-dom';
 import { useAuth } from '~/hooks';
+import { SocketContext } from '~/contexts/socketContext';
 const { HiPlus, FaRegBell, FaBell } = icons;
 
 const Header = () => {
     const navigate = useNavigate();
+    const socket = useContext(SocketContext);
     const [isShowNotify, setIsShowNotify] = useState(false);
     const [openMenu, setOpenMenu] = useState(false);
     const { isLoggedIn, user: currentUser } = useAuth();
+    const [unreadNotifications, setUnreadNotifications] = useState([]);
     useEffect(() => {
         document.addEventListener('click', () => {
             setIsShowNotify(false);
@@ -28,10 +29,17 @@ const Header = () => {
             });
         };
     }, []);
-
+    useEffect(() => {
+        if (currentUser && socket) {
+            socket.on('notification', (data) => {
+                setUnreadNotifications((prevState) => [...prevState, data]);
+            });
+        }
+    }, [currentUser, socket]);
     const handleOpenChange = (newOpen) => {
         setOpenMenu(newOpen);
     };
+    console.log(unreadNotifications);
     return (
         <div className="header">
             <div className="header__inner">
@@ -54,18 +62,20 @@ const Header = () => {
                             Post
                         </Button>
                         <div className="header__notification">
-                            <HeadlessTippy
-                                interactive
-                                visible={isShowNotify}
-                                render={(attrs) => (
-                                    <div className={clsx('notify-wrapper')} tabIndex="-1" {...attrs}>
+                            <Popover
+                                arrow
+                                fresh
+                                open={isShowNotify}
+                                placement="bottom"
+                                content={() => (
+                                    <div className={clsx('notify-wrapper')} tabIndex="-1">
                                         <span onClick={(e) => e.stopPropagation()}>
-                                            <Notification />
+                                            <Notification data={unreadNotifications} />
                                         </span>
                                     </div>
                                 )}
                             >
-                                <Badge count={155} color="#6497b1">
+                                <Badge count={unreadNotifications?.length || 0} color="#6497b1">
                                     <span
                                         className="header__notify-icon"
                                         onClick={(e) => {
@@ -76,7 +86,7 @@ const Header = () => {
                                         {isShowNotify ? <FaBell size={25} /> : <FaRegBell size={25} />}
                                     </span>
                                 </Badge>
-                            </HeadlessTippy>
+                            </Popover>
                         </div>
 
                         <div className="header__avatar">

@@ -38,6 +38,19 @@
     &__title {
         font-size: 2rem;
     }
+    &__social-network {
+        margin: 10px 0;
+        .icon {
+            padding: 5px;
+            border-radius: 5px;
+            display: flex;
+            align-self: center;
+            cursor: pointer;
+            &:hover {
+                background: #bde4e2;
+            }
+        }
+    }
     &__my-tags {
         height: 350px;
     }

@@ -8,13 +8,9 @@ const to = require('await-to-js').default;
 const mongoose = require('mongoose');
 const tagController = require('./tag.controller');
 const cloudinary = require('../config/cloudinary.config');
-function delay(ms) {
-    return new Promise((resolve) => setTimeout(resolve, ms));
-}
 
 const getPosts = async (req, res, next) => {
     try {
-        await delay(1000);
         const filters = { ...req.query };
         const excludedFields = ['limit', 'sort', 'page', 'fields'];
         excludedFields.forEach((field) => delete filters[field]);
@@ -47,6 +43,7 @@ const getPosts = async (req, res, next) => {
         const limit = req.query.limit || 10;
         const skip = (page - 1) * limit;
         query.skip(skip).limit(limit);
+        let posts;
         [error, posts] = await to(query.exec());
         [err, postCount] = await to(Post.find(finalQuery).countDocuments());
         if (err) {
@@ -59,6 +56,40 @@ const getPosts = async (req, res, next) => {
             status: 'success',
             count: postCount,
             posts: posts,
+        });
+    } catch (error) {
+        next(error);
+    }
+};
+
+const getPostByTagsDiscuss = async (req, res, next) => {
+    try {
+        const [err, tag] = await to(
+            Tag.findOne({
+                name: 'discuss',
+            }).populate({
+                path: 'posts',
+            }),
+        );
+
+        if (err) {
+            return res.status(500).json({
+                status: 'error',
+                message: 'Error fetching tag',
+                error: err.message,
+            });
+        }
+
+        if (!tag) {
+            return res.status(404).json({
+                status: 'error',
+                message: 'Tag not found',
+            });
+        }
+
+        return res.status(200).json({
+            status: 'success',
+            posts: tag.posts || [],
         });
     } catch (error) {
         next(error);
@@ -91,7 +122,6 @@ const uploadImage = async (req, res, next) => {
     }
 };
 const searchPost = async (req, res, next) => {
-    await delay(1000);
     try {
         const { q } = req.query;
         const [err, posts] = await to(
@@ -505,7 +535,27 @@ const bookmarkPost = async (req, res, next) => {
                     $addToSet: { bookmarks: userId },
                 },
                 { new: true },
-            ),
+            )
+                .populate({
+                    path: 'tags',
+                    select: 'name theme',
+                })
+                .populate({
+                    path: 'author',
+                    select: 'firstname lastname avatar',
+                })
+                .populate({
+                    path: 'comments',
+                    populate: [
+                        {
+                            path: 'author',
+                            select: 'firstname lastname avatar',
+                        },
+                        {
+                            path: 'parentId',
+                        },
+                    ],
+                }),
         );
 
         if (updateError) {
@@ -558,7 +608,27 @@ const unbookmarkPost = async (req, res, next) => {
                     $pull: { bookmarks: userId },
                 },
                 { new: true },
-            ),
+            )
+                .populate({
+                    path: 'tags',
+                    select: 'name theme',
+                })
+                .populate({
+                    path: 'author',
+                    select: 'firstname lastname avatar',
+                })
+                .populate({
+                    path: 'comments',
+                    populate: [
+                        {
+                            path: 'author',
+                            select: 'firstname lastname avatar',
+                        },
+                        {
+                            path: 'parentId',
+                        },
+                    ],
+                }),
         );
 
         if (updateError) {
@@ -600,6 +670,40 @@ const unbookmarkPost = async (req, res, next) => {
         next(error);
     }
 };
+const getBookmarkUser = async (req, res, next) => {
+    try {
+        const { _id: uid } = req.user;
+
+        const [err, user] = await to(
+            User.findById(uid).populate({
+                path: 'bookmarked',
+                select: 'title author createdAt tags',
+                populate: [
+                    { path: 'tags', select: 'name theme' },
+                    { path: 'author', select: 'firstname lastname avatar username' },
+                ],
+            }),
+        );
+
+        if (err) {
+            return res.status(500).json({
+                status: 'error',
+                message: 'Something went wrong with the server',
+            });
+        }
+
+        if (!user) {
+            return res.status(401).json({
+                status: 'error',
+                message: 'Could not find bookmark user',
+            });
+        }
+
+        return res.status(200).json({ posts: user?.bookmarked || [] });
+    } catch (error) {
+        next(error);
+    }
+};
 
 module.exports = {
     getPosts,
@@ -614,4 +718,6 @@ module.exports = {
     bookmarkPost,
     unbookmarkPost,
     searchPost,
+    getPostByTagsDiscuss,
+    getBookmarkUser,
 };

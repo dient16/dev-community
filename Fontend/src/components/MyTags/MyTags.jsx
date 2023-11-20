@@ -1,8 +1,8 @@
 import { useEffect } from 'react';
 import './MyTags.scss';
 import icons from '~/utils/icons';
-import { useQuery } from '@tanstack/react-query'; // Import useQuery
-import { apiGetMyTags } from '~/apiServices';
+import { useQuery } from '@tanstack/react-query';
+import { apiGetMyTags, apiGetPopularTags } from '~/apiServices';
 import { TagChildren, Loading } from '~/components';
 import { Spin } from 'antd';
 import { useAuth } from '~/hooks';
@@ -10,37 +10,41 @@ import { useAuth } from '~/hooks';
 const { RiSettingsLine } = icons;
 
 const MyTags = () => {
-    const {
-        data: listMyTags,
-        refetch,
-        isLoading,
-    } = useQuery({
+    const { isLoggedIn } = useAuth();
+
+    const { data: myTagsData, isLoading: isLoadingMyTags } = useQuery({
         queryKey: ['myTags'],
         queryFn: apiGetMyTags,
-        enabled: false,
+        enabled: isLoggedIn,
     });
 
-    const { isLoggedIn } = useAuth();
-    useEffect(() => {
-        if (isLoggedIn) {
-            refetch();
-        }
-    }, [isLoggedIn, refetch]);
+    const { data: popularTagsData, isLoading: isLoadingPopularTags } = useQuery({
+        queryKey: ['popularTags'],
+        queryFn: apiGetPopularTags,
+        enabled: !isLoggedIn,
+    });
 
     return (
-        <Spin indicator={<Loading />} spinning={isLoading} className="loading">
+        <Spin
+            indicator={<Loading />}
+            spinning={isLoggedIn ? isLoadingMyTags : isLoadingPopularTags}
+            className="loading"
+        >
             <div className="my-tags">
                 <div className="my-tags__header">
-                    <span className="title">My tags</span>
+                    <span className="title">{isLoggedIn ? 'My tags' : 'Popular Tags'}</span>
                     <span className="icon">
                         <RiSettingsLine />
                     </span>
                 </div>
                 <div className="my-tags__container">
-                    {listMyTags &&
-                        listMyTags?.tags?.followedTags.map((tag) => (
-                            <TagChildren key={tag._id} tagName={tag.name} color={tag.theme} />
-                        ))}
+                    {isLoggedIn
+                        ? myTagsData?.tags?.map((tag) => (
+                              <TagChildren key={tag._id} tagName={tag.name} color={tag.theme} />
+                          ))
+                        : popularTagsData?.tags?.map((tag) => (
+                              <TagChildren key={tag._id} tagName={tag.name} color={tag.theme} />
+                          ))}
                 </div>
             </div>
         </Spin>

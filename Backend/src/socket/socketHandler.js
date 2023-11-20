@@ -8,7 +8,6 @@ function socketHandler(io) {
     });
     io.on('connection', (socket) => {
         const reconnectedUser = disconnected.findIndex((item) => item.id === socket.data.userId);
-
         socket.on('action', ({ actionType, data }) => {
             const { sender, receiver, postId } = data;
 

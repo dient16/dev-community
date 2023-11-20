@@ -8,9 +8,21 @@ import {
     BsImage,
     BsFillPostcardFill,
     BsReplyFill,
+    BsFacebook,
 } from 'react-icons/bs';
-import { RiHome4Fill, RiChat1Line, RiSettingsLine, RiHeart2Line, RiHeart2Fill } from 'react-icons/ri';
-import { FaRegHeart, FaHeart, FaRegBookmark, FaRegBell, FaBell, FaBirthdayCake } from 'react-icons/fa';
+import { RiHome4Fill, RiChat1Line, RiSettingsLine, RiHeart2Line, RiHeart2Fill, RiInstagramFill } from 'react-icons/ri';
+import {
+    FaRegHeart,
+    FaHeart,
+    FaRegBookmark,
+    FaRegBell,
+    FaBell,
+    FaBirthdayCake,
+    FaTwitter,
+    FaGithub,
+    FaYoutube,
+    FaBookmark,
+} from 'react-icons/fa';
 import { HiPlus } from 'react-icons/hi';
 import { LuBold, LuItalic } from 'react-icons/lu';
 import { BiLink, BiSolidQuoteAltLeft, BiSearch } from 'react-icons/bi';
@@ -55,5 +67,11 @@ const icons = {
     PiCircleNotchBold,
     IoIosCloseCircle,
     FiTrash,
+    FaTwitter,
+    BsFacebook,
+    FaGithub,
+    RiInstagramFill,
+    FaYoutube,
+    FaBookmark,
 };
 export default icons;

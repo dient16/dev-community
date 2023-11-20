@@ -1,5 +1,5 @@
 let unreadNotification = [];
-
+let disconnected = [];
 function findConnectedUser(userId) {
     return users.find((item) => item.id === userId);
 }

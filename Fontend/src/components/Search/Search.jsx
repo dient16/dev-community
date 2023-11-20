@@ -9,19 +9,7 @@ import { apiSearchPost } from '~/apiServices';
 
 const Search = () => {
     const { BiSearch, IoIosCloseCircle } = icons;
-    const [isInputFocused, setIsInputFocused] = useState(false);
-    function delay(ms) {
-        return new Promise((resolve) => setTimeout(resolve, ms));
-    }
-    const handleInputFocus = () => {
-        setIsInputFocused(true);
-    };
-
-    const handleInputBlur = async () => {
-        await delay(100);
-        setIsInputFocused(false);
-    };
-
+    const [isOpenResult, setIsOpenResult] = useState(false);
     const [searchValue, setSearchValue] = useState('');
     const [searchResult, setSearchResult] = useState([]);
     const [loading, setLoading] = useState(false);
@@ -40,7 +28,6 @@ const Search = () => {
                 const result = await apiSearchPost(debouncedValue);
                 setSearchResult(result?.data || []);
             } catch (error) {
-                console.error('Error fetching search results:', error);
                 setSearchResult([]);
             } finally {
                 setLoading(false);
@@ -62,15 +49,23 @@ const Search = () => {
             setSearchValue(searchValue);
         }
     };
+    useEffect(() => {
+        document.addEventListener('click', () => {
+            setIsOpenResult(false);
+        });
+        return () => {
+            document.removeEventListener('click', () => {
+                setIsOpenResult(false);
+            });
+        };
+    }, []);
     return (
         <Popover
-            content={<SearchResult resultList={searchResult} />}
-            open={isInputFocused && searchResult.length > 0}
+            content={<SearchResult resultList={searchResult} setIsOpenResult={setIsOpenResult} />}
+            open={isOpenResult && !!searchValue}
             arrow={false}
-            trigger="focus"
-            mouseLeaveDelay={10000}
         >
-            <div className="search-header">
+            <div className="search-header" onClick={(e) => e.stopPropagation()}>
                 <input
                     className="search-header__input"
                     type="text"
@@ -79,8 +74,7 @@ const Search = () => {
                     value={searchValue}
                     spellCheck={false}
                     onChange={handleChange}
-                    onFocus={handleInputFocus}
-                    onBlur={handleInputBlur}
+                    onFocus={() => setIsOpenResult(true)}
                 />
                 {loading && (
                     <i className="search-header__loading">
@@ -95,7 +89,10 @@ const Search = () => {
                 <button
                     className="search-header__btn"
                     onMouseDown={(e) => e.preventDefault()}
-                    onClick={handleInputFocus}
+                    onClick={() => {
+                        setIsOpenResult(true);
+                        inputRef.current.focus();
+                    }}
                 >
                     <BiSearch size={20} />
                 </button>

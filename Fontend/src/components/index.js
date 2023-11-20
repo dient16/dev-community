@@ -15,3 +15,5 @@ export { default as Comments } from './Comment/Comments';
 export { default as CommentItem } from './Comment/CommentItem';
 export { default as PostDetailAuthor } from './PostDetailAuthor/PostDetailAuthor';
 export { default as MenuAccount } from './MenuAccount/MenuAccount';
+export { default as Discuss } from './Discuss/Discuss';
+export { default as ModalRequireLogin } from './Modal/ModalRequireLogin';

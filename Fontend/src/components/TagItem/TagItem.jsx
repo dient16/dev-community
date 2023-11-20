@@ -13,7 +13,6 @@ const TagItem = ({ tag }) => {
         mutationFn: apiFollowTag,
         onSuccess: () => {
             setIsFollowTag(true);
-            // Refetch the tags or update the state as needed
         },
     });
 
@@ -21,7 +20,6 @@ const TagItem = ({ tag }) => {
         mutationFn: apiUnfollowTag,
         onSuccess: () => {
             setIsFollowTag(false);
-            // Refetch the tags or update the state as needed
         },
     });
 
