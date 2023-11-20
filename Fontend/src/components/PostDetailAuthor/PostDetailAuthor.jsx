@@ -1,10 +1,49 @@
-import React from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import { Button } from '~/components';
 import moment from 'moment';
 import { Flex } from 'antd';
 import './PostDetailAuthor.scss';
+import { SocketContext } from '~/contexts/socketContext';
+import { apiFollowUser, apiUnFollowUser } from '~/apiServices';
+import { useMutation } from '@tanstack/react-query';
+import { useAuth } from '~/hooks';
 
 const PostDetailAuthor = ({ author }) => {
+    const socket = useContext(SocketContext);
+    const [isFollow, setIsFollow] = useState(false);
+    const { user: currentUser } = useAuth();
+
+    const followUserMutation = useMutation({
+        mutationFn: apiFollowUser,
+        onSuccess: () => {
+            setIsFollow(true);
+            socket.emit('follow', {
+                sender: { id: currentUser?._id, username: currentUser?.username, avatar: currentUser?.avatar },
+                receiver: { id: author?._id, username: author?.username, avatar: author?.avatar },
+                date: Date.now(),
+            });
+        },
+    });
+
+    const unfollowUserMutation = useMutation({
+        mutationFn: apiUnFollowUser,
+        onSuccess: () => {
+            setIsFollow(false);
+        },
+    });
+
+    const toggleFollowUser = () => {
+        if (!isFollow) {
+            followUserMutation.mutate(author._id);
+        } else {
+            unfollowUserMutation.mutate(author._id);
+        }
+    };
+    useEffect(() => {
+        if (author?._id === currentUser?._id) return;
+        const userFollow = author?.followers?.some((userId) => userId === currentUser?._id);
+        setIsFollow(userFollow);
+    }, [author, currentUser]);
     return (
         <div className="post-detail__author">
             <div className="post-detail__author-top">
@@ -14,9 +53,32 @@ const PostDetailAuthor = ({ author }) => {
                         <h3>{`${author?.firstname} ${author?.lastname}`}</h3>
                     </div>
                 </div>
-                <Button primary className={'btn-follow'}>
-                    Follow
-                </Button>
+                {currentUser?._id === author?._id ? (
+                    <div style={{ height: '60px' }}></div>
+                ) : isFollow ? (
+                    <Button
+                        small
+                        outline
+                        className={'btn-follow'}
+                        onClick={() => {
+                            toggleFollowUser();
+                        }}
+                    >
+                        Unfollow
+                    </Button>
+                ) : (
+                    <Button
+                        primary
+                        small
+                        className={'btn-follow'}
+                        onClick={() => {
+                            toggleFollowUser();
+                        }}
+                    >
+                        Follow
+                    </Button>
+                )}
+
                 <div className="post-detail__author-info">
                     <Flex vertical>
                         <span className="info-detail">{author?.bio}</span>

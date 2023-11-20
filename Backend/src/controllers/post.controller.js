@@ -23,13 +23,15 @@ const getPosts = async (req, res, next) => {
         if (filters?.title) formattedFilters.title = { $regex: filters.title, $options: 'i' };
         if (filters?.author) formattedFilters.author = { $regex: filters.author, $options: 'i' };
         const finalQuery = { ...postQueryObject, ...formattedFilters };
+
         let query = Post.find(finalQuery)
             .select('-body')
             .populate({ path: 'tags', select: '_id name theme' })
             .populate({
                 path: 'author',
-                select: 'firstname lastname avatar username',
+                select: 'firstname lastname avatar username followers',
             });
+
         if (req.query.fields) {
             const selectedFields = req.query.fields.split(',').join(' ');
             query = query.select(selectedFields);
@@ -39,22 +41,42 @@ const getPosts = async (req, res, next) => {
             const sortBy = req.query.sort.split(',').join(' ');
             query = query.sort(sortBy);
         }
+
         const page = req.query.page || 1;
         const limit = req.query.limit || 10;
         const skip = (page - 1) * limit;
+
         query.skip(skip).limit(limit);
+
         let posts;
         [error, posts] = await to(query.exec());
-        [err, postCount] = await to(Post.find(finalQuery).countDocuments());
-        if (err) {
+
+        if (error) {
             return res.status(200).json({
                 status: 'success',
                 message: 'Fetch posts error',
             });
         }
+        posts = posts.map((post) => {
+            const postObject = post.toObject();
+            postObject.likeCount = post.likes.length;
+            postObject.commentCount = post.comments.length;
+            delete postObject.bookmarks;
+            delete postObject.likes;
+            delete postObject.comments;
+
+            if (req.user) {
+                const userId = req.user._id;
+                postObject.isLiked = post.likes.some((like) => like.equals(userId));
+                postObject.isBookmarked = post.bookmarks.some((bookmark) => bookmark.equals(userId));
+            }
+
+            return postObject;
+        });
+
         return res.status(200).json({
             status: 'success',
-            count: postCount,
+            count: posts.length,
             posts: posts,
         });
     } catch (error) {
@@ -159,7 +181,11 @@ const getPost = async (req, res, next) => {
                 })
                 .populate({
                     path: 'author',
-                    select: '-password -refreshToken',
+                    select: '-password -refreshToken -followedTags -tags -following -posts -followers -updatedAt -createdAt -bookmarked',
+                })
+                .populate({
+                    path: 'likes',
+                    select: 'avatar username',
                 })
                 .populate({
                     path: 'comments',
@@ -200,11 +226,19 @@ const getPost = async (req, res, next) => {
                 return { ...comment.toObject(), replyCount: replies.length };
             }),
         );
+        let postObject = post.toObject();
+        delete postObject.bookmarks;
+        if (req.user) {
+            const userId = req.user._id;
 
+            postObject.isLiked = Array.isArray(post.likes) && post.likes.some((like) => like.equals(userId));
+            postObject.isBookmarked =
+                Array.isArray(post.bookmarks) && post.bookmarks.some((bookmark) => bookmark.equals(userId));
+        }
         return res.status(200).json({
             status: 'success',
             data: {
-                ...post.toObject(),
+                ...postObject,
                 comments,
             },
         });
@@ -421,8 +455,16 @@ const likePost = async (req, res, next) => {
                 message: 'Missing input',
             });
         }
+        const existingPost = await Post.findById(postId);
+        if (!existingPost) {
+            return res.status(404).json({
+                status: 'error',
+                message: 'Post not found',
+            });
+        }
         const [updateErr, updatedPost] = await to(
             Post.findByIdAndUpdate(postId, { $addToSet: { likes: userId } }, { new: true })
+                .select('-body')
                 .populate({
                     path: 'tags',
                     select: 'name theme',
@@ -430,49 +472,57 @@ const likePost = async (req, res, next) => {
                 .populate({
                     path: 'author',
                     select: 'firstname lastname avatar',
-                })
-                .populate({
-                    path: 'comments',
-                    populate: [
-                        {
-                            path: 'author',
-                            select: 'firstname lastname avatar',
-                        },
-                        {
-                            path: 'parentId',
-                        },
-                    ],
                 }),
         );
 
-        if (updateErr) {
+        if (updateErr || !updatedPost) {
             return res.status(500).json({
                 status: 'error',
                 message: 'Like post failed',
             });
         }
 
-        // const authorId = updatedPost.author.toString();
-        // if (authorId !== userId) {
-        //     await NotificationService.likeNotification(userId, postId, authorId, next);
-        // }
+        const postObject = updatedPost.toObject();
+        postObject.isLiked = Array.isArray(updatedPost.likes) && updatedPost.likes.some((like) => like.equals(userId));
+        postObject.isBookmarked =
+            Array.isArray(updatedPost.bookmarks) && updatedPost.bookmarks.some((bookmark) => bookmark.equals(userId));
+        postObject.likeCount = Array.isArray(updatedPost.likes) ? updatedPost.likes.length : 0;
+        postObject.commentCount = Array.isArray(updatedPost.comments) ? updatedPost.comments.length : 0;
+        delete postObject.bookmarks;
+        delete postObject.likes;
+        delete postObject.comments;
 
         return res.status(200).json({
             status: 'success',
             message: 'Like post successfully',
-            post: updatedPost,
+            post: postObject,
         });
     } catch (error) {
         next(error);
     }
 };
+
 ////////////////////////////////
 const unlikePost = async (req, res, next) => {
     try {
         const { postId } = req.params;
         const { _id: userId } = req.user;
-        const [findError, postToUnlike] = await to(
-            Post.findOne({ _id: postId, likes: userId })
+        if (!postId || !userId) {
+            return res.status(400).json({
+                status: 'error',
+                message: 'Missing input',
+            });
+        }
+        const existingPost = await Post.findById(postId);
+        if (!existingPost) {
+            return res.status(404).json({
+                status: 'error',
+                message: 'Post not found',
+            });
+        }
+        const [updateErr, updatedPost] = await to(
+            Post.findByIdAndUpdate(postId, { $pull: { likes: userId } }, { new: true })
+                .select('-body')
                 .populate({
                     path: 'tags',
                     select: 'name theme',
@@ -480,48 +530,35 @@ const unlikePost = async (req, res, next) => {
                 .populate({
                     path: 'author',
                     select: 'firstname lastname avatar',
-                })
-                .populate({
-                    path: 'comments',
-                    populate: [
-                        {
-                            path: 'author',
-                            select: 'firstname lastname avatar',
-                        },
-                        {
-                            path: 'parentId',
-                        },
-                    ],
                 }),
         );
-
-        if (findError) {
-            return next(findError);
-        }
-
-        if (!postToUnlike) {
-            return res.status(404).json({
+        if (updateErr) {
+            return res.status(500).json({
                 status: 'error',
-                message: 'Post not found',
+                message: 'Unlike post failed',
             });
         }
 
-        postToUnlike.likes = postToUnlike.likes.filter((likedUser) => !likedUser.equals(userId));
-        await postToUnlike.save();
-
-        // if (!postToUnlike.author.equals(userId)) {
-        //     await NotificationService.removeLikeNotification(userId, postToUnlike.author, postId);
-        // }
+        const postObject = updatedPost.toObject();
+        postObject.isLiked = Array.isArray(updatedPost.likes) && updatedPost.likes.some((like) => like.equals(userId));
+        postObject.isBookmarked =
+            Array.isArray(updatedPost.bookmarks) && updatedPost.bookmarks.some((bookmark) => bookmark.equals(userId));
+        postObject.likeCount = Array.isArray(updatedPost.likes) ? updatedPost.likes.length : 0;
+        postObject.commentCount = Array.isArray(updatedPost.comments) ? updatedPost.comments.length : 0;
+        delete postObject.bookmarks;
+        delete postObject.likes;
+        delete postObject.comments;
 
         return res.status(200).json({
             status: 'success',
             message: 'Unlike post successfully',
-            post: postToUnlike,
+            post: postObject,
         });
     } catch (error) {
         next(error);
     }
 };
+
 ////////////////////////////////
 const bookmarkPost = async (req, res, next) => {
     try {
@@ -536,6 +573,7 @@ const bookmarkPost = async (req, res, next) => {
                 },
                 { new: true },
             )
+                .select('-body')
                 .populate({
                     path: 'tags',
                     select: 'name theme',
@@ -543,18 +581,6 @@ const bookmarkPost = async (req, res, next) => {
                 .populate({
                     path: 'author',
                     select: 'firstname lastname avatar',
-                })
-                .populate({
-                    path: 'comments',
-                    populate: [
-                        {
-                            path: 'author',
-                            select: 'firstname lastname avatar',
-                        },
-                        {
-                            path: 'parentId',
-                        },
-                    ],
                 }),
         );
 
@@ -564,7 +590,7 @@ const bookmarkPost = async (req, res, next) => {
                 message: 'Could not bookmark post',
             });
         }
-        const [userUpdateError, updatedUser] = await to(
+        const [userUpdateError] = await to(
             User.findByIdAndUpdate(
                 userId,
                 {
@@ -586,10 +612,19 @@ const bookmarkPost = async (req, res, next) => {
                 message: 'Post not found',
             });
         }
+        const postObject = updatedPost.toObject();
+        postObject.isLiked = Array.isArray(updatedPost.likes) && updatedPost.likes.some((like) => like.equals(userId));
+        postObject.isBookmarked =
+            Array.isArray(updatedPost.bookmarks) && updatedPost.bookmarks.some((bookmark) => bookmark.equals(userId));
+        postObject.likeCount = Array.isArray(updatedPost.likes) ? updatedPost.likes.length : 0;
+        postObject.commentCount = Array.isArray(updatedPost.comments) ? updatedPost.comments.length : 0;
+        delete postObject.bookmarks;
+        delete postObject.likes;
+        delete postObject.comments;
 
         return res.status(200).json({
             status: 'success',
-            post: updatedPost,
+            post: postObject,
         });
     } catch (error) {
         next(error);
@@ -609,6 +644,7 @@ const unbookmarkPost = async (req, res, next) => {
                 },
                 { new: true },
             )
+                .select('-body')
                 .populate({
                     path: 'tags',
                     select: 'name theme',
@@ -616,18 +652,6 @@ const unbookmarkPost = async (req, res, next) => {
                 .populate({
                     path: 'author',
                     select: 'firstname lastname avatar',
-                })
-                .populate({
-                    path: 'comments',
-                    populate: [
-                        {
-                            path: 'author',
-                            select: 'firstname lastname avatar',
-                        },
-                        {
-                            path: 'parentId',
-                        },
-                    ],
                 }),
         );
 
@@ -638,7 +662,7 @@ const unbookmarkPost = async (req, res, next) => {
             });
         }
 
-        const [userUpdateError, updatedUser] = await to(
+        const [userUpdateError] = await to(
             User.findByIdAndUpdate(
                 userId,
                 {
@@ -661,10 +685,18 @@ const unbookmarkPost = async (req, res, next) => {
                 message: 'Post not found',
             });
         }
-
+        const postObject = updatedPost.toObject();
+        postObject.isLiked = Array.isArray(updatedPost.likes) && updatedPost.likes.some((like) => like.equals(userId));
+        postObject.isBookmarked =
+            Array.isArray(updatedPost.bookmarks) && updatedPost.bookmarks.some((bookmark) => bookmark.equals(userId));
+        postObject.likeCount = Array.isArray(updatedPost.likes) ? updatedPost.likes.length : 0;
+        postObject.commentCount = Array.isArray(updatedPost.comments) ? updatedPost.comments.length : 0;
+        delete postObject.bookmarks;
+        delete postObject.likes;
+        delete postObject.comments;
         return res.status(200).json({
             status: 'success',
-            post: updatedPost,
+            post: postObject,
         });
     } catch (error) {
         next(error);

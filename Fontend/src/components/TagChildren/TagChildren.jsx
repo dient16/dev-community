@@ -9,8 +9,8 @@ const TagChildren = ({ tagName, color }) => {
     const [isHovered, setIsHovered] = useState(false);
 
     const tagStyle = {
-        border: `1px solid ${color}`,
-        background: isHovered ? hexToRgba(color, 0.2) : hexToRgba(color, 0.05),
+        border: `1px solid ${hexToRgba(color, 0.7)}`,
+        background: isHovered ? hexToRgba(color, 0.12) : hexToRgba(color, 0.03),
         cursor: 'pointer',
         transition: 'opacity 0.3s ease',
     };

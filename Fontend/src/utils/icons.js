@@ -27,10 +27,11 @@ import { HiPlus } from 'react-icons/hi';
 import { LuBold, LuItalic } from 'react-icons/lu';
 import { BiLink, BiSolidQuoteAltLeft, BiSearch } from 'react-icons/bi';
 import { AiOutlineUnorderedList, AiOutlineOrderedList } from 'react-icons/ai';
-import { MdOutlineKeyboardArrowDown, MdOutlineKeyboardArrowUp } from 'react-icons/md';
+import { MdOutlineKeyboardArrowDown, MdOutlineKeyboardArrowUp, MdMenu } from 'react-icons/md';
 import { IoIosCloseCircle } from 'react-icons/io';
 import { PiCircleNotchBold } from 'react-icons/pi';
 import { FiTrash } from 'react-icons/fi';
+import { SlClose } from 'react-icons/sl';
 
 const icons = {
     RiHome4Fill,
@@ -73,5 +74,7 @@ const icons = {
     RiInstagramFill,
     FaYoutube,
     FaBookmark,
+    MdMenu,
+    SlClose,
 };
 export default icons;

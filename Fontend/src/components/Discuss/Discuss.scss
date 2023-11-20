@@ -1,5 +1,7 @@
 @use '~/styles/' as *;
 .discuss {
+    position: sticky;
+    top: 75px;
     box-shadow: 0 0 0 1px rgba(23, 23, 23, 0.05);
     background-color: #fff;
     margin-left: 25px;

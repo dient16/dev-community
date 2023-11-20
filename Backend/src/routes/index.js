@@ -4,7 +4,7 @@ const postRouter = require('./post');
 const commentRouter = require('./comment');
 const tagRouter = require('./tag');
 
-const { notFound, errHandler } = require('../middlewares/errorHandler');
+const { notFound } = require('../middlewares/errorHandler');
 
 const initRoutes = (app) => {
     app.use('/api/auth', authRouter);
@@ -14,7 +14,6 @@ const initRoutes = (app) => {
     app.use('/api/tag', tagRouter);
 
     app.use(notFound);
-    app.use(errHandler);
 };
 
 module.exports = initRoutes;

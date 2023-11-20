@@ -10,9 +10,9 @@ const Notification = ({ data }) => {
                 <div className="header-notify">
                     <span className="header-notify__item header-notify__item--active">All activity</span>
                     <span className="header-notify__item">Likes</span>
-                    <span className="header-notify__item">Comments</span>
                     <span className="header-notify__item">Follow</span>
                     <span className="header-notify__item">Post</span>
+                    <span className="header-notify__item">Comments</span>
                 </div>
             </div>
             <div className="notification__body">

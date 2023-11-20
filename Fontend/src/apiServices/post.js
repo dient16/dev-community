@@ -17,7 +17,7 @@ export const apiUploadImage = (data) =>
 
 export const apiGetPosts = () =>
     axios({
-        url: '/post',
+        url: '/post?fields=-updatedAt',
         method: 'get',
         withCredentials: true,
     });

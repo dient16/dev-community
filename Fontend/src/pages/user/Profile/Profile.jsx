@@ -27,7 +27,7 @@ const Profile = () => {
             setIsFollow(true);
             socket.emit('follow', {
                 sender: { id: currentUser?._id, username: currentUser?.username, avatar: currentUser?.avatar },
-                receiver: { id: user?._id, username: user?.username, avatar: currentUser?.avatar },
+                receiver: { id: user?._id, username: user?.username, avatar: user?.avatar },
                 date: Date.now(),
             });
         },

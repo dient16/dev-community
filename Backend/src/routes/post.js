@@ -1,14 +1,14 @@
 const router = require('express').Router();
 const controller = require('../controllers/post.controller');
-const { verifyAccessToken } = require('../middlewares/verifyToken');
+const { verifyAccessToken, allowNullAccessToken } = require('../middlewares/verifyToken');
 const uploader = require('../middlewares/uploadFile');
 const { validateRequest } = require('../middlewares/validation');
 const { postSchema } = require('../utils/validation');
-router.get('/', controller.getPosts);
+router.get('/', allowNullAccessToken, controller.getPosts);
 router.get('/search', controller.searchPost);
 router.get('/tag-discuss', controller.getPostByTagsDiscuss);
 router.get('/bookmark', verifyAccessToken, controller.getBookmarkUser);
-router.get('/:pid', controller.getPost);
+router.get('/:pid', allowNullAccessToken, controller.getPost);
 router.post('/', verifyAccessToken, uploader.single('image'), validateRequest(postSchema), controller.createPost);
 router.delete('/:postId', [verifyAccessToken], controller.deletePost);
 router.put('/:postId', verifyAccessToken, controller.updatePost);

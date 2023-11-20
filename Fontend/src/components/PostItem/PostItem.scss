@@ -57,6 +57,7 @@
     &__tags {
         display: flex;
         gap: 5px;
+        flex-wrap: wrap;
     }
     &__actions {
         padding-top: 10px;
