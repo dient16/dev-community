@@ -42,7 +42,7 @@
     &__search {
         width: 50%;
         display: none;
-        @include screen-tablet {
+        @include screen-mobile {
             display: block;
         }
     }
@@ -65,7 +65,7 @@
         .btn-search {
             margin-right: 30px;
             background: $primary-color;
-            @include screen-tablet {
+            @include screen-mobile {
                 display: none;
             }
         }

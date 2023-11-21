@@ -8,7 +8,7 @@ import { apiFollowUser, apiUnFollowUser } from '~/apiServices';
 import { useMutation } from '@tanstack/react-query';
 import { useAuth } from '~/hooks';
 
-const PostDetailAuthor = ({ author }) => {
+const PostDetailAuthor = ({ author, setIsOpenAuthModal }) => {
     const socket = useContext(SocketContext);
     const [isFollow, setIsFollow] = useState(false);
     const { user: currentUser } = useAuth();
@@ -33,6 +33,10 @@ const PostDetailAuthor = ({ author }) => {
     });
 
     const toggleFollowUser = () => {
+        if (!isLoggedIn) {
+            setIsOpenAuthModal(true);
+            return;
+        }
         if (!isFollow) {
             followUserMutation.mutate(author._id);
         } else {

@@ -3,18 +3,21 @@ import './Post.scss';
 import icons from '~/utils/icons';
 import MDEditor from '@uiw/react-md-editor';
 import moment from 'moment';
-import { Comments, TagChildren, PostDetailAuthor } from '~/components';
+import { Comments, TagChildren, PostDetailAuthor, ModalRequireLogin } from '~/components';
 import { useParams, useNavigate } from 'react-router-dom';
 import { useQuery, useMutation } from '@tanstack/react-query';
 import { Avatar, Flex, Image, Spin, Tooltip } from 'antd';
 import { apiGetPost, apiLikePost, apiUnlikePost } from '~/apiServices/post';
 import clsx from 'clsx';
+import { useAuth } from '~/hooks';
 
 const Post = () => {
-    const { FaRegHeart, FaHeart, RiChat1Line, FaRegBookmark } = icons;
+    const { FaRegHeart, FaHeart, RiChat1Line, FaRegBookmark, FaBookmark } = icons;
     const navigate = useNavigate();
     const { slug } = useParams();
     const commentRef = useRef(null);
+    const [isOpenAuthModal, setIsOpenAuthModal] = useState(false);
+    const { isLoggedIn } = useAuth();
     const {
         data,
         isLoading,
@@ -38,6 +41,10 @@ const Post = () => {
     });
 
     const handleToggleLike = (e) => {
+        if (!isLoggedIn) {
+            setIsOpenAuthModal(true);
+            return;
+        }
         e.stopPropagation();
         const postId = post?._id;
         post?.isLiked
@@ -61,6 +68,7 @@ const Post = () => {
 
     return (
         <div className="post-detail">
+            <ModalRequireLogin open={isOpenAuthModal} setOpen={setIsOpenAuthModal} />
             <div className="post-detail__wrapper">
                 <div className="post-detail__actions">
                     <Flex vertical align="center">
@@ -96,7 +104,9 @@ const Post = () => {
                     </Tooltip>
                     <Tooltip title="Bookmark">
                         <div className="post-detail__action-bookmark">
-                            <FaRegBookmark size={24} />
+                            <i className={clsx('icon', (post?.isBookmarked || false) && 'icon--active')}>
+                                {post?.isBookmarked || false ? <FaBookmark size={21} /> : <FaRegBookmark size={21} />}
+                            </i>
                         </div>
                     </Tooltip>
                 </div>
@@ -135,10 +145,16 @@ const Post = () => {
                         </div>
                     </Spin>
                     <div ref={commentRef}>
-                        <Comments commentList={post?.comments} postId={post?._id} />
+                        <Comments
+                            commentList={post?.comments}
+                            postId={post?._id}
+                            postAuthorAvatar={post?.author?.avatar}
+                            setIsOpenAuthModal={setIsOpenAuthModal}
+                            refetchPost={refetchPost}
+                        />
                     </div>
                 </div>
-                <PostDetailAuthor author={post?.author} />
+                <PostDetailAuthor author={post?.author} setIsOpenAuthModal={setIsOpenAuthModal} />
             </div>
         </div>
     );

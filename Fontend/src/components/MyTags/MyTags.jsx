@@ -1,9 +1,8 @@
-import { useEffect } from 'react';
 import './MyTags.scss';
 import icons from '~/utils/icons';
 import { useQuery } from '@tanstack/react-query';
 import { apiGetMyTags, apiGetPopularTags } from '~/apiServices';
-import { TagChildren, Loading } from '~/components';
+import { TagChildren } from '~/components';
 import { Spin } from 'antd';
 import { useAuth } from '~/hooks';
 
@@ -25,11 +24,7 @@ const MyTags = () => {
     });
 
     return (
-        <Spin
-            indicator={<Loading />}
-            spinning={isLoggedIn ? isLoadingMyTags : isLoadingPopularTags}
-            className="loading"
-        >
+        <Spin spinning={isLoggedIn ? isLoadingMyTags : isLoadingPopularTags} className="loading">
             <div className="my-tags">
                 <div className="my-tags__header">
                     <span className="title">{isLoggedIn ? 'My tags' : 'Popular Tags'}</span>

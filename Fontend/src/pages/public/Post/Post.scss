@@ -1,7 +1,7 @@
 @use '~/styles/' as *;
 .post-detail {
     width: $width-full;
-    margin-bottom: 30px;
+    margin-bottom: 100px;
     &__wrapper {
         max-width: $width-main;
         width: $width-full;
@@ -12,11 +12,22 @@
         border-radius: 10px;
     }
     &__actions {
-        margin: 30px;
+        margin: 10px;
         margin-top: 65px;
         display: flex;
         flex-direction: column;
         gap: 30px;
+        position: sticky;
+        top: 100px;
+        display: none;
+        @include screen-laptop {
+            margin: 30px;
+            display: block;
+        }
+        @include screen-tablet {
+            margin: 20px;
+            display: block;
+        }
     }
     &__action-like,
     &__action-comment,
@@ -31,6 +42,19 @@
         border: 1px solid transparent;
         cursor: pointer;
     }
+    &__action-bookmark {
+        .icon--active {
+            background: #bde4e2;
+            opacity: 0.8;
+        }
+        .icon {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 10px;
+            border-radius: 10px;
+        }
+    }
     &__action-like {
         height: 39px;
         &:hover {
@@ -42,9 +66,8 @@
     }
     &__body {
         max-width: 850px;
-        min-width: 500px;
         min-height: 500px;
-        box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.03);
         background-color: rgba(255, 255, 255, 0.5);
         display: flex;
         flex-direction: column;
@@ -59,6 +82,7 @@
         display: flex;
         gap: 10px;
         padding: 0 30px;
+
         .author-avatar {
             width: 50px;
             height: 50px;
@@ -75,9 +99,12 @@
         }
     }
     &__body-title {
-        font-size: 4rem;
+        font-size: 3rem;
         font-weight: 700;
         padding: 0 30px;
+        @include screen-laptop {
+            font-size: 4rem;
+        }
     }
     &__body-tags {
         display: flex;
@@ -90,8 +117,8 @@
     &__content {
         padding: 0 30px;
         .wmde-markdown.wmde-markdown-color {
-            font-family: $font-family;
-            font-size: 1.6rem;
+            //font-family: $font-family;
+            font-size: 1.8rem;
             padding: 10px;
             background: transparent;
             color: $black;
@@ -124,6 +151,12 @@
         background-color: rgba(255, 255, 255, 0.5);
         padding: 20px;
         border-radius: 10px;
+        position: sticky;
+        top: 80px;
+        display: none;
+        @include screen-laptop {
+            display: block;
+        }
     }
     &__author-top {
         .author-background {

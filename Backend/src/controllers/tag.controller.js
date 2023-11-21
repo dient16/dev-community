@@ -46,7 +46,7 @@ const getPopularTags = async (req, res, next) => {
             Tag.aggregate([
                 {
                     $lookup: {
-                        from: 'posts', // Tên của collection bài viết
+                        from: 'posts',
                         localField: '_id',
                         foreignField: 'tags',
                         as: 'posts',
@@ -56,14 +56,14 @@ const getPopularTags = async (req, res, next) => {
                     $project: {
                         name: 1,
                         theme: 1,
-                        postCount: { $size: '$posts' }, // Đếm số lượng bài viết cho mỗi thẻ
+                        postCount: { $size: '$posts' },
                     },
                 },
                 {
-                    $sort: { postCount: -1 }, // Sắp xếp theo số lượng bài viết giảm dần
+                    $sort: { postCount: -1 },
                 },
                 {
-                    $limit: 10, // Giới hạn số lượng thẻ trả về (ví dụ: 10 thẻ phổ biến nhất)
+                    $limit: 10,
                 },
             ]),
         );
