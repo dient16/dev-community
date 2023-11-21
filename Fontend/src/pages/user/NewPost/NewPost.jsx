@@ -1,10 +1,10 @@
 import { useState, useEffect } from 'react';
-import { InputTags, PostMarkdown } from '~/components';
+import { InputTags, PostMarkdown, PreviewPost } from '~/components';
 import { useMutation } from '@tanstack/react-query'; // Import useMutation
 import { useNavigate } from 'react-router-dom';
 import { apiCreatePost } from '~/apiServices/post';
 import { UploadOutlined } from '@ant-design/icons';
-import { Image, Spin, message, Upload, Button, Flex } from 'antd';
+import { Image, Spin, message, Upload, Button, Flex, Tabs } from 'antd';
 import './NewPost.scss';
 import icons from '~/utils/icons';
 
@@ -29,25 +29,6 @@ const NewPost = () => {
     useEffect(() => {
         document.documentElement.setAttribute('data-color-mode', 'light');
     }, []);
-
-    const addTag = (event) => {
-        const tag = event.target.value;
-        if ((event.code === 'Enter' || event.code === 'Space') && tag.trim() !== '') {
-            setPostTags((tags) => [...tags, tag.trim()]);
-            event.target.value = '';
-        }
-    };
-
-    const removeTag = (indexToRemove) => {
-        setPostTags((tags) => tags.filter((_, index) => index !== indexToRemove));
-    };
-
-    const handleKeyDown = (event) => {
-        if (event.key === 'Enter') {
-            event.preventDefault();
-        }
-    };
-
     const handleCreatePost = () => {
         if (postBody && postTitle && postTags.length >= 1) {
             const formData = new FormData();
@@ -61,12 +42,12 @@ const NewPost = () => {
             message.error('Please fill out all fields');
         }
     };
-
-    return (
-        <>
-            <Spin size="large" spinning={createPostMutation.isPending} fullscreen={createPostMutation.isPending}></Spin>
-            <div className="new-post">
-                <div className="new-post__wrapper">
+    const items = [
+        {
+            key: '1',
+            label: 'Edit',
+            children: (
+                <div>
                     <div className="new-post__add-image">
                         <Upload
                             accept="image/*"
@@ -100,12 +81,7 @@ const NewPost = () => {
                             onChange={(e) => setPostTitle(e.target.value)}
                         />
                         <div className="add-new-tag ">
-                            <InputTags
-                                tags={postTags}
-                                addTag={addTag}
-                                removeTag={removeTag}
-                                handleKeyDown={handleKeyDown}
-                            />
+                            <InputTags value={postTags} onChange={(value) => setPostTags(value)} />
                         </div>
                     </div>
                     <div className="new-post__bottom">
@@ -116,6 +92,29 @@ const NewPost = () => {
                             Post now
                         </Button>
                     </div>
+                </div>
+            ),
+        },
+        {
+            key: '2',
+            label: 'Preview',
+            children: (
+                <PreviewPost
+                    body={postBody}
+                    title={postTitle}
+                    tags={postTags}
+                    image={selectedImage?.[0]?.originFileObj}
+                />
+            ),
+        },
+    ];
+
+    return (
+        <>
+            <Spin size="large" spinning={createPostMutation.isPending} fullscreen={createPostMutation.isPending}></Spin>
+            <div className="new-post">
+                <div className="new-post__wrapper">
+                    <Tabs defaultActiveKey="1" items={items} />
                 </div>
             </div>
         </>

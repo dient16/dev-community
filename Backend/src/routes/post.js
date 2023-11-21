@@ -11,7 +11,7 @@ router.get('/bookmark', verifyAccessToken, controller.getBookmarkUser);
 router.get('/:pid', allowNullAccessToken, controller.getPost);
 router.post('/', verifyAccessToken, uploader.single('image'), validateRequest(postSchema), controller.createPost);
 router.delete('/:postId', [verifyAccessToken], controller.deletePost);
-router.put('/:postId', verifyAccessToken, controller.updatePost);
+router.put('/:postId', verifyAccessToken, uploader.single('image'), controller.updatePost);
 router.post('/upload-image', verifyAccessToken, uploader.single('image'), controller.uploadImage);
 router.put('/like/:postId', verifyAccessToken, controller.likePost);
 router.put('/unlike/:postId', verifyAccessToken, controller.unlikePost);

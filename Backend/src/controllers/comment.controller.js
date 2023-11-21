@@ -176,8 +176,8 @@ const likeComment = async (req, res, next) => {
         const commentObject = updatedComment.toObject();
         commentObject.isLiked =
             Array.isArray(updatedComment.likes) && updatedComment.likes.some((like) => like.equals(userId));
-        commentObject.likeCount = Array.isArray(updatedComment.likes) ? updatedComment.likes.length : 0;
-        commentObject.replyCount = Array.isArray(updatedComment.replies) ? updatedComment.replies.length : 0;
+        commentObject.likeCount = Array.isArray(updatedComment.likes) && updatedComment.likes.length;
+        commentObject.replyCount = Array.isArray(updatedComment.replies) && updatedComment.replies.length;
         delete commentObject.likes;
         delete commentObject.replies;
 

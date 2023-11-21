@@ -6,3 +6,58 @@ export function hexToRgba(hex, alpha) {
         return `rgba(${r}, ${g}, ${b}, ${alpha})`;
     }
 }
+
+export const appendNodeToChildren = (list, parentKey, newNode) => {
+    return list.map((node) => {
+        if (node.key === parentKey) {
+            return {
+                ...node,
+                children: node.children ? [newNode, ...node.children] : [newNode],
+            };
+        }
+        if (node.children) {
+            return {
+                ...node,
+                children: appendNodeToChildren(node.children, parentKey, newNode),
+            };
+        }
+
+        return node;
+    });
+};
+
+export const findAndAppendReplies = (list, key, children) =>
+    list.map((node) => {
+        if (node.key === key) {
+            return {
+                ...node,
+                children,
+            };
+        }
+        if (node.children) {
+            return {
+                ...node,
+                children: findAndAppendReplies(node.children, key, children),
+            };
+        }
+        return node;
+    });
+export const findAndRemoveNode = (list, key) => {
+    for (let i = 0; i < list.length; i++) {
+        const node = list[i];
+
+        if (node.key === key) {
+            list.splice(i, 1);
+            return list;
+        }
+
+        if (node.children) {
+            node.children = findAndRemoveNode(node.children, key);
+            if (node.children.length === 0) {
+                delete node.children;
+            }
+        }
+    }
+
+    return list;
+};

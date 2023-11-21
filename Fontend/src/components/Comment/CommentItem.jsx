@@ -15,6 +15,7 @@ const CommentItem = ({
     contentParent,
     setIsOpenAuthModal,
     onRemove,
+    onAddReply,
 }) => {
     const { RiHeart2Fill, RiHeart2Line, RiChat1Line, BsReplyFill, HiOutlineDotsVertical } = icons;
     const [isShowInputReply, setIsShowInputReply] = useState(false);
@@ -31,7 +32,11 @@ const CommentItem = ({
             return;
         }
         const response = await apiAddComment(postId, { content: textReply, parentId: commentId });
-        if (response.status !== 'success') {
+        if (response.status === 'success') {
+            setTextReply('');
+            setIsShowInputReply(false);
+            onAddReply(commentId, response.comment);
+        } else {
             message.error('Something went wrong');
         }
     };
@@ -52,6 +57,7 @@ const CommentItem = ({
             message.error('Something went wrong');
         }
     };
+
     const items = [
         {
             key: '1',

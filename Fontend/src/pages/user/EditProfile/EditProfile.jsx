@@ -222,15 +222,6 @@ function EditProfile() {
                                 )}
                             />
                         </div>
-                        <div className="setting-fields">
-                            <label htmlFor="theme" style={{ marginBottom: '0.5rem' }}>
-                                Theme
-                            </label>
-                            {/* <div className="color-picker">
-                            <span style={{ backgroundColor: `${theme}` }}></span>
-                            <HuePicker color={theme} onChangeComplete={handleThemeChange} />
-                        </div> */}
-                        </div>
                     </div>
 
                     <div className="settings-submit">

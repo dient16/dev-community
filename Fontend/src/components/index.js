@@ -17,3 +17,4 @@ export { default as PostDetailAuthor } from './PostDetailAuthor/PostDetailAuthor
 export { default as MenuAccount } from './MenuAccount/MenuAccount';
 export { default as Discuss } from './Discuss/Discuss';
 export { default as ModalRequireLogin } from './Modal/ModalRequireLogin';
+export { default as PreviewPost } from './PreviewPost/PreviewPost';

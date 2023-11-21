@@ -1,13 +1,11 @@
 @use '~/styles/' as *;
 .new-post {
-    margin-top: 20px;
     display: flex;
     flex-direction: column;
     font-family: $font-family;
     align-items: center;
     &__wrapper {
         max-width: 845px;
-        min-width: 830px;
         margin: 0 auto;
         .btn-add-banner {
             margin: 0;
