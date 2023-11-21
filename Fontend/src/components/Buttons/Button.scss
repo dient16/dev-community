@@ -15,7 +15,7 @@
         background-color: $white;
         border: 1px solid transparent;
         user-select: none;
-        border-radius: 5px;
+        border-radius: 10px;
         margin-left: 8px;
         gap: 5px;
         &.disabled {
@@ -34,14 +34,16 @@
     }
 
     &__title {
-        font-size: 1.8rem;
+        font-size: 1.4rem;
         + .button__icon,
         .button__icon + .button__title {
             margin-left: 8px;
         }
+        @include screen-laptop {
+            font-size: 1.8rem;
+        }
     }
 
-    // Button types
     &--rounded {
         border-radius: 999px;
         box-shadow: 0 2px 8px rgb(0 0 0 / 6%);

@@ -149,6 +149,7 @@ const searchPost = async (req, res, next) => {
         const [err, posts] = await to(
             Post.find({ title: { $regex: q, $options: 'i' } })
                 .select('title createdAt')
+                .limit(4)
                 .populate({
                     path: 'author',
                     select: 'firstname lastname avatar username',

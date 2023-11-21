@@ -13,3 +13,9 @@ export const apiAddComment = (postId, data) =>
         data,
         withCredentials: true,
     });
+export const apiDeleteComment = (commentId) =>
+    axios({
+        url: '/comment/' + commentId,
+        method: 'delete',
+        withCredentials: true,
+    });

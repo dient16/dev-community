@@ -60,6 +60,7 @@ const MenuAccount = ({ user, setOpenMenu }) => {
                     className="menu-account__btn"
                     onClick={() => {
                         handleSignOut();
+                        window.location.reload();
                         setOpenMenu(false);
                     }}
                 >

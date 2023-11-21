@@ -141,10 +141,10 @@ const Header = () => {
                 ) : (
                     <div className="header__actions">
                         <Button primary to={`/${path.REGISTER}`}>
-                            Đăng kí
+                            Sign up
                         </Button>
                         <Button outline to={`/${path.LOGIN}`}>
-                            Đăng nhập
+                            Sign in
                         </Button>
                     </div>
                 )}

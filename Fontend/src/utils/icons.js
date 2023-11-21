@@ -32,6 +32,7 @@ import { IoIosCloseCircle } from 'react-icons/io';
 import { PiCircleNotchBold } from 'react-icons/pi';
 import { FiTrash } from 'react-icons/fi';
 import { SlClose } from 'react-icons/sl';
+import { HiOutlineDotsVertical } from 'react-icons/hi';
 
 const icons = {
     RiHome4Fill,
@@ -76,5 +77,6 @@ const icons = {
     FaBookmark,
     MdMenu,
     SlClose,
+    HiOutlineDotsVertical,
 };
 export default icons;
