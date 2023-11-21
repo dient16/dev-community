@@ -11,26 +11,10 @@ const cloudinary = require('../config/cloudinary.config');
 
 const getPosts = async (req, res, next) => {
     try {
-        const filters = { ...req.query };
-        const excludedFields = ['limit', 'sort', 'page', 'fields'];
-        excludedFields.forEach((field) => delete filters[field]);
-
-        let filterString = JSON.stringify(filters);
-        filterString = filterString.replace(/\b(gte|gt|lt|lte)\b/g, (matchedOperator) => `$${matchedOperator}`);
-        const formattedFilters = JSON.parse(filterString);
-
-        let postQueryObject = {};
-        if (filters?.title) formattedFilters.title = { $regex: filters.title, $options: 'i' };
-        if (filters?.author) formattedFilters.author = { $regex: filters.author, $options: 'i' };
-        const finalQuery = { ...postQueryObject, ...formattedFilters };
-
-        let query = Post.find(finalQuery)
-            .select('-body')
-            .populate({ path: 'tags', select: '_id name theme' })
-            .populate({
-                path: 'author',
-                select: 'firstname lastname avatar username followers',
-            });
+        let query = Post.find().select('-body').populate({ path: 'tags', select: '_id name theme' }).populate({
+            path: 'author',
+            select: 'firstname lastname avatar username',
+        });
 
         if (req.query.fields) {
             const selectedFields = req.query.fields.split(',').join(' ');
@@ -47,10 +31,8 @@ const getPosts = async (req, res, next) => {
         const skip = (page - 1) * limit;
 
         query.skip(skip).limit(limit);
-
         let posts;
         [error, posts] = await to(query.exec());
-
         if (error) {
             return res.status(200).json({
                 status: 'success',
@@ -70,7 +52,6 @@ const getPosts = async (req, res, next) => {
                 postObject.isLiked = post.likes.some((like) => like.equals(userId));
                 postObject.isBookmarked = post.bookmarks.some((bookmark) => bookmark.equals(userId));
             }
-
             return postObject;
         });
 
@@ -174,12 +155,18 @@ const searchPost = async (req, res, next) => {
 const getPost = async (req, res, next) => {
     try {
         const { pid } = req.params;
+        let queryFields;
+        if (req.query.fields) {
+            queryFields = req.query.fields.split(',').join(' ');
+        }
+
         const [err, post] = await to(
             Post.findById(pid)
                 .populate({
                     path: 'tags',
                     select: 'name theme',
                 })
+                .select(queryFields)
                 .populate({
                     path: 'author',
                     select: '-password -refreshToken -followedTags -tags -following -posts -followers -updatedAt -createdAt -bookmarked',
@@ -330,13 +317,12 @@ const createPost = async (req, res, next) => {
 
 ////////////////////////////////
 
-const updatePost = async (req, res, next) => {
+const updatePsost = async (req, res, next) => {
     try {
         const { postId } = req.params;
-        const { body } = req;
         const { _id: uid } = req.user;
         const imageUrl = req.file ? req.file.path : null;
-        req = { ...req, body: { ...body, image: imageUrl } };
+        const { body, title, tags } = req.body;
 
         let err, post;
         [err, post] = await to(Post.findById(postId).populate('tags'));
@@ -394,27 +380,57 @@ const updatePost = async (req, res, next) => {
         next(error);
     }
 };
-////////////////////////////////
-const getPostById = async (req, res, next) => {
-    const { postId } = req.params;
-    let post;
+const updatePost = async (req, res, next) => {
     try {
-        post = await Post.findById(postId).populate('author').populate('comments').populate('tags');
-    } catch (err) {
-        return res.status(500).json({
-            status: 'error',
-            message: 'Something went wrong with the server',
+        const { postId } = req.params;
+        const { _id: uid } = req.user;
+        const imageUrl = req.file ? req.file.path : null;
+        const { body, title, tags } = req.body;
+        let objUpdate;
+        if (imageUrl) {
+            objUpdate = { body, title, image: imageUrl };
+        } else {
+            objUpdate = { body, title };
+        }
+        console.log(objUpdate);
+        let postUpdateErr, tagUpdateErr, postUpdate;
+        [postUpdateErr, postUpdate] = await to(
+            Post.findByIdAndUpdate(
+                postId,
+                {
+                    ...objUpdate,
+                },
+                { new: true },
+            ),
+        );
+
+        if (postUpdateErr) {
+            return res.status(500).json({
+                status: 'error',
+                message: 'Updating post failed',
+            });
+        }
+
+        [tagUpdateErr] = await to(tag.updateTags(tags.split(','), postUpdate));
+
+        if (tagUpdateErr) {
+            return res.status(500).json({
+                status: 'error',
+                message: 'Creating tags failed',
+            });
+        }
+
+        return res.status(200).json({
+            status: 'success',
+            message: 'Tags updated successfully',
         });
+    } catch (error) {
+        next(error);
     }
-    if (!post) {
-        return res.status(401).json({
-            status: 'error',
-            message: 'Could not find post for the provided ID',
-        });
-    }
-    res.json({ post: post.toObject({ getters: true }) });
 };
+
 ////////////////////////////////
+
 const deletePost = async (req, res, next) => {
     const { postId } = req.params;
     try {
@@ -744,7 +760,6 @@ module.exports = {
     getPost,
     createPost,
     updatePost,
-    getPostById,
     deletePost,
     unlikePost,
     likePost,

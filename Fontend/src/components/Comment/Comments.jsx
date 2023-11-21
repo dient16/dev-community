@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import './Comment.scss';
 import { Avatar, Input, Tree, Flex, message } from 'antd';
 import { apiAddComment, apiGetReliedComment } from '~/apiServices';
@@ -6,16 +6,17 @@ import { Button, CommentItem } from '~/components';
 import { ClipLoader } from 'react-spinners';
 import icons from '~/utils/icons';
 import { useAuth } from '~/hooks';
+import { appendNodeToChildren, findAndAppendReplies, findAndRemoveNode } from '~/utils/helper';
 const { MdOutlineKeyboardArrowUp, MdOutlineKeyboardArrowDown } = icons;
 
 const Comments = ({ commentList, postId, postAuthorAvatar, setIsOpenAuthModal, refetchPost }) => {
-    const [comments, setComments] = useState([]);
     const [textComment, setTextComment] = useState(null);
     const { isLoggedIn } = useAuth();
     const handleRemoveComment = (id) => {
         setComments(() => findAndRemoveNode(comments, id));
         refetchPost();
     };
+
     const objectNodeComment = (comment, contentParent) => ({
         title: (
             <CommentItem
@@ -28,6 +29,7 @@ const Comments = ({ commentList, postId, postAuthorAvatar, setIsOpenAuthModal, r
                 contentParent={contentParent}
                 setIsOpenAuthModal={setIsOpenAuthModal}
                 onRemove={handleRemoveComment}
+                onAddReply={handleAddReply}
             />
         ),
         key: comment._id,
@@ -56,42 +58,12 @@ const Comments = ({ commentList, postId, postAuthorAvatar, setIsOpenAuthModal, r
             }
         },
     });
-
-    const findAndAppendReplies = (list, key, children) =>
-        list.map((node) => {
-            if (node.key === key) {
-                return {
-                    ...node,
-                    children,
-                };
-            }
-            if (node.children) {
-                return {
-                    ...node,
-                    children: findAndAppendReplies(node.children, key, children),
-                };
-            }
-            return node;
-        });
-    const findAndRemoveNode = (list, key) => {
-        for (let i = 0; i < list.length; i++) {
-            const node = list[i];
-
-            if (node.key === key) {
-                list.splice(i, 1);
-                return list;
-            }
-
-            if (node.children) {
-                node.children = findAndRemoveNode(node.children, key);
-                if (node.children.length === 0) {
-                    delete node.children;
-                }
-            }
-        }
-
-        return list;
+    const handleAddReply = (id, newReply) => {
+        setComments((prev) => appendNodeToChildren(prev, id, objectNodeComment(newReply)));
     };
+    const [comments, setComments] = useState(() =>
+        (commentList || [])?.filter((comment) => !comment.parentId)?.map((comment) => objectNodeComment(comment)),
+    );
 
     const onLoadReplied = ({ key }) =>
         new Promise(async (resolve) => {
@@ -134,12 +106,6 @@ const Comments = ({ commentList, postId, postAuthorAvatar, setIsOpenAuthModal, r
             message.error(response?.message);
         }
     };
-    const renderComments = () =>
-        commentList?.filter((comment) => !comment.parentId)?.map((comment) => objectNodeComment(comment));
-
-    useEffect(() => {
-        setComments(renderComments());
-    }, [commentList]);
 
     return (
         <div className="comment-detail-post">

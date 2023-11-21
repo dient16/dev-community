@@ -146,44 +146,40 @@ function handleCommentEvent(io, receiverSocket, sender, receiver) {
 }
 
 function socketHandler(io) {
-    try {
-        io.use((socket, next) => {
-            const { query } = socket?.handshake;
-            const { userId } = query;
-            socket.data.userId = userId;
-            next();
+    io.use((socket, next) => {
+        const { query } = socket?.handshake;
+        const { userId } = query;
+        socket.data.userId = userId;
+        next();
+    });
+    return io.on('connection', (socket) => {
+        const reconnectedUser = disconnected.findIndex((item) => item?.id === socket?.data?.userId);
+        socket.on('join', ({ userId, socketId }) => {
+            if (reconnectedUser !== -1) {
+                unreadNotification.forEach((notification) => {
+                    if (notification?.id === disconnected[reconnectedUser]?.id) {
+                        io.to(socketId).emit('notification', notification?.data);
+                    }
+                });
+            }
+            const userSockets = addNewSocket(userId, socketId);
+            console.log(`connected: `, userSockets);
+            console.log('disconnected: ', disconnected);
         });
-        return io.on('connection', (socket) => {
-            const reconnectedUser = disconnected.findIndex((item) => item?.id === socket?.data?.userId);
-            socket.on('join', ({ userId, socketId }) => {
-                if (reconnectedUser !== -1) {
-                    unreadNotification.forEach((notification) => {
-                        if (notification?.id === disconnected[reconnectedUser]?.id) {
-                            io.to(socketId).emit('notification', notification?.data);
-                        }
-                    });
-                }
-                const userSockets = addNewSocket(userId, socketId);
-                console.log(`connected: `, userSockets);
-                console.log('disconnected: ', disconnected);
-            });
 
-            socket.on('clearNotification', ({ sender }) => {
-                unreadNotification = unreadNotification.filter((item) => item?.id !== sender?.id);
-            });
-            socket.on('like', (data) => handleNotification(io, 'like', data));
-            socket.on('follow', (data) => handleNotification(io, 'follow', data));
-            socket.on('comment', (data) => handleNotification(io, 'comment', data));
-            socket.on('disconnect', () => {
-                const disconnectingUser = users.find((item) => item?.socketId === socket?.id);
-                removeSocket(disconnectingUser.id, socket?.id);
-                console.log(`connected: `, users);
-                console.log('disconnected: ', disconnected);
-            });
+        socket.on('clearNotification', ({ sender }) => {
+            unreadNotification = unreadNotification.filter((item) => item?.id !== sender?.id);
         });
-    } catch (error) {
-        next(error);
-    }
+        socket.on('like', (data) => handleNotification(io, 'like', data));
+        socket.on('follow', (data) => handleNotification(io, 'follow', data));
+        socket.on('comment', (data) => handleNotification(io, 'comment', data));
+        socket.on('disconnect', () => {
+            const disconnectingUser = users.find((item) => item?.socketId === socket?.id);
+            removeSocket(disconnectingUser.id, socket?.id);
+            console.log(`connected: `, users);
+            console.log('disconnected: ', disconnected);
+        });
+    });
 }
 
 module.exports = { socketHandler };

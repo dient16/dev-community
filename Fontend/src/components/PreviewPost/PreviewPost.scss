@@ -1,0 +1,49 @@
+@use '~/styles/' as *;
+.post-preview {
+    &__body-title {
+        font-size: 3rem;
+        font-weight: 700;
+        padding: 0 30px;
+        @include screen-laptop {
+            font-size: 4rem;
+        }
+    }
+    &__body-tags {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        flex-wrap: wrap;
+        padding: 0 30px;
+        font-size: 2rem;
+    }
+    &__content {
+        padding: 0 30px;
+        .wmde-markdown.wmde-markdown-color {
+            //font-family: $font-family;
+            font-size: 1.8rem;
+            padding: 10px;
+            background: transparent;
+            color: $black;
+        }
+        .code-highlight {
+            //background: #ccc;
+            color: $white;
+        }
+        code {
+            //background: #ccc;
+            //background: $black;
+            filter: brightness(1.1);
+            mix-blend-mode: difference;
+            color: $white;
+        }
+        pre {
+            color: $white;
+            display: -webkit-box;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            -webkit-line-clamp: 1;
+            -webkit-box-orient: vertical;
+            word-break: break-all;
+        }
+    }
+}

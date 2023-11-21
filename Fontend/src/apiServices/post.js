@@ -21,9 +21,9 @@ export const apiGetPosts = () =>
         method: 'get',
         withCredentials: true,
     });
-export const apiGetPost = (pid) =>
+export const apiGetPost = (pid, query) =>
     axios({
-        url: `/post/${pid}`,
+        url: `/post/${pid}` + (query ? `?fields=${query}` : ''),
         method: 'get',
         withCredentials: true,
     });
@@ -69,5 +69,18 @@ export const apiGetBookmarkUser = () =>
     axios({
         url: `/post/bookmark`,
         method: 'get',
+        withCredentials: true,
+    });
+export const apiDeletePost = (postId) =>
+    axios({
+        url: `/post/${postId}`,
+        method: 'delete',
+        withCredentials: true,
+    });
+export const apiEditPost = ({ postId, data }) =>
+    axios({
+        url: `/post/${postId}`,
+        method: 'put',
+        data,
         withCredentials: true,
     });

@@ -1,22 +1,28 @@
 import { Button, TagChildren } from '~/components';
 import './Profile.scss';
-import { Avatar, Flex, Spin } from 'antd';
+import { Avatar, Flex, Spin, Button as ButtonAnt, Dropdown, message } from 'antd';
 import icons from '~/utils/icons';
 import moment from 'moment';
 import { useAuth } from '~/hooks';
 import { path } from '~/utils/constant';
-import { useParams } from 'react-router-dom';
+import { Link, useNavigate, useParams } from 'react-router-dom';
 import { useQuery, useMutation } from '@tanstack/react-query';
-import { apiFollowUser, apiGetUserByUsername, apiUnFollowUser } from '~/apiServices';
+import { apiDeletePost, apiFollowUser, apiGetUserByUsername, apiUnFollowUser } from '~/apiServices';
 import { useState, useEffect, useContext } from 'react';
 import { SocketContext } from '~/contexts/socketContext';
+import { HiOutlineDotsVertical } from 'react-icons/hi';
 
 const Profile = () => {
     const { BsFillPostcardFill, LuHash, FaBirthdayCake } = icons;
     const { username } = useParams();
     const socket = useContext(SocketContext);
+    const navigate = useNavigate();
     const [isFollow, setIsFollow] = useState(false);
-    const { data: { userData: user } = { userData: null }, isLoading } = useQuery({
+    const {
+        data: { userData: user } = { userData: null },
+        isLoading,
+        refetch,
+    } = useQuery({
         queryKey: ['profile', username],
         queryFn: () => apiGetUserByUsername(username),
     });
@@ -51,6 +57,15 @@ const Profile = () => {
             followUserMutation.mutate(user._id);
         } else {
             unfollowUserMutation.mutate(user._id);
+        }
+    };
+    const handleDeletePost = async (postId) => {
+        const response = await apiDeletePost(postId);
+        if (response.status === 'success') {
+            message.success('Delete post successfully');
+            refetch();
+        } else {
+            message.error('Something went wrong');
         }
     };
 
@@ -126,13 +141,64 @@ const Profile = () => {
                                     return (
                                         <div className="my-post-item" key={post._id}>
                                             <div className="author">
+                                                <div className="menu-manage-post">
+                                                    <Dropdown
+                                                        menu={{
+                                                            items: [
+                                                                {
+                                                                    key: '1',
+                                                                    label: (
+                                                                        <ButtonAnt
+                                                                            type="primary"
+                                                                            ghost
+                                                                            style={{ width: '100%' }}
+                                                                            onClick={() =>
+                                                                                navigate(
+                                                                                    `/post/${user?.username}/${post?._id}/edit`,
+                                                                                )
+                                                                            }
+                                                                        >
+                                                                            Edit
+                                                                        </ButtonAnt>
+                                                                    ),
+                                                                },
+                                                                {
+                                                                    key: '2',
+                                                                    label: (
+                                                                        <ButtonAnt
+                                                                            type="primary"
+                                                                            danger
+                                                                            ghost
+                                                                            style={{ width: '100%' }}
+                                                                            onClick={() => {
+                                                                                handleDeletePost(post._id);
+                                                                            }}
+                                                                        >
+                                                                            Delete
+                                                                        </ButtonAnt>
+                                                                    ),
+                                                                },
+                                                            ],
+                                                        }}
+                                                        placement="bottomRight"
+                                                        arrow
+                                                    >
+                                                        <ButtonAnt
+                                                            icon={<HiOutlineDotsVertical />}
+                                                            type="primary"
+                                                            ghost
+                                                        />
+                                                    </Dropdown>
+                                                </div>
                                                 <Avatar src={user?.avatar} size={45} />
                                                 <Flex vertical>
                                                     <span>{`${user?.firstname} ${user?.lastname}`}</span>
                                                     <span>Sep 1</span>
                                                 </Flex>
                                             </div>
-                                            <h3 className="title">{post?.title}</h3>
+                                            <Link className="title" to={`/post/${user?.username}/${post?._id}`}>
+                                                {post?.title}
+                                            </Link>
                                             <div className="">
                                                 <Flex gap={10} wrap="wrap">
                                                     {post &&
