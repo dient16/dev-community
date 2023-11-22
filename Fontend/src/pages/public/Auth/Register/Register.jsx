@@ -1,70 +1,125 @@
-import React from 'react';
-import { Form, Input, Button } from 'antd';
+import { useForm } from 'react-hook-form';
 import './Register.scss';
-const Register = () => {
-    const onFinish = (values) => {
-        console.log('Received values:', values);
+import { AiFillFacebook } from 'react-icons/ai';
+import { FcGoogle } from 'react-icons/fc';
+import { Link, useNavigate } from 'react-router-dom';
+import { path } from '~/utils/constant';
+import clsx from 'clsx';
+import { useMutation } from '@tanstack/react-query';
+import { apiRegister } from '~/apiServices';
+import { Spin, message } from 'antd';
+
+function SignUp() {
+    const navigate = useNavigate();
+    const {
+        register,
+        handleSubmit,
+        formState: { errors },
+        getValues,
+    } = useForm({
+        defaultValues: {
+            email: '',
+            password: '',
+            confirmPassword: '',
+        },
+    });
+    const registerMutation = useMutation({
+        mutationFn: apiRegister,
+    });
+    const onSubmit = (data) => {
+        delete data.confirmPassword;
+        registerMutation.mutate(data, {
+            onSuccess: (data) => {
+                if (data.status === 'success') {
+                    message.success('Register successful');
+                    navigate(`/${path.LOGIN}`);
+                } else {
+                    message.error(data.message);
+                }
+            },
+            onError: () => {
+                message.error('Something went wrong');
+            },
+        });
     };
 
     return (
-        <Form className="register-form" onFinish={onFinish}>
-            <Form.Item
-                name="email"
-                rules={[
-                    {
-                        type: 'email',
-                        message: 'Please enter a valid email address!',
-                    },
-                    {
-                        required: true,
-                        message: 'Please enter your email!',
-                    },
-                ]}
-            >
-                <Input placeholder="Email" />
-            </Form.Item>
+        <>
+            <Spin spinning={registerMutation.isPending} fullscreen={registerMutation.isPending} size="large" />
+            <div className="registration">
+                <div className="registration__content">
+                    <h1>Welcome to Dev Community</h1>
+                    <p>The way to the top of programming.</p>
+                </div>
+                <div className="registration__actions">
+                    <div className="registration__actions--providers">
+                        <button className="google">
+                            <FcGoogle size={17} style={{ marginRight: '0.5rem' }} />
+                            Continue with Google
+                        </button>
+                        <button className="facebook">
+                            <AiFillFacebook size={17} style={{ marginRight: '0.5rem' }} />
+                            Continue with Facebook
+                        </button>
+                    </div>
+                    <div className="registration__hr">
+                        <span>Continue with your email address</span>
+                    </div>
+                    <form id="email-form" className="registration__actions--email" onSubmit={handleSubmit(onSubmit)}>
+                        <div>
+                            <label htmlFor="email">Email</label>
+                            <input
+                                className={clsx(errors.email && 'error')}
+                                {...register('email', {
+                                    required: 'Email is required',
+                                    pattern: {
+                                        value: /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i,
+                                        message: 'Invalid email address',
+                                    },
+                                })}
+                                type="text"
+                            />
+                            {errors.email && <p className="error-message">{errors.email.message}</p>}
+                        </div>
 
-            <Form.Item
-                name="password"
-                rules={[
-                    {
-                        required: true,
-                        message: 'Please enter your password!',
-                    },
-                ]}
-            >
-                <Input.Password placeholder="Password" />
-            </Form.Item>
+                        <div>
+                            <label htmlFor="password">Password</label>
+                            <input
+                                className={clsx(errors.password && 'error')}
+                                {...register('password', { required: 'Password is required' })}
+                                type="password"
+                            />
+                            {errors.password && <p className="error-message">{errors.password.message}</p>}
+                        </div>
 
-            <Form.Item
-                name="confirmPassword"
-                dependencies={['password']}
-                hasFeedback
-                rules={[
-                    {
-                        required: true,
-                        message: 'Please confirm your password!',
-                    },
-                    ({ getFieldValue }) => ({
-                        validator(_, value) {
-                            if (!value || getFieldValue('password') === value) {
-                                return Promise.resolve();
-                            }
-                            return Promise.reject(new Error('The two passwords do not match!'));
-                        },
-                    }),
-                ]}
-            >
-                <Input.Password placeholder="Confirm Password" />
-            </Form.Item>
+                        <div>
+                            <label htmlFor="confirm">Confirm Password</label>
+                            <input
+                                {...register('confirmPassword', {
+                                    required: 'Confirm password is required',
+                                    validate: (value) => value === getValues('password') || 'Passwords do not match',
+                                })}
+                                className={clsx(errors.confirmPassword && 'error')}
+                                type="password"
+                            />
+                            {errors.confirmPassword && (
+                                <p className="error-message">{errors.confirmPassword.message}</p>
+                            )}
+                        </div>
 
-            <Form.Item>
-                <Button type="primary" htmlType="submit">
-                    Register
-                </Button>
-            </Form.Item>
-        </Form>
+                        <button id="enter" type="submit">
+                            Sign Up
+                        </button>
+                    </form>
+                    <div className="registration__hr">
+                        <span>
+                            Already have an account? <Link to={`/${path.LOGIN}`}>Sign In</Link>
+                        </span>
+                    </div>
+                </div>
+            </div>
+        </>
     );
-};
+}
 
-export default Register;
+export default SignUp;

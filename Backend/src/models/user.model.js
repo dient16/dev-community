@@ -13,7 +13,7 @@ const userSchema = new mongoose.Schema(
                 return this.email.split('@')[0];
             },
         },
-        firstname: { type: String, require: true },
+        firstname: { type: String },
         lastname: { type: String, require: true },
         email: { type: String, require: true, unique: true },
         password: { type: String, allowNull: true, default: null },

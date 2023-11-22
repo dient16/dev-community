@@ -16,6 +16,9 @@
         padding: 0 30px;
         font-size: 2rem;
     }
+    &__body-image {
+        border-radius: 15px;
+    }
     &__content {
         padding: 0 30px;
         .wmde-markdown.wmde-markdown-color {

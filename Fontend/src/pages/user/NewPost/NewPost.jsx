@@ -45,7 +45,7 @@ const NewPost = () => {
     const items = [
         {
             key: '1',
-            label: 'Edit',
+            label: <h2>Edit</h2>,
             children: (
                 <div>
                     <div className="new-post__add-image">
@@ -97,7 +97,7 @@ const NewPost = () => {
         },
         {
             key: '2',
-            label: 'Preview',
+            label: <h2>Preview</h2>,
             children: (
                 <PreviewPost
                     body={postBody}

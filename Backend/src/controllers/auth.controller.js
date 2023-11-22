@@ -8,7 +8,10 @@ const hashPassword = (password) => bcrypt.hashSync(password, bcrypt.genSaltSync(
 
 const authController = {
     register: async (req, res, next) => {
-        const { email, password, firstname, lastname } = req.body;
+        let { email, password, firstname, lastname } = req.body;
+        if (lastname) {
+            lastname = 'User';
+        }
         const [err, existingUser] = await to(User.findOne({ email }));
         if (err) throw err;
         if (existingUser) {

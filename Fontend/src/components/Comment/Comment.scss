@@ -82,11 +82,13 @@
         font-size: 1.7rem;
     }
     &__contentParent {
+        max-width: 200px;
         font-style: italic;
-        display: flex;
-        align-items: center;
         gap: 5px;
         font-size: 1.3rem;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
     }
     &__content {
         font-size: 1.6rem;
