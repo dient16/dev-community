@@ -9,6 +9,9 @@ export const path = {
     TAGS: 'tags',
     FAQS: 'faqs',
     ABOUT: 'about',
+    FOR_YOU: '',
+    TOP: 'top',
+    LATEST: 'latest',
 
     ///User
     READING_LIST: 'readinglist',

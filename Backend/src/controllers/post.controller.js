@@ -8,8 +8,11 @@ const to = require('await-to-js').default;
 const mongoose = require('mongoose');
 const tagController = require('./tag.controller');
 const cloudinary = require('../config/cloudinary.config');
-
+function delay(milliseconds) {
+    return new Promise((resolve) => setTimeout(resolve, milliseconds));
+}
 const getPosts = async (req, res, next) => {
+    await delay(1000);
     try {
         let query = Post.find().select('-body').populate({ path: 'tags', select: '_id name theme' }).populate({
             path: 'author',
@@ -21,16 +24,34 @@ const getPosts = async (req, res, next) => {
             query = query.select(selectedFields);
         }
 
-        if (req.query.sort) {
-            const sortBy = req.query.sort.split(',').join(' ');
-            query = query.sort(sortBy);
+        if (req.query.latest) {
+            query = query.sort('-createdAt');
+        }
+
+        if (req.query.top) {
+            query = query.sort('-likes.length');
+        }
+
+        if (req.user && req.query.foryou) {
+            const [tagsError, tagsUser] = await to(
+                User.findById(req.user._id).select('followedTags').populate({
+                    path: 'followedTags',
+                }),
+            );
+            if (tagsError) {
+                throw new Error('Could not fetch tags, please try again');
+            }
+
+            const followedTags = tagsUser.followedTags.map((tag) => tag._id.toString());
+            query = query.where('tags').in(followedTags);
         }
 
         const page = req.query.page || 1;
-        const limit = req.query.limit || 10;
+        const limit = req.query.limit || 5;
         const skip = (page - 1) * limit;
 
         query.skip(skip).limit(limit);
+
         let posts;
         [error, posts] = await to(query.exec());
         if (error) {
@@ -39,6 +60,7 @@ const getPosts = async (req, res, next) => {
                 message: 'Fetch posts error',
             });
         }
+
         posts = posts.map((post) => {
             const postObject = post.toObject();
             postObject.likeCount = post.likes.length;

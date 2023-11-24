@@ -13,17 +13,19 @@ const MenuAccount = ({ user, setOpenMenu }) => {
     return (
         <div className="menu-account">
             <Flex vertical gap={5}>
-                <Button
-                    to={`/${user?.username}`}
-                    onClick={() => {
-                        setOpenMenu(false);
-                    }}
-                    outline
-                    className="menu-account__btn menu-account__user"
-                >
-                    <div>{`${user.firstname} ${user.lastname}`}</div>
-                    <div>{`@${user?.username}`}</div>
-                </Button>
+                {user && (
+                    <Button
+                        to={`/${user?.username}`}
+                        onClick={() => {
+                            setOpenMenu(false);
+                        }}
+                        outline
+                        className="menu-account__btn menu-account__user"
+                    >
+                        <div>{`${user.firstname} ${user.lastname}`}</div>
+                        <div>{`@${user?.username}`}</div>
+                    </Button>
+                )}
                 <hr />
                 <Button
                     outline

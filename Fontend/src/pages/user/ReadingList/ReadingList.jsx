@@ -1,5 +1,4 @@
 import { Avatar, Button, Flex, message } from 'antd';
-import React from 'react';
 import './ReadingList.scss';
 import { useQuery, useMutation } from '@tanstack/react-query';
 import { apiGetBookmarkUser, apiUnbookmarkPost } from '~/apiServices';

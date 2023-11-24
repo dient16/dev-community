@@ -1,3 +1,5 @@
+import { useQuery } from '@tanstack/react-query';
+import { Spin } from 'antd';
 import { createContext, useEffect, useState } from 'react';
 import { apiGetCurrentUser } from '~/apiServices';
 
@@ -13,25 +15,21 @@ export const AuthProvider = ({ children }) => {
         accessToken: null,
         user: null,
     });
+    const { data, isError, isLoading } = useQuery({
+        queryKey: ['currentUser'],
+        queryFn: apiGetCurrentUser,
+        enabled: !!localStorage.getItem('dev:ACCESS_TOKEN'),
+        staleTime: Infinity,
+    });
 
     useEffect(() => {
-        (async () => {
-            const accessToken = JSON.parse(
-                localStorage.getItem('dev:ACCESS_TOKEN') && localStorage.getItem('dev:ACCESS_TOKEN'),
-            );
-            if (!accessToken) {
-                return setAuth({ isLoggedIn: false, accessToken: null, user: null });
-            } else setAuth({ isLoggedIn: true, accessToken: accessToken, user: null });
-            try {
-                const response = await apiGetCurrentUser();
-                if (response.status === 'success') setAuth({ isLoggedIn: true, accessToken, user: response?.userData });
-                else setAuth({ isLoggedIn: false, accessToken: null, user: null });
-            } catch {
-                setAuth({ isLoggedIn: false, accessToken: null, user: null });
-            }
-        })();
-    }, []);
-
+        if (data?.status == 'success' && !isError && !!localStorage.getItem('dev:ACCESS_TOKEN')) {
+            const token = JSON.parse(localStorage.getItem('dev:ACCESS_TOKEN'));
+            setAuth({ isLoggedIn: true, accessToken: token, user: data?.userData });
+        } else {
+            setAuth({ isLoggedIn: false, accessToken: null, user: null });
+        }
+    }, [data, isError, auth.accessToken]);
     const signIn = (newAccessToken, user) => {
         localStorage.setItem('dev:ACCESS_TOKEN', JSON.stringify(newAccessToken));
         setAuth({ isLoggedIn: true, accessToken: newAccessToken, user });
@@ -42,5 +40,11 @@ export const AuthProvider = ({ children }) => {
         setAuth({ isLoggedIn: false, accessToken: null, user: null });
     };
 
-    return <AuthContext.Provider value={{ ...auth, signIn, signOut }}>{children}</AuthContext.Provider>;
+    return (
+        <AuthContext.Provider value={{ ...auth, signIn, signOut }}>
+            <Spin spinning={isLoading} fullscreen={isLoading}>
+                {children}
+            </Spin>
+        </AuthContext.Provider>
+    );
 };

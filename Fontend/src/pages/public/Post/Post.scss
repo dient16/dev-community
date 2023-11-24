@@ -116,12 +116,17 @@
     }
     &__content {
         padding: 0 30px;
+        overflow: auto;
         .wmde-markdown.wmde-markdown-color {
             //font-family: $font-family;
             font-size: 1.8rem;
             padding: 10px;
             background: transparent;
             color: $black;
+        }
+        table {
+            color: $white;
+            filter: brightness(0.8);
         }
         .code-highlight {
             //background: #ccc;
@@ -130,7 +135,7 @@
         code {
             //background: #ccc;
             //background: $black;
-            filter: brightness(1.1);
+            filter: brightness(0.8);
             mix-blend-mode: difference;
             color: $white;
         }

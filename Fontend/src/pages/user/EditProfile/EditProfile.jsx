@@ -3,7 +3,7 @@ import './EditProfile.scss';
 import { Input, Avatar, Flex, message, Spin } from 'antd';
 import { useForm, Controller } from 'react-hook-form';
 import { apiGetCurrentUser, apiEditUserProfile } from '~/apiServices';
-import { useMutation } from '@tanstack/react-query';
+import { useMutation, useQueryClient } from '@tanstack/react-query';
 
 function EditProfile() {
     const {
@@ -11,7 +11,7 @@ function EditProfile() {
         watch,
         getValues,
         control,
-        formState: { errors },
+        formState: { errors, isLoading },
     } = useForm({
         model: 'onBlur',
         defaultValues: async () => {
@@ -28,6 +28,7 @@ function EditProfile() {
 
     const [avatar, setAvatar] = useState(null);
     const [previewAvatar, setPreviewAvatar] = useState(null);
+    const queryClient = useQueryClient();
     const mutationEditProfile = useMutation({
         mutationFn: (userId, data) => apiEditUserProfile(userId, data),
     });
@@ -50,6 +51,9 @@ function EditProfile() {
                     onSuccess: (response) => {
                         if (response.status === 'success') {
                             message.success('User profile updated successfully');
+                            queryClient.invalidateQueries({
+                                queryKey: ['currentUser'],
+                            });
                         } else {
                             message.error(response.message);
                         }
@@ -61,7 +65,7 @@ function EditProfile() {
 
     return (
         <>
-            <Spin size="large" spinning={mutationEditProfile.isPending} fullscreen={true}></Spin>
+            <Spin size="large" spinning={mutationEditProfile.isPending || isLoading} fullscreen={true} />
             <div className="settings-layout">
                 <form onSubmit={handleSubmit(handleEditInfo)}>
                     <div className="settings__header">
@@ -95,7 +99,7 @@ function EditProfile() {
                                         rules={{ required: 'Name is required' }}
                                         render={({ field }) => (
                                             <>
-                                                <Input xid="lastname" placeholder="John Doe" {...field} />
+                                                <Input id="lastname" placeholder="John Doe" {...field} />
                                                 {errors.lastname && (
                                                     <span className="error-message">{errors.lastname.message}</span>
                                                 )}
