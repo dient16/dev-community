@@ -8,6 +8,7 @@
             font-size: 4rem;
         }
     }
+
     &__body-tags {
         display: flex;
         align-items: center;
@@ -28,6 +29,9 @@
             background: transparent;
             color: $black;
         }
+        table {
+            color: $white;
+        }
         .code-highlight {
             //background: #ccc;
             color: $white;
@@ -35,7 +39,7 @@
         code {
             //background: #ccc;
             //background: $black;
-            filter: brightness(1.1);
+            //filter: brightness(1);
             mix-blend-mode: difference;
             color: $white;
         }

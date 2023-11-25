@@ -1,6 +1,6 @@
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 import { InputTags, PostMarkdown, PreviewPost } from '~/components';
-import { useMutation } from '@tanstack/react-query'; // Import useMutation
+import { useMutation } from '@tanstack/react-query';
 import { useNavigate } from 'react-router-dom';
 import { apiCreatePost } from '~/apiServices/post';
 import { UploadOutlined } from '@ant-design/icons';
@@ -26,9 +26,6 @@ const NewPost = () => {
         },
     });
 
-    useEffect(() => {
-        document.documentElement.setAttribute('data-color-mode', 'light');
-    }, []);
     const handleCreatePost = () => {
         if (postBody && postTitle && postTags.length >= 1) {
             const formData = new FormData();
@@ -108,13 +105,22 @@ const NewPost = () => {
             ),
         },
     ];
-
     return (
         <>
             <Spin size="large" spinning={createPostMutation.isPending} fullscreen={createPostMutation.isPending}></Spin>
             <div className="new-post">
                 <div className="new-post__wrapper">
-                    <Tabs defaultActiveKey="1" items={items} />
+                    <Tabs
+                        defaultActiveKey="1"
+                        items={items}
+                        onChange={(activeKey) => {
+                            if (activeKey == '1') {
+                                document.documentElement.setAttribute('data-color-mode', 'light');
+                            } else {
+                                document.documentElement.setAttribute('data-color-mode', 'dark');
+                            }
+                        }}
+                    />
                 </div>
             </div>
         </>

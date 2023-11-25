@@ -15,12 +15,15 @@ export const apiUploadImage = (data) =>
         withCredentials: true,
     });
 
-export const apiGetPosts = () =>
-    axios({
-        url: '/post?fields=-updatedAt',
+export const apiGetPosts = (page, location) => {
+    return axios({
+        url: `/post?fields=limit=3&page=${page}${
+            location === '/top' ? '&top=true' : location === '/latest' ? '&latest=true' : ''
+        }`,
         method: 'get',
         withCredentials: true,
     });
+};
 export const apiGetPost = (pid, query) =>
     axios({
         url: `/post/${pid}` + (query ? `?fields=${query}` : ''),
@@ -46,7 +49,7 @@ export const apiSearchPost = (q) =>
         params: { q },
         withCredentials: true,
     });
-export const apiGetPostByTagDiscuss = (q) =>
+export const apiGetPostByTagDiscuss = () =>
     axios({
         url: `/post/tag-discuss`,
         method: 'get',

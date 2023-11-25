@@ -50,8 +50,14 @@
         align-items: flex-start;
         gap: 15px;
         .post-title {
-            font-size: 30px;
+            font-size: 20px;
             font-weight: 600;
+            @include screen-tablet {
+                font-size: 25px;
+            }
+            @include screen-laptop {
+                font-size: 30px;
+            }
         }
     }
     &__tags {
@@ -90,7 +96,10 @@
             cursor: pointer;
             border-radius: 10px;
             height: 35px;
-            padding: 5px 15px;
+            padding: 5px;
+            @include screen-mobile {
+                padding: 5px 15px;
+            }
             &:hover {
                 background: #ccc;
             }

@@ -1,4 +1,3 @@
-import { useState } from 'react';
 import MDEditor, { commands } from '@uiw/react-md-editor';
 import './PostMarkdown.scss';
 import icons from '~/utils/icons';
@@ -85,7 +84,6 @@ const PostMarkdown = ({ content, setContent }) => {
                                         const modifyText = `![image](${data.imageUrl})\n`;
                                         setContent((prevContent) => prevContent + modifyText);
                                     },
-                                    onError: (error) => {},
                                 });
                             }
                         }}

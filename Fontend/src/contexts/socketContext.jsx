@@ -10,14 +10,14 @@ function SocketProvider({ children }) {
     useEffect(() => {
         const newSocket = io(`${import.meta.env.VITE_SERVER_URL}`, {
             query: {
-                userId: current_user ? current_user._id : null,
+                userId: current_user ? current_user?._id : null,
             },
             withCredentials: true,
         });
         if (current_user !== null) {
             newSocket.on('connect', () => {
                 newSocket.emit('join', {
-                    userId: current_user._id,
+                    userId: current_user?._id,
                     socketId: newSocket.id,
                 });
             });

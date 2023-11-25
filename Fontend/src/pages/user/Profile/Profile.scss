@@ -17,6 +17,10 @@
         width: 100%;
     }
     &__top {
+        margin: 5px 10px;
+        @include screen-tablet {
+            margin: 0;
+        }
         position: relative;
         box-shadow: 0 3px 10px rgb(0 0 0 / 0.2);
         border-radius: 10px;
@@ -63,6 +67,10 @@
         gap: 15px;
         margin-top: 5px;
         .slipt-left {
+            display: none;
+            @include screen-tablet {
+                display: block;
+            }
             width: 30%;
             .card-skills,
             .card-other {
@@ -85,11 +93,20 @@
             }
         }
         .slipt-right {
-            width: 70%;
+            width: 100%;
+            @include screen-tablet {
+                width: 70%;
+                padding: 0;
+            }
             display: flex;
+            float: 1;
             flex-direction: column;
+            justify-content: center;
+            align-items: center;
             gap: 10px;
+            padding: 5px 10px;
             .my-post-item {
+                width: 100%;
                 padding: 20px;
                 box-shadow: 0 3px 10px rgb(0 0 0 / 0.2);
                 border-radius: 10px;

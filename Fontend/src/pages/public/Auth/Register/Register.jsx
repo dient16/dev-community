@@ -44,8 +44,7 @@ function SignUp() {
     };
 
     return (
-        <>
-            <Spin spinning={registerMutation.isPending} fullscreen={registerMutation.isPending} size="large" />
+        <Spin spinning={registerMutation.isPending} fullscreen={registerMutation.isPending} size="large">
             <div className="registration">
                 <div className="registration__content">
                     <h1>Welcome to Dev Community</h1>
@@ -118,7 +117,7 @@ function SignUp() {
                     </div>
                 </div>
             </div>
-        </>
+        </Spin>
     );
 }
 

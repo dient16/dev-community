@@ -1,4 +1,3 @@
-import React from 'react';
 import './Search.scss';
 import { Empty, Flex } from 'antd';
 import ResultItem from './ResultItem';

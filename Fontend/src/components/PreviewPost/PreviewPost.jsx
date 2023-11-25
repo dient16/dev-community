@@ -16,7 +16,6 @@ const PreviewPost = ({ body, title, image, tags }) => {
                 reader.onerror = (error) => reject(error);
             });
         } catch (error) {
-            console.error('Error converting image to base64:', error);
             return null;
         }
     };
@@ -28,12 +27,8 @@ const PreviewPost = ({ body, title, image, tags }) => {
                 setPreview(base64Preview);
             }
         };
-
         loadPreview();
     }, [image]);
-    useEffect(() => {
-        document.documentElement.setAttribute('data-color-mode', 'dark');
-    }, []);
     return (
         <div className="post-preview__body">
             {image && <Image className="post-preview__body-image" src={preview} preview={false} />}

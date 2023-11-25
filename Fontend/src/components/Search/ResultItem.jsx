@@ -1,5 +1,4 @@
 import { Avatar, Flex } from 'antd';
-import React from 'react';
 import './Search.scss';
 import moment from 'moment';
 import { Link } from 'react-router-dom';

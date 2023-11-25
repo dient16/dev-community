@@ -175,7 +175,7 @@ function socketHandler(io) {
         socket.on('comment', (data) => handleNotification(io, 'comment', data));
         socket.on('disconnect', () => {
             const disconnectingUser = users.find((item) => item?.socketId === socket?.id);
-            removeSocket(disconnectingUser.id, socket?.id);
+            removeSocket(disconnectingUser?.id, socket?.id);
             console.log(`connected: `, users);
             console.log('disconnected: ', disconnected);
         });

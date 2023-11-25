@@ -1,3 +1,4 @@
+@use '~/styles/' as *;
 .tag-children {
     display: flex;
     align-items: center;
@@ -9,10 +10,14 @@
     font-size: 1.6rem;
     cursor: pointer;
     width: fit-content;
-    // &__icon {
-    // }
     &__name {
-        font-size: 1.7rem;
+        font-size: 1.3rem;
+        @include screen-tablet {
+            font-size: 1.7rem;
+        }
+        @include screen-mobile {
+            font-size: 1.4rem;
+        }
         font-weight: 400;
     }
 }

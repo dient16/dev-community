@@ -21,7 +21,7 @@ const PostItem = ({ postItemOnHome, isLiked, onToggleLike, isBookmarked, onToggl
             setIsOpenAuthModal(true);
             return;
         }
-        onToggleLike(postItemOnHome._id, isLiked);
+        onToggleLike(postItemOnHome?._id, isLiked);
     };
 
     const handleToggleBookmark = (e) => {
@@ -30,7 +30,7 @@ const PostItem = ({ postItemOnHome, isLiked, onToggleLike, isBookmarked, onToggl
             setIsOpenAuthModal(true);
             return;
         }
-        onToggleBookmark(postItemOnHome._id, isBookmarked);
+        onToggleBookmark(postItemOnHome?._id, isBookmarked);
     };
 
     return (
@@ -38,7 +38,7 @@ const PostItem = ({ postItemOnHome, isLiked, onToggleLike, isBookmarked, onToggl
             <ModalRequireLogin open={isOpenAuthModal} setOpen={setIsOpenAuthModal} />
             <div
                 className="post-item"
-                onClick={() => navigate(`/post/${postItemOnHome.author.username}/${postItemOnHome._id}`)}
+                onClick={() => navigate(`/post/${postItemOnHome?.author.username}/${postItemOnHome._id}`)}
             >
                 {postItemOnHome?.image && (
                     <div className="post-item__image">
