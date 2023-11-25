@@ -33,7 +33,7 @@ app.get('/run', (req, res) => {
 });
 const io = new Server(server, {
     cors: {
-        origin: '*',
+        origin: process.env.CLIENT_URI,
         methods: ['GET', 'POST'],
         credentials: true,
     },
