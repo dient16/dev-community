@@ -35,6 +35,7 @@ const CommentItem = ({
         if (response.status === 'success') {
             setTextReply('');
             setIsShowInputReply(false);
+
             onAddReply(commentId, response.comment);
         } else {
             message.error('Something went wrong');

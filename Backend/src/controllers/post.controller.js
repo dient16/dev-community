@@ -29,9 +29,8 @@ const getPosts = async (req, res, next) => {
         }
 
         if (req.query.top) {
-            query = query.sort('-likes.length');
+            query = query.sort('likes.length');
         }
-
         if (req.user && req.query.foryou) {
             const [tagsError, tagsUser] = await to(
                 User.findById(req.user._id).select('followedTags').populate({

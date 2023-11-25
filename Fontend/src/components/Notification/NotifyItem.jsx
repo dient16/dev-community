@@ -10,7 +10,11 @@ const NotifyItem = ({ notify }) => {
             <div className="notification-item">
                 <Avatar size={45} src={notify.sender?.avatar} />
                 <div className="notification-item__content">
-                    <Link className="notification-item__sender-name" to={`/${notify.sender?.username}`}>
+                    <Link
+                        className="notification-item__sender-name"
+                        to={`/${notify.sender?.username}`}
+                        onClick={(e) => e.stopPropagation()}
+                    >
                         {notify.sender.username}
                     </Link>
                     <p className="notification-item__message">{`Follow you: ${moment(notify?.date).format(
@@ -31,7 +35,11 @@ const NotifyItem = ({ notify }) => {
             >
                 <Avatar size={45} src={notify.sender?.avatar} />
                 <div className="notification-item__content">
-                    <Link className="notification-item__sender-name" to={`/${notify.sender?.username}`}>
+                    <Link
+                        className="notification-item__sender-name"
+                        to={`/${notify.sender?.username}`}
+                        onClick={(e) => e.stopPropagation()}
+                    >
                         {notify.sender?.username}
                     </Link>
                     <p className="notification-item__message">{`Like your post: ${moment(notify?.date).format(

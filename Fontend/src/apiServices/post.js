@@ -17,7 +17,7 @@ export const apiUploadImage = (data) =>
 
 export const apiGetPosts = (page, location) => {
     return axios({
-        url: `/post?fields=limit=3&page=${page}${
+        url: `/post?limit=3&page=${page}${
             location === '/top' ? '&top=true' : location === '/latest' ? '&latest=true' : ''
         }`,
         method: 'get',

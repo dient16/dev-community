@@ -31,7 +31,6 @@ const HomeContent = () => {
     });
     useEffect(() => {
         refetch();
-        window.scrollTo(0, 0);
     }, [location.pathname, refetch]);
     const handleToggleLike = (postId, isLiked) => {
         const apiAction = isLiked ? apiUnlikePost : apiLikePost;
@@ -69,17 +68,24 @@ const HomeContent = () => {
     };
 
     const updatePostInQuery = (updatedPost) => {
-        queryClient.setQueryData(['posts'], (prevData) => {
-            const newPosts = prevData.pages.map((page) => ({
-                ...page,
-                posts: page.posts.map((post) => (post._id === updatedPost._id ? updatedPost : post)),
-            }));
+        queryClient.setQueryData(
+            location.pathname === '/'
+                ? ['posts', 'for-you']
+                : location.pathname === '/top'
+                ? ['posts', 'for-you']
+                : ['posts', 'latest'],
+            (prevData) => {
+                const newPosts = prevData.pages.map((page) => ({
+                    ...page,
+                    posts: page.posts.map((post) => (post._id === updatedPost._id ? updatedPost : post)),
+                }));
 
-            return {
-                ...prevData,
-                pages: newPosts,
-            };
-        });
+                return {
+                    ...prevData,
+                    pages: newPosts,
+                };
+            },
+        );
     };
     const _posts = data?.pages.flatMap((page) => page?.posts);
 
@@ -118,9 +124,9 @@ const HomeContent = () => {
                                     ),
                             )}
                     </InfiniteScroll>
-                    <FloatButton.BackTop visibilityHeight={0} duration={1000} />
                 </>
             )}
+            {/* <FloatButton.BackTop /> */}
         </div>
     );
 };

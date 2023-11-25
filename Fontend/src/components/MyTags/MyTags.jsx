@@ -15,6 +15,7 @@ const MyTags = () => {
         queryKey: ['myTags'],
         queryFn: apiGetMyTags,
         enabled: isLoggedIn,
+        staleTime: Infinity,
     });
 
     const { data: popularTagsData, isLoading: isLoadingPopularTags } = useQuery({
