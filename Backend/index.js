@@ -7,11 +7,11 @@ const compression = require('compression');
 const cookieParser = require('cookie-parser');
 const app = express();
 const { Server } = require('socket.io');
-const dbConnect = require('./src/config/db.config');
-const initRoutes = require('./src/routes');
+const dbConnect = require('./config/db.config');
+const initRoutes = require('./routes');
 const server = require('http').createServer(app);
-const { socketHandler } = require('./src/socket/socket');
-const { errHandler } = require('./src/middlewares/errorHandler');
+const { socketHandler } = require('./socket/socket');
+const { errHandler } = require('./middlewares/errorHandler');
 app.use(
     cors({
         origin: process.env.CLIENT_URI,
