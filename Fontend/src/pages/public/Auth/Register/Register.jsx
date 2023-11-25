@@ -85,7 +85,13 @@ function SignUp() {
                             <label htmlFor="password">Password</label>
                             <input
                                 className={clsx(errors.password && 'error')}
-                                {...register('password', { required: 'Password is required' })}
+                                {...register('password', {
+                                    required: 'Password is required',
+                                    minLength: {
+                                        value: 6,
+                                        message: 'Password must be at least 6 characters',
+                                    },
+                                })}
                                 type="password"
                             />
                             {errors.password && <p className="error-message">{errors.password.message}</p>}
@@ -96,6 +102,10 @@ function SignUp() {
                             <input
                                 {...register('confirmPassword', {
                                     required: 'Confirm password is required',
+                                    minLength: {
+                                        value: 6,
+                                        message: 'Password must be at least 6 characters',
+                                    },
                                     validate: (value) => value === getValues('password') || 'Passwords do not match',
                                 })}
                                 className={clsx(errors.confirmPassword && 'error')}

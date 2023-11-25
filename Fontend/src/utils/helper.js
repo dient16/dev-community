@@ -6,6 +6,15 @@ export function hexToRgba(hex, alpha) {
         return `rgba(${r}, ${g}, ${b}, ${alpha})`;
     }
 }
+export function scrollIntoView(delay) {
+    setTimeout(() => {
+        window.scrollTo({
+            top: 0,
+            left: 0,
+            behavior: 'smooth',
+        });
+    }, delay);
+}
 
 export const appendNodeToChildren = (list, parentKey, newNode) => {
     return list.map((node) => {

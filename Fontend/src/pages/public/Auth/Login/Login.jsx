@@ -70,7 +70,7 @@ const Login = () => {
                         validate={{
                             required: 'Password is required',
                             minLength: {
-                                value: 3,
+                                value: 6,
                                 message: 'Password must be at least 6 characters',
                             },
                         }}

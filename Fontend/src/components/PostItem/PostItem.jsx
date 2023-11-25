@@ -64,7 +64,9 @@ const PostItem = ({ postItemOnHome, isLiked, onToggleLike, isBookmarked, onToggl
                                         e.stopPropagation();
                                         navigate(`/${postItemOnHome.author.username}`);
                                     }}
-                                >{`${postItemOnHome?.author?.firstname} ${postItemOnHome?.author?.lastname}`}</span>
+                                >{`${postItemOnHome?.author?.firstname ? postItemOnHome.author.firstname : ''} ${
+                                    postItemOnHome?.author?.lastname ? postItemOnHome.author.lastname : ''
+                                }`}</span>
                                 <span className="post-time">{moment(postItemOnHome.createdAt).fromNow()}</span>
                             </div>
                         </div>

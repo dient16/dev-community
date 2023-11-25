@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { InputTags, PostMarkdown, PreviewPost } from '~/components';
 import { useMutation } from '@tanstack/react-query';
 import { useNavigate } from 'react-router-dom';
@@ -25,6 +25,9 @@ const NewPost = () => {
             message.error('create failed');
         },
     });
+    useEffect(() => {
+        document.documentElement.setAttribute('data-color-mode', 'light');
+    }, []);
 
     const handleCreatePost = () => {
         if (postBody && postTitle && postTags.length >= 1) {

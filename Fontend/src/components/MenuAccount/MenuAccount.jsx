@@ -22,7 +22,7 @@ const MenuAccount = ({ user, setOpenMenu }) => {
                         outline
                         className="menu-account__btn menu-account__user"
                     >
-                        <div>{`${user.firstname} ${user.lastname}`}</div>
+                        <div>{`${user.firstname ? user.firstname : ''} ${user.lastname ? user.lastname : ''}`}</div>
                         <div>{`@${user?.username}`}</div>
                     </Button>
                 )}

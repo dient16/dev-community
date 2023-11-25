@@ -107,7 +107,9 @@ const Profile = () => {
                             </Button>
                         )}
 
-                        <h2 className="username">{`${user?.firstname} ${user?.lastname}`}</h2>
+                        <h2 className="username">{`${user?.firstname ? user.firstname : ''} ${
+                            user?.lastname ? user.lastname : ''
+                        }`}</h2>
                         <p className="bio">{user?.bio}</p>
                         <Flex align="center" gap={10}>
                             <FaBirthdayCake size={20} />
