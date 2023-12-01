@@ -112,8 +112,8 @@ const removeTags = async (tags, post) => {
 };
 
 const updateTags = async (tags, post) => {
-    await createTags(tags, post);
     await removeTags(tags, post);
+    await createTags(tags, post);
 };
 const followTag = async (req, res, next) => {
     try {

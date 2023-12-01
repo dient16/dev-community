@@ -1,0 +1,94 @@
+@use '~/styles/' as *;
+.header {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0px 1px 1px rgba(0, 0, 0, 0.12);
+    height: 70px;
+    width: $width-full;
+    top: 0;
+    right: 0;
+    position: sticky;
+    -webkit-align-items: center;
+    -webkit-box-align: center;
+    -ms-flex-align: center;
+    background: rgba(255, 255, 255, 1);
+    z-index: 10;
+    padding: 10px;
+    &__inner {
+        max-width: $width-main;
+        width: $width-full;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+    }
+    &__left {
+        width: 20%;
+    }
+
+    &__logo {
+        img {
+            width: 50px;
+        }
+        width: 70px;
+        cursor: pointer;
+    }
+    &__menu {
+        cursor: pointer;
+        @include screen-laptop {
+            display: none;
+        }
+    }
+    &__search {
+        width: 50%;
+        display: none;
+        @include screen-mobile {
+            display: block;
+        }
+    }
+    &__actions {
+        width: 39%;
+        display: flex;
+        gap: 3px;
+        @include screen-mobile {
+            width: 25%;
+        }
+        .btn-actions {
+            padding: 5px 10px;
+            margin: 0;
+            min-width: 70px;
+            @include screen-mobile {
+                padding: 5px 13px;
+            }
+        }
+    }
+    &__right {
+        width: 30%;
+        display: flex;
+        align-items: flex-end;
+        gap: 20px;
+        justify-content: flex-end;
+        padding-top: 0.4rem;
+        padding-bottom: 0.4rem;
+        .btn-post {
+            display: none;
+            border-radius: 15px;
+            @include screen-tablet {
+                display: flex;
+            }
+        }
+        .btn-search {
+            margin-right: 30px;
+            background: $primary-color;
+            @include screen-mobile {
+                display: none;
+            }
+        }
+    }
+    &__notify-icon {
+        position: relative;
+    }
+}
+.notify-wrapper {
+    transition: all 200ms linear 0s;
+}

@@ -27,7 +27,7 @@ function findConnectedUser(userId) {
     return users.find((item) => item?.id === userId);
 }
 
-function handleNotification(io, eventType, { sender, receiver, postId, date }) {
+function handleNotification(io, eventType, { sender, receiver, postId, date, data }) {
     const receiverSocket = findConnectedUser(receiver?.id);
 
     switch (eventType) {
@@ -40,7 +40,7 @@ function handleNotification(io, eventType, { sender, receiver, postId, date }) {
             break;
 
         case 'comment':
-            handleCommentEvent(io, receiverSocket, sender, receiver);
+            handleCommentEvent(io, receiverSocket, sender, receiver, data, date);
             break;
 
         default:
@@ -53,18 +53,18 @@ function handleLikeEvent(io, receiverSocket, sender, receiver, postId, date) {
         io.to(receiverSocket.socketId).emit('notification', {
             sender: sender,
             receiver: receiver,
-            type: 'like',
             postId: postId,
             date: date,
+            type: 'like',
         });
         unreadNotification.push({
             id: receiver.id,
             data: {
                 sender: sender,
                 receiver: receiver,
-                type: 'like',
                 postId: postId,
                 date: date,
+                type: 'like',
             },
         });
     } else {
@@ -73,10 +73,11 @@ function handleLikeEvent(io, receiverSocket, sender, receiver, postId, date) {
             unreadNotification.push({
                 id: disconnected[disconnectedIndex]?.id,
                 data: {
-                    senderName: sender.username,
-                    receiverName: receiver.username,
-                    type: 'like',
+                    sender: sender,
+                    receiver: receiver,
                     postId: postId,
+                    date: date,
+                    type: 'like',
                 },
             });
         }
@@ -106,8 +107,9 @@ function handleFollowEvent(io, receiverSocket, sender, receiver, date) {
             unreadNotification.push({
                 id: disconnected[disconnectedIndex].id,
                 data: {
-                    senderName: sender.username,
-                    receiverName: receiver.username,
+                    sender: sender,
+                    receiver: receiver,
+                    date,
                     type: 'follow',
                 },
             });
@@ -115,18 +117,22 @@ function handleFollowEvent(io, receiverSocket, sender, receiver, date) {
     }
 }
 
-function handleCommentEvent(io, receiverSocket, sender, receiver) {
+function handleCommentEvent(io, receiverSocket, sender, receiver, data, date) {
     if (receiverSocket) {
         io.to(receiverSocket.socketId).emit('notification', {
-            senderName: sender.username,
-            receiverName: receiver.username,
+            sender: sender,
+            receiver: receiver,
+            data,
+            date,
             type: 'comment',
         });
         unreadNotification.push({
             id: receiver.id,
             data: {
-                senderName: sender.username,
-                receiverName: receiver.username,
+                sender: sender,
+                receiver: receiver,
+                data,
+                date,
                 type: 'comment',
             },
         });
@@ -136,8 +142,10 @@ function handleCommentEvent(io, receiverSocket, sender, receiver) {
             unreadNotification.push({
                 id: disconnected[disconnectedIndex]?.id,
                 data: {
-                    senderName: sender.username,
-                    receiverName: receiver.username,
+                    sender: sender,
+                    receiver: receiver,
+                    data,
+                    date,
                     type: 'comment',
                 },
             });

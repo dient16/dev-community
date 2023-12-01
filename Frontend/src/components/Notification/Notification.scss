@@ -1,0 +1,144 @@
+@use '~/styles/' as *;
+.notification {
+    width: 370px;
+    height: 500px;
+    background: $white;
+    border-radius: 8px;
+    box-shadow: rgba(0, 0, 0, 0.12) 0px -4px 32px;
+    transition: all 200ms linear 0s;
+    user-select: none;
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    font-family: $font-family;
+    margin: -11px;
+    &__top {
+        margin-top: 5px;
+        display: flex;
+        flex-direction: column;
+        align-items: flex-start;
+        padding: 15px;
+        .title {
+            color: $black;
+            font-weight: 600;
+            font-size: 2.4rem;
+            line-height: 3rem;
+        }
+    }
+    &__body {
+        display: flex;
+        flex-direction: column;
+        padding: 15px;
+        overflow-y: auto;
+    }
+}
+.header-notify {
+    margin-top: 20px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    width: 100%;
+    flex-wrap: wrap;
+    &__item {
+        color: $black;
+        background: rgba(22, 24, 35, 0.2);
+        border: none;
+        padding: 2px 8px;
+        text-align: center;
+        cursor: pointer;
+        border-radius: 12px;
+        transition: all 0.5s ease-out;
+        &--active {
+            color: $white;
+            background: $black;
+            font-weight: 500;
+        }
+    }
+}
+.notification-item {
+    margin-top: 10px;
+    display: flex;
+    gap: 15px;
+    align-items: center;
+    font-size: 1.6rem;
+    padding: 7px 3px;
+    border-radius: 15px;
+    cursor: pointer;
+    &:hover {
+        background: #f1f1f1;
+    }
+    &__content {
+        flex: 1;
+        flex-direction: column;
+        display: flex;
+    }
+    &__sender-name {
+        display: -webkit-box;
+        overflow: hidden;
+        text-decoration: none;
+        text-overflow: ellipsis;
+        -webkit-line-clamp: 1;
+        -webkit-box-orient: vertical;
+        font-weight: 600;
+        word-break: break-all;
+        color: $black;
+        font-size: 1.6rem;
+        line-height: 1.7rem;
+        width: fit-content;
+        &:hover {
+            text-decoration: underline;
+        }
+    }
+    &__message {
+        font-size: 1.4rem;
+        display: -webkit-box;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        -webkit-line-clamp: 2;
+        -webkit-box-orient: vertical;
+        color: rgba(22, 24, 35, 0.7);
+        max-height: 130px;
+        word-break: break-word;
+    }
+    &__action {
+        width: 100px;
+        button {
+            font-family: $font-family;
+            border-radius: 9px;
+            border: none;
+            color: rgb(255, 255, 255);
+            background-color: $primary-color;
+            min-width: 40px;
+            min-height: 30px;
+            font-size: 13px;
+            line-height: 16px;
+            font-weight: 500;
+            display: flex;
+            position: relative;
+            -webkit-box-align: center;
+            align-items: center;
+            -webkit-box-pack: center;
+            justify-content: center;
+            padding: 6px 8px;
+            user-select: none;
+            cursor: pointer;
+            align-self: center;
+            flex: 0 0 auto;
+        }
+    }
+    &__content-comment {
+        border-left: 2px solid #ccc;
+        display: -webkit-box;
+        font-size: 1.4rem;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        -webkit-box-orient: vertical;
+        color: rgba(22, 24, 35, 0.5);
+        max-height: 130px;
+        word-break: break-word;
+        position: relative;
+        padding-left: 8px;
+        margin-top: 1px;
+        -webkit-line-clamp: 1;
+    }
+}

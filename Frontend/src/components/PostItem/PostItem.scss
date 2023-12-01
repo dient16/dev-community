@@ -1,0 +1,146 @@
+@use '~/styles/' as *;
+.post-item {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    padding: 1px;
+    gap: 10px;
+    box-shadow: 0 3px 10px rgb(0 0 0 / 0.05);
+    margin: 5px 10px;
+    border-radius: 10px;
+    overflow: hidden;
+    cursor: pointer;
+    font-family: $font-family;
+    background: $white;
+    &__image {
+        img {
+            width: 100%;
+            height: 243px;
+            object-fit: cover;
+        }
+    }
+    &__body {
+        display: flex;
+        flex-direction: column;
+    }
+
+    &__author {
+        display: flex;
+        align-items: center;
+        justify-content: flex-start;
+        gap: 10px;
+        margin-left: 15px;
+        .author-avatar {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+        }
+        .post-author {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: flex-start;
+        }
+    }
+    &__wrap-detail {
+        margin: 15px 0;
+        padding-left: 50px;
+        display: flex;
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 15px;
+        .post-title {
+            font-size: 20px;
+            font-weight: 600;
+            @include screen-tablet {
+                font-size: 25px;
+            }
+            @include screen-laptop {
+                font-size: 30px;
+            }
+        }
+    }
+    &__tags {
+        display: flex;
+        gap: 5px;
+        flex-wrap: wrap;
+    }
+    &__actions {
+        padding-top: 10px;
+        margin-top: 10px;
+        width: 100%;
+        display: flex;
+        align-items: center;
+        margin-bottom: 15px;
+        border-top: 1px solid #686565;
+        .action-bookmark {
+            cursor: pointer;
+        }
+    }
+    &__action-comment,
+    &__action-like {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+    &__action-like {
+        width: 33%;
+        @include screen-mobile {
+            width: 37%;
+        }
+    }
+    &__action-comment,
+    &__action-like {
+        > .comment-inner,
+        > .like-inner {
+            user-select: none;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 5px;
+            cursor: pointer;
+            border-radius: 10px;
+            height: 35px;
+            padding: 5px;
+            @include screen-mobile {
+                padding: 5px 15px;
+            }
+            &:hover {
+                background: #ccc;
+            }
+        }
+    }
+
+    &__action-comment {
+        width: 47%;
+        @include screen-mobile {
+            width: 37%;
+        }
+        .comment-icon {
+            margin-top: 5px;
+        }
+    }
+    &__action-bookmark {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        width: 20%;
+        @include screen-mobile {
+            width: 26%;
+        }
+        .icon--active {
+            background: #bde4e2;
+        }
+
+        .icon {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 10px;
+            border-radius: 5px;
+            &:hover {
+                background: #ccc;
+            }
+        }
+    }
+}

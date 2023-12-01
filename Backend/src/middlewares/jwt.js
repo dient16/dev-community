@@ -8,7 +8,7 @@ const jwtMiddleware = {
                 isAdmin,
             },
             process.env.JWT_ACCESS_KEY,
-            { expiresIn: '1d' },
+            { expiresIn: '2d' },
         );
     },
 
