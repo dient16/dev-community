@@ -1,0 +1,64 @@
+@use '~/styles/' as *;
+.sidebar {
+    max-width: 240px;
+    width: 100%;
+    padding: 0px 0px 10px 0;
+    font-family: $font-family;
+    @include screen-laptop {
+        margin-left: 20px;
+        padding: 20px 10px 10px 0;
+    }
+    &__top {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        gap: 5px;
+    }
+    &__item {
+        text-decoration: none;
+        color: $black;
+        font-weight: 600;
+        display: flex;
+        align-items: center;
+        padding: 4px 4px 4px 0;
+        gap: 10px;
+        border-radius: 7px;
+        color: #161823;
+        font-size: 1.5rem;
+        @include screen-tablet {
+            font-size: 1.8rem;
+            padding: 7px 7px 7px 0;
+        }
+        &--active {
+            color: $primary-color;
+        }
+        &:hover {
+            background: #2e386e0f;
+        }
+    }
+    &__icon {
+        font-size: 2.2rem;
+        font-weight: bold;
+        display: flex;
+        justify-content: center;
+    }
+    &__title {
+        font-size: 2rem;
+    }
+    &__social-network {
+        margin: 10px 0;
+        .icon {
+            padding: 5px;
+            border-radius: 5px;
+            display: flex;
+            align-self: center;
+            cursor: pointer;
+            &:hover {
+                background: #bde4e2;
+            }
+        }
+    }
+    &__my-tags {
+        height: 100%;
+    }
+}

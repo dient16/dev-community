@@ -94,6 +94,70 @@ const createComment = async (req, res, next) => {
     }
 };
 
+const getCommentsByPostId = async (req, res, next) => {
+    try {
+        const { postId } = req.params;
+        const userId = req.user._id;
+        const post = await Post.findById(postId).populate({
+            path: 'comments',
+            match: { parentId: null },
+            options: { sort: { createdAt: -1 } },
+            populate: [
+                {
+                    path: 'author',
+                    select: 'firstname lastname avatar username',
+                },
+                {
+                    path: 'parentId',
+                    match: { parentId: null },
+                    populate: {
+                        path: 'author',
+                        select: 'firstname lastname avatar username',
+                    },
+                },
+            ],
+        });
+
+        if (!post) {
+            return res.status(404).json({
+                status: 'error',
+                message: 'Post not found',
+            });
+        }
+
+        const comments = await Promise.all(
+            post.comments.map(async (comment) => {
+                const [err, replies] = await to(Comment.find({ parentId: comment._id }));
+                if (err) {
+                    return res.status(500).json({
+                        status: 'error',
+                        message: 'Error fetching replies',
+                    });
+                }
+
+                const replyCount = replies.length;
+                const commentObject = { ...comment.toObject(), replyCount };
+
+                commentObject.isLiked =
+                    Array.isArray(comment.likes) && comment.likes.some((like) => like.equals(userId));
+                commentObject.likeCount = Array.isArray(comment.likes) ? comment.likes.length : 0;
+                commentObject.replyCount = Array.isArray(replies) ? replies.length : 0;
+
+                delete commentObject.likes;
+
+                return commentObject;
+            }),
+        );
+
+        return res.status(200).json({
+            status: 'success',
+            comments,
+        });
+    } catch (error) {
+        next(error);
+    }
+};
+
 const getRepliedByParentId = async (req, res, next) => {
     try {
         const { commentId } = req.params;
@@ -114,17 +178,24 @@ const getRepliedByParentId = async (req, res, next) => {
                 message: 'Fetching replied comments failed',
             });
         }
-        const contentParentComment = await Comment.findById(commentId).select('content');
-        const repliedComments = await Promise.all(
-            repliedComment.map(async (comment) => {
-                const replies = await Comment.find({ parentId: comment._id });
-                return { ...comment.toObject(), replyCount: replies.length };
-            }),
-        );
+
         if (repliedComment) {
+            const repliedComments = await Promise.all(
+                repliedComment.map(async (comment) => {
+                    const replies = await Comment.find({ parentId: comment._id });
+                    const commentObject = comment.toObject();
+                    commentObject.isLiked =
+                        Array.isArray(comment.likes) && comment.likes.some((like) => like.equals(userId));
+                    commentObject.likeCount = Array.isArray(comment.likes) && comment.likes.length;
+                    commentObject.replyCount = Array.isArray(replies) ? replies.length : 0;
+                    delete commentObject.likes;
+                    delete commentObject.replies;
+                    return commentObject;
+                }),
+            );
+
             return res.status(200).json({
                 status: 'success',
-                contentParent: contentParentComment.content,
                 repliedComments,
             });
         } else {
@@ -184,6 +255,58 @@ const likeComment = async (req, res, next) => {
         return res.status(200).json({
             status: 'success',
             message: 'Like comment successfully',
+            comment: commentObject,
+        });
+    } catch (error) {
+        next(error);
+    }
+};
+const unlikeComment = async (req, res, next) => {
+    try {
+        const { commentId } = req.params;
+        const { _id: userId } = req.user;
+
+        if (!commentId || !userId) {
+            return res.status(400).json({
+                status: 'error',
+                message: 'Missing input',
+            });
+        }
+
+        const existingComment = await Comment.findById(commentId);
+
+        if (!existingComment) {
+            return res.status(404).json({
+                status: 'error',
+                message: 'Comment not found',
+            });
+        }
+
+        const [updateErr, updatedComment] = await to(
+            Comment.findByIdAndUpdate(commentId, { $pull: { likes: userId } }, { new: true }).populate({
+                path: 'author',
+                select: 'firstname lastname avatar',
+            }),
+        );
+
+        if (updateErr || !updatedComment) {
+            return res.status(500).json({
+                status: 'error',
+                message: 'Unlike comment failed',
+            });
+        }
+
+        const commentObject = updatedComment.toObject();
+        commentObject.isLiked =
+            Array.isArray(updatedComment.likes) && updatedComment.likes.some((like) => like.equals(userId));
+        commentObject.likeCount = Array.isArray(updatedComment.likes) ? updatedComment.likes.length : 0;
+        commentObject.replyCount = Array.isArray(updatedComment.replies) ? updatedComment.replies.length : 0;
+        delete commentObject.likes;
+        delete commentObject.replies;
+
+        return res.status(200).json({
+            status: 'success',
+            message: 'Unlike comment successfully',
             comment: commentObject,
         });
     } catch (error) {
@@ -255,5 +378,7 @@ module.exports = {
     createComment,
     getRepliedByParentId,
     likeComment,
+    unlikeComment,
     deleteComment,
+    getCommentsByPostId,
 };

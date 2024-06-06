@@ -1,0 +1,195 @@
+@use '~/styles/' as *;
+.post-detail {
+    width: $width-full;
+    margin-bottom: 100px;
+    &__wrapper {
+        max-width: $width-main;
+        width: $width-full;
+        margin: 0 auto;
+        display: flex;
+        align-items: flex-start;
+        gap: 10px;
+        border-radius: 10px;
+    }
+    &__actions {
+        margin: 10px;
+        margin-top: 65px;
+        display: flex;
+        flex-direction: column;
+        gap: 30px;
+        position: sticky;
+        top: 100px;
+        display: none;
+        width: 50px;
+        @include screen-laptop {
+            margin: 30px;
+            display: block;
+        }
+        @include screen-tablet {
+            margin: 20px;
+            display: block;
+        }
+    }
+    &__action-like,
+    &__action-comment,
+    &__action-bookmark {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        flex-direction: column;
+        padding: 8px 7px;
+        border-radius: 50%;
+        gap: 10px;
+        border: 1px solid transparent;
+        cursor: pointer;
+    }
+    &__action-bookmark {
+        .icon--active {
+            background: #bde4e2;
+            opacity: 0.8;
+        }
+        .icon {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 10px;
+            border-radius: 10px;
+        }
+    }
+    &__action-like {
+        height: 39px;
+        &:hover {
+            border: 1px solid red;
+        }
+    }
+    &__action-like--active {
+        border: 1px solid red;
+    }
+    &__body {
+        max-width: 850px;
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.03);
+        background-color: rgba(255, 255, 255, 0.5);
+        display: flex;
+        flex-direction: column;
+        gap: 30px;
+    }
+    &__body-image {
+        width: 100%;
+        border-radius: 10px;
+    }
+
+    &__body-author {
+        display: flex;
+        gap: 10px;
+        padding: 0 30px;
+
+        .author-avatar {
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            object-fit: cover;
+            cursor: pointer;
+        }
+        .author-wrap {
+            display: flex;
+            flex-direction: column;
+            .author-name {
+                font-size: 1.7rem;
+                font-weight: 700;
+            }
+        }
+    }
+    &__body-title {
+        font-size: 3rem;
+        font-weight: 700;
+        padding: 0 30px;
+        @include screen-laptop {
+            font-size: 4rem;
+        }
+    }
+    &__body-tags {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        flex-wrap: wrap;
+        padding: 0 30px;
+        font-size: 2rem;
+    }
+    &__content {
+        padding: 0 30px;
+        overflow: auto;
+        .wmde-markdown.wmde-markdown-color {
+            //font-family: $font-family;
+            font-size: 1.8rem;
+            padding: 10px;
+            background: transparent;
+            color: $black;
+        }
+        table {
+            color: $white;
+            filter: brightness(0.8);
+        }
+        .code-highlight {
+            color: hsl(0, 0%, 80%);
+        }
+
+        code {
+            filter: brightness(1.1);
+            mix-blend-mode: difference;
+            color: hsl(0, 0%, 80%);
+        }
+        pre {
+            color: $white;
+            display: -webkit-box;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            -webkit-line-clamp: 1;
+            -webkit-box-orient: vertical;
+            word-break: break-all;
+        }
+    }
+    &__author {
+        flex: 1;
+        min-width: 200px;
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        background-color: rgba(255, 255, 255, 0.5);
+        padding: 20px;
+        border-radius: 10px;
+        position: sticky;
+        top: 80px;
+        display: none;
+        @include screen-laptop {
+            display: block;
+        }
+    }
+    &__author-top {
+        .author-background {
+            position: relative;
+            height: 100px;
+            background: rgb(80, 168, 219);
+            border-radius: 10px;
+            .avatar-info {
+                display: flex;
+                align-items: flex-end;
+                gap: 10px;
+                position: absolute;
+                bottom: -33px;
+                left: 15px;
+                .author-avatar {
+                    width: 60px;
+                    height: 60px;
+                    border-radius: 50%;
+                    cursor: pointer;
+                }
+            }
+        }
+        .btn-follow {
+            width: 100%;
+            margin: 0;
+            margin-top: 50px;
+        }
+        .author-bio {
+            margin-top: 10px;
+        }
+    }
+}

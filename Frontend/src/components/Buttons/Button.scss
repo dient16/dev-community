@@ -1,0 +1,95 @@
+@use '~/styles/' as *;
+
+.button {
+    &__wrapper {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        min-width: 100px;
+        padding: 9px 16px;
+        border-radius: 4px;
+        font-size: 1.6rem;
+        font-weight: 600;
+        font-family: $font-family;
+        cursor: pointer;
+        background-color: $white;
+        border: 1px solid transparent;
+        user-select: none;
+        border-radius: 10px;
+        margin-left: 8px;
+        gap: 5px;
+        &.disabled {
+            pointer-events: none;
+            opacity: 0.5;
+        }
+    }
+
+    &__icon {
+        display: inline-block;
+        width: 24px;
+        text-align: center;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+
+    &__title {
+        font-size: 1.4rem;
+        + .button__icon,
+        .button__icon + .button__title {
+            margin-left: 8px;
+        }
+        @include screen-laptop {
+            font-size: 1.8rem;
+        }
+    }
+
+    &--rounded {
+        border-radius: 999px;
+        box-shadow: 0 2px 8px rgb(0 0 0 / 6%);
+        border-color: rgba(22, 24, 35, 0.12);
+
+        &:hover {
+            border-color: rgba(22, 24, 35, 0.2);
+            background-color: rgba(22, 24, 35, 0.03);
+        }
+    }
+
+    &--primary {
+        color: $white;
+        background-color: $primary-color;
+        border-color: $primary-color;
+        text-decoration: none;
+        &:hover {
+            border-color: $primary-color;
+            background: linear-gradient(0deg, rgba(0, 0, 0, 0.06), rgba(0, 0, 0, 0.06)), #add4e7;
+        }
+    }
+
+    &--outline {
+        color: $primary-color;
+        border-color: currentColor;
+        text-decoration: none;
+        &:hover {
+            border-color: currentColor;
+            background-color: rgba(140, 201, 235, 0.3);
+        }
+    }
+
+    &--text {
+        &:hover {
+            text-decoration: underline;
+        }
+    }
+
+    // Button sizes
+    &--small {
+        min-width: 88px;
+        padding: 4px 16px;
+    }
+
+    &--large {
+        padding: 14px 16px;
+        min-width: 140px;
+    }
+}
