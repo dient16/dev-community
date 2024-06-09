@@ -58,10 +58,10 @@ const PostItem = ({ postItem }) => {
     const updatePostInQuery = (updatedPost) => {
         const queryKey =
             location.pathname === '/'
-                ? ['posts', 'for-you']
+                ? ['post-home', '/']
                 : location.pathname === '/top'
-                ? ['posts', 'for-you']
-                : ['posts', 'latest'];
+                  ? ['post-home', '/top']
+                  : ['post-home', '/latest'];
         queryClient.setQueryData(queryKey, (prevData) => {
             const newPosts = prevData.pages.map((page) => ({
                 ...page,

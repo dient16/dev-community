@@ -217,7 +217,7 @@ const CommentItem = ({
                         </Flex>
                     </Flex>
                 )}
-                {isShowRelies && data?.repliedComments.length > 0 && (
+                {isShowRelies && data?.repliedComments?.length > 0 && (
                     <div className="comment-item__reply-list">
                         <CommentList comments={data?.repliedComments} postId={postId} />
                     </div>

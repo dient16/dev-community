@@ -8,6 +8,7 @@
 
 html {
     font-size: 62.5%;
+    scroll-behavior: smooth;
 }
 body {
     scroll-behavior: smooth;
@@ -19,9 +20,40 @@ body {
     line-height: 1.5;
     text-rendering: optimizespeed;
     overflow-y: overlay;
+
     @include screen-mobile {
         overflow-x: hidden;
     }
+}
+
+/* Custom scrollbar styles */
+::-webkit-scrollbar {
+    width: 8px;
+    border-radius: 10000px;
+}
+
+::-webkit-scrollbar-track {
+    background: #f1f1f1;
+    border-radius: 10000px;
+}
+
+::-webkit-scrollbar-thumb {
+    background: #ccc;
+    border-radius: 1000px;
+    border: 1px solid transparent;
+    background-clip: content-box;
+}
+
+::-webkit-scrollbar-thumb:hover {
+    background: #b7aeae;
+}
+
+::-webkit-scrollbar-thumb:active {
+    background: #a39e9e;
+}
+
+::-webkit-scrollbar-corner {
+    background: transparent;
 }
 
 button:hover {

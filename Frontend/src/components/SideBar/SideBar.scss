@@ -1,18 +1,29 @@
 @use '~/styles/' as *;
 .sidebar {
-    max-width: 240px;
     width: 100%;
     padding: 0px 0px 10px 0;
+    min-height: 500px;
     font-family: $font-family;
+    display: flex;
+    flex-direction: column;
+    @include screen-mobile {
+    }
     @include screen-laptop {
         margin-left: 20px;
-        padding: 20px 10px 10px 0;
+        padding: 0px 0px 10px 0;
     }
-    &__top {
+    &__list {
         display: flex;
         flex-direction: column;
-        justify-content: center;
+        justify-content: flex-start;
         gap: 5px;
+        margin-top: 10px;
+    }
+    &__top {
+        height: 240px;
+        @include screen-tablet {
+            height: 300px;
+        }
     }
     &__item {
         text-decoration: none;
@@ -20,14 +31,12 @@
         font-weight: 600;
         display: flex;
         align-items: center;
-        padding: 4px 4px 4px 0;
+        padding: 5px 5px 5px 0;
         gap: 10px;
         border-radius: 7px;
         color: #161823;
-        font-size: 1.5rem;
         @include screen-tablet {
-            font-size: 1.8rem;
-            padding: 7px 7px 7px 0;
+            padding: 6px 6px 6px 0;
         }
         &--active {
             color: $primary-color;
@@ -43,7 +52,10 @@
         justify-content: center;
     }
     &__title {
-        font-size: 2rem;
+        font-size: 1.5rem;
+        @include screen-tablet {
+            font-size: 2rem;
+        }
     }
     &__social-network {
         margin: 10px 0;
@@ -59,6 +71,10 @@
         }
     }
     &__my-tags {
-        height: 100%;
+        max-height: 500px;
+        flex-grow: 1;
     }
+}
+.ant-drawer-body:has(.sidebar) {
+    padding: 5px 5px 10px 24px;
 }

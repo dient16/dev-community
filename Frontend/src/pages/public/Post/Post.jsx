@@ -28,7 +28,7 @@ const Post = () => {
     });
 
     useEffect(() => {
-        document.documentElement.setAttribute('data-color-mode', 'dark');
+        document.documentElement.setAttribute('data-color-mode', 'light');
     }, []);
 
     const likeMutation = useMutation({

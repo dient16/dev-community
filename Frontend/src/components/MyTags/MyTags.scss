@@ -1,15 +1,16 @@
 @use '~/styles/' as *;
 
 .my-tags {
-    height: 400px;
+    min-height: 300px;
+    height: 100%;
     width: 100%;
     @include screen-tablet {
-        max-width: 85%;
+        max-width: 92%;
     }
     border-top: 1px solid #ccc;
     float: left;
-    margin-top: 10px;
-    padding-top: 5px;
+    margin-top: 3px;
+    padding-top: 10px;
     display: flex;
     flex-direction: column;
     font-family: $font-family;

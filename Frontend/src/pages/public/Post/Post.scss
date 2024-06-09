@@ -1,16 +1,24 @@
 @use '~/styles/' as *;
+
 .post-detail {
-    width: $width-full;
+    width: 100%;
     margin-bottom: 100px;
+
     &__wrapper {
-        max-width: $width-main;
-        width: $width-full;
+        max-width: 100%;
+        width: 100%;
         margin: 0 auto;
         display: flex;
         align-items: flex-start;
         gap: 10px;
         border-radius: 10px;
+        flex-direction: column;
+        @include screen-tablet {
+            flex-direction: row;
+            max-width: $width-main;
+        }
     }
+
     &__actions {
         margin: 10px;
         margin-top: 65px;
@@ -21,15 +29,14 @@
         top: 100px;
         display: none;
         width: 50px;
+        @include screen-tablet {
+            display: block;
+        }
         @include screen-laptop {
             margin: 30px;
-            display: block;
-        }
-        @include screen-tablet {
-            margin: 20px;
-            display: block;
         }
     }
+
     &__action-like,
     &__action-comment,
     &__action-bookmark {
@@ -43,9 +50,10 @@
         border: 1px solid transparent;
         cursor: pointer;
     }
+
     &__action-bookmark {
         .icon--active {
-            background: #bde4e2;
+            background: #ccc;
             opacity: 0.8;
         }
         .icon {
@@ -56,23 +64,37 @@
             border-radius: 10px;
         }
     }
+
     &__action-like {
         height: 39px;
         &:hover {
             border: 1px solid red;
         }
     }
+
     &__action-like--active {
         border: 1px solid red;
     }
+
     &__body {
-        max-width: 850px;
+        width: 100%;
         box-shadow: 0 0 10px rgba(0, 0, 0, 0.03);
         background-color: rgba(255, 255, 255, 0.5);
         display: flex;
         flex-direction: column;
-        gap: 30px;
+        gap: 10px;
+        padding: 0 5px;
+        @include screen-tablet {
+            width: 88%;
+            gap: 20px;
+        }
+        @include screen-laptop {
+            max-width: 850px;
+            width: 100%;
+            gap: 30px;
+        }
     }
+
     &__body-image {
         width: 100%;
         border-radius: 10px;
@@ -81,7 +103,13 @@
     &__body-author {
         display: flex;
         gap: 10px;
-        padding: 0 30px;
+        padding: 0 20px;
+        @include screen-tablet {
+            padding: 0 10px;
+        }
+        @include screen-laptop {
+            padding: 0 30px;
+        }
 
         .author-avatar {
             width: 50px;
@@ -90,56 +118,87 @@
             object-fit: cover;
             cursor: pointer;
         }
+
         .author-wrap {
             display: flex;
             flex-direction: column;
+
             .author-name {
-                font-size: 1.7rem;
+                font-size: 1.5rem;
                 font-weight: 700;
+                @include screen-tablet {
+                    font-size: 1.7rem;
+                }
+                @include screen-laptop {
+                    font-size: 1.8rem;
+                }
             }
         }
     }
+
     &__body-title {
-        font-size: 3rem;
+        font-size: 2.3rem;
         font-weight: 700;
-        padding: 0 30px;
+        padding: 0 20px;
+        @include screen-tablet {
+            font-size: 3rem;
+            padding: 0 10px;
+        }
         @include screen-laptop {
             font-size: 4rem;
+            padding: 0 30px;
         }
     }
+
     &__body-tags {
         display: flex;
         align-items: center;
         gap: 8px;
         flex-wrap: wrap;
-        padding: 0 30px;
-        font-size: 2rem;
-    }
-    &__content {
-        padding: 0 30px;
-        overflow: auto;
-        .wmde-markdown.wmde-markdown-color {
-            //font-family: $font-family;
+        padding: 0 20px;
+        font-size: 1.5rem;
+        @include screen-tablet {
             font-size: 1.8rem;
+            padding: 0 10px;
+        }
+        @include screen-laptop {
+            font-size: 2rem;
+            padding: 0 30px;
+        }
+    }
+
+    &__content {
+        padding: 0 20px;
+        overflow: auto;
+        @include screen-tablet {
+            padding: 0 10px;
+        }
+        @include screen-laptop {
+            padding: 0 30px;
+        }
+
+        .wmde-markdown.wmde-markdown-color {
+            font-size: 1.6rem;
             padding: 10px;
             background: transparent;
-            color: $black;
+            @include screen-tablet {
+                font-size: 1.8rem;
+            }
         }
-        table {
-            color: $white;
-            filter: brightness(0.8);
-        }
+
         .code-highlight {
-            color: hsl(0, 0%, 80%);
+            background: #181c1c;
         }
 
         code {
-            filter: brightness(1.1);
-            mix-blend-mode: difference;
-            color: hsl(0, 0%, 80%);
+            & > .code-line {
+                filter: brightness(2.6);
+                mix-blend-mode: difference;
+                color: #ffff;
+            }
         }
+
         pre {
-            color: $white;
             display: -webkit-box;
             overflow: hidden;
             text-overflow: ellipsis;
@@ -148,6 +207,7 @@
             word-break: break-all;
         }
     }
+
     &__author {
         flex: 1;
         min-width: 200px;
@@ -162,12 +222,14 @@
             display: block;
         }
     }
+
     &__author-top {
         .author-background {
             position: relative;
             height: 100px;
             background: rgb(80, 168, 219);
             border-radius: 10px;
+
             .avatar-info {
                 display: flex;
                 align-items: flex-end;
@@ -175,6 +237,7 @@
                 position: absolute;
                 bottom: -33px;
                 left: 15px;
+
                 .author-avatar {
                     width: 60px;
                     height: 60px;
@@ -183,11 +246,13 @@
                 }
             }
         }
+
         .btn-follow {
             width: 100%;
             margin: 0;
             margin-top: 50px;
         }
+
         .author-bio {
             margin-top: 10px;
         }
