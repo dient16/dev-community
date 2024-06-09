@@ -97,7 +97,7 @@ const createComment = async (req, res, next) => {
 const getCommentsByPostId = async (req, res, next) => {
     try {
         const { postId } = req.params;
-        const userId = req.user._id;
+        const userId = req.user?._id;
         const post = await Post.findById(postId).populate({
             path: 'comments',
             match: { parentId: null },
@@ -161,6 +161,7 @@ const getCommentsByPostId = async (req, res, next) => {
 const getRepliedByParentId = async (req, res, next) => {
     try {
         const { commentId } = req.params;
+        const userId = req.user?._id;
         let repliedComment;
 
         [err, repliedComment] = await to(

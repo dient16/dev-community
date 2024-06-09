@@ -18,7 +18,7 @@ const TagChildren = ({ tagName, color }) => {
         e.stopPropagation();
     };
     return (
-        <span
+        <div
             className="tag-children"
             style={tagStyle}
             onClick={(e) => handleClickTag(e)}
@@ -29,7 +29,7 @@ const TagChildren = ({ tagName, color }) => {
                 <LuHash color={color} />
             </div>
             <span className="tag-children__name">{tagName}</span>
-        </span>
+        </div>
     );
 };
 

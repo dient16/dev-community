@@ -15,8 +15,11 @@
     &__image {
         img {
             width: 100%;
-            height: 243px;
+            height: 140px;
             object-fit: cover;
+            @include screen-tablet {
+                height: 243px;
+            }
         }
     }
     &__body {
@@ -31,32 +34,45 @@
         gap: 10px;
         margin-left: 15px;
         .author-avatar {
-            width: 40px;
-            height: 40px;
+            width: 33px;
+            height: 33px;
             border-radius: 50%;
+            @include screen-tablet {
+                width: 40px;
+                height: 40px;
+            }
         }
         .post-author {
             display: flex;
             flex-direction: column;
             justify-content: center;
             align-items: flex-start;
+            font-size: 1.3rem;
+            @include screen-tablet {
+                font-size: 2rem;
+            }
+            @include screen-laptop {
+                font-size: 2.5rem;
+            }
         }
     }
     &__wrap-detail {
         margin: 15px 0;
-        padding-left: 50px;
+        padding-left: 15px;
         display: flex;
         flex-direction: column;
         align-items: flex-start;
-        gap: 15px;
+        gap: 7px;
         .post-title {
-            font-size: 20px;
+            font-size: 1.5rem;
             font-weight: 600;
             @include screen-tablet {
-                font-size: 25px;
+                font-size: 2rem;
+                gap: 12px;
             }
             @include screen-laptop {
-                font-size: 30px;
+                font-size: 2.5rem;
+                gap: 15px;
             }
         }
     }
@@ -66,15 +82,21 @@
         flex-wrap: wrap;
     }
     &__actions {
-        padding-top: 10px;
-        margin-top: 10px;
+        padding-top: 5px;
+        margin-top: 5px;
         width: 100%;
         display: flex;
         align-items: center;
-        margin-bottom: 15px;
+        margin-bottom: 8px;
         border-top: 1px solid #686565;
+        font-size: 1.2rem;
         .action-bookmark {
             cursor: pointer;
+        }
+        @include screen-tablet {
+            padding-top: 10px;
+            margin-top: 10px;
+            margin-bottom: 15px;
         }
     }
     &__action-comment,
@@ -100,11 +122,15 @@
             gap: 5px;
             cursor: pointer;
             border-radius: 10px;
-            height: 35px;
+            height: 28px;
             padding: 5px;
             @include screen-mobile {
                 padding: 5px 15px;
             }
+            @include screen-tablet {
+                height: 35px;
+            }
+
             &:hover {
                 background: #ccc;
             }
@@ -129,14 +155,14 @@
             width: 26%;
         }
         .icon--active {
-            background: #bde4e2;
+            background: #ccc;
         }
 
         .icon {
             display: flex;
             align-items: center;
             justify-content: center;
-            padding: 10px;
+            padding: 8px;
             border-radius: 5px;
             &:hover {
                 background: #ccc;

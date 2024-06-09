@@ -2,7 +2,6 @@ import { Outlet, useNavigate } from 'react-router-dom';
 import './Home.scss';
 import { SideBar, Discuss } from '~/components';
 import { path } from '~/utils/constant';
-import { scrollIntoView } from '~/utils/helper';
 
 const Home = () => {
     const navigate = useNavigate();
@@ -18,7 +17,6 @@ const Home = () => {
                     <span
                         onClick={() => {
                             navigate(`/${path.FOR_YOU}`);
-                            scrollIntoView(500);
                         }}
                     >
                         For you
@@ -26,7 +24,6 @@ const Home = () => {
                     <span
                         onClick={() => {
                             navigate(`/${path.TOP}`);
-                            scrollIntoView(500);
                         }}
                     >
                         Top
@@ -34,7 +31,6 @@ const Home = () => {
                     <span
                         onClick={() => {
                             navigate(`/${path.LATEST}`);
-                            scrollIntoView(500);
                         }}
                     >
                         Latest

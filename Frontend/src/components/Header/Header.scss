@@ -35,6 +35,7 @@
     }
     &__menu {
         cursor: pointer;
+        margin-top: 5px;
         @include screen-laptop {
             display: none;
         }
@@ -72,7 +73,6 @@
         padding-bottom: 0.4rem;
         .btn-post {
             display: none;
-            border-radius: 15px;
             @include screen-tablet {
                 display: flex;
             }

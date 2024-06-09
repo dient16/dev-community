@@ -4,9 +4,10 @@
     height: 46px;
     background: rgba(22, 24, 35, 0.06);
     border-radius: 92px;
-    padding-left: 16px;
+    padding-left: 20px;
     display: flex;
     border: 1.5px solid transparent;
+    border-right: none;
     max-width: 400px;
     &:hover {
         border-color: rgba(22, 24, 35, 0.2);

@@ -22,7 +22,7 @@ const NewPost = () => {
             navigate('/');
         },
         onError: () => {
-            message.error('create failed');
+            message.error('Create failed');
         },
     });
     useEffect(() => {
@@ -80,7 +80,7 @@ const NewPost = () => {
                             value={postTitle}
                             onChange={(e) => setPostTitle(e.target.value)}
                         />
-                        <div className="add-new-tag ">
+                        <div className="add-new-tag">
                             <InputTags value={postTags} onChange={(value) => setPostTags(value)} />
                         </div>
                     </div>

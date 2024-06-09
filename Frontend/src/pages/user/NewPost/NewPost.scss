@@ -81,6 +81,9 @@
         display: flex;
         align-items: center;
         justify-content: center;
-        padding: 5px 10px;
+        &:hover {
+            color: $white !important;
+            opacity: 0.8;
+        }
     }
 }

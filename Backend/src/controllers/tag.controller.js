@@ -2,6 +2,7 @@ const Tag = require('../models/tag.model');
 const User = require('../models/user.model');
 const Post = require('../models/post.model');
 const to = require('await-to-js').default;
+const mongoose = require('mongoose');
 
 const getTags = async (req, res, next) => {
     try {
@@ -22,19 +23,41 @@ const getTags = async (req, res, next) => {
 const getTagsUser = async (req, res, next) => {
     try {
         const { _id: uid } = req.user;
-        const [tagsError, tagsUser] = await to(
-            User.findById(uid).select('followedTags').populate({
-                path: 'followedTags',
-            }),
-        );
+        const user = await User.findById(uid).select('followedTags').populate({
+            path: 'followedTags',
+            select: 'name theme',
+        });
 
-        if (tagsError) {
-            throw new Error('Could not fetch tags, please try again');
+        if (!user) {
+            return res.status(404).json({
+                status: 'fail',
+                message: 'User not found',
+            });
         }
+
+        const tagsWithPostCount = await Tag.aggregate([
+            { $match: { _id: { $in: user.followedTags.map((tag) => new mongoose.Types.ObjectId(tag._id)) } } },
+            {
+                $lookup: {
+                    from: 'posts',
+                    localField: 'posts',
+                    foreignField: '_id',
+                    as: 'posts',
+                },
+            },
+            {
+                $project: {
+                    name: 1,
+                    theme: 1,
+                    postsCount: { $size: '$posts' },
+                },
+            },
+        ]);
+
         return res.status(200).json({
             status: 'success',
             message: 'Get tags successfully',
-            tags: tagsUser?.followedTags || [],
+            tags: tagsWithPostCount,
         });
     } catch (error) {
         next(error);
