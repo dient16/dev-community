@@ -1,4 +1,3 @@
-import React from 'react';
 import './InputForm.scss';
 
 const Input = ({ label, disabled, type, register, errors, id, validate, defaultValue }) => {

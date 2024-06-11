@@ -1,89 +1,211 @@
 @use '~/styles/' as *;
+
 .new-post {
-    margin-top: -0.5rem;
+   margin-top: -0.5rem;
+   font-family: $font-family;
+   padding: 0 15px;
 
-    font-family: $font-family;
+   .tab-create {
+      font-size: 1.8rem;
+      font-weight: 600;
+      @include screen-mobile {
+         font-size: 2.5rem;
+      }
+   }
+   &__wrapper {
+      max-width: 845px;
+      margin: 0 auto;
+      @include screen-mobile {
+         max-width: 100%;
+         padding: 0 1rem;
+      }
 
-    &__wrapper {
-        max-width: 845px;
-        margin: 0 auto;
-        .btn-add-banner {
-            margin: 0;
-        }
-    }
-    &__add-image {
-        display: flex;
-        align-items: center;
-        gap: 30px;
-        margin-bottom: 15px;
-        height: 60px;
-        .ant-upload-wrapper {
-            display: flex;
-            align-items: center;
-            gap: 20px;
-        }
-        .upload-btn {
-            border-radius: 15px;
-        }
-        .preview-upload {
-            border: 1px solid $black;
-            border-radius: 15px;
-            padding: 0px 10px;
-            .delete-upload {
-                cursor: pointer;
-                &:hover {
-                    opacity: 0.5s;
-                }
+      @include screen-tablet {
+         max-width: 90%;
+      }
+
+      @include screen-laptop {
+         max-width: 80%;
+      }
+
+      @include screen-desktop {
+         max-width: 70%;
+      }
+
+      @include screen-xl-desktop {
+         max-width: 60%;
+      }
+
+      .btn-add-banner {
+         margin: 0;
+      }
+   }
+
+   &__add-image {
+      display: flex;
+      align-items: center;
+      justify-content: flex-start;
+      gap: 10px;
+      margin-bottom: 15px;
+      height: 60px;
+
+      @include screen-mobile {
+         gap: 30px;
+      }
+
+      .ant-upload-wrapper {
+         display: flex;
+         align-items: center;
+         gap: 20px;
+      }
+
+      .upload-btn {
+         border-radius: 15px;
+
+         @include screen-mobile {
+            width: 100%;
+         }
+      }
+
+      .preview-upload {
+         border: 1px solid $black;
+         border-radius: 15px;
+         padding: 0px 10px;
+         display: flex;
+         align-items: center;
+         gap: 10px;
+
+         .delete-upload {
+            cursor: pointer;
+            &:hover {
+               opacity: 0.5s;
             }
-        }
-    }
-    &__custom-input {
-        display: inline-block;
-        padding: 10px 15px;
-        cursor: pointer;
-        border: 1px solid #ccc;
-        border-radius: 4px;
-        margin-bottom: 20px;
-    }
-    &__top {
-        display: flex;
-        flex-direction: column;
-        gap: 10px;
-        background: white;
-        border-radius: 15px;
-        padding: 20px;
-        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-    }
-    &__title {
-        font-family: $font-family;
-        font-size: 40px;
-        font-weight: 600;
-        outline: none;
-        border: none;
-        padding: 20px;
-        resize: none;
-    }
-    &__bottom {
-        margin-top: 15px;
-    }
-    &__markdown {
-        margin-bottom: 10px;
-        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-        border-radius: 15px;
-        overflow: hidden;
-        padding: 1px;
-    }
-    &__btn-create-post {
-        background: $primary-color;
-        color: $white;
-        font-family: $font-family;
-        font-size: 2rem;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        &:hover {
-            color: $white !important;
-            opacity: 0.8;
-        }
-    }
+         }
+      }
+   }
+
+   &__custom-input {
+      display: inline-block;
+      padding: 10px 15px;
+      cursor: pointer;
+      border: 1px solid #ccc;
+      border-radius: 4px;
+      margin-bottom: 20px;
+   }
+
+   &__top {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      background: white;
+      border-radius: 15px;
+      padding: 20px;
+      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+
+      @include screen-mobile {
+         padding: 10px;
+      }
+
+      @include screen-tablet {
+         padding: 15px;
+      }
+   }
+
+   &__title {
+      font-family: $font-family;
+      font-size: 3rem;
+      font-weight: 600;
+      outline: none;
+      border: none;
+      padding: 5px;
+      resize: none;
+
+      @include screen-mobile {
+         font-size: 3.5rem;
+         padding: 10px;
+      }
+
+      @include screen-tablet {
+         font-size: 2rem;
+         padding: 15px;
+      }
+
+      @include screen-laptop {
+         font-size: 2.5rem;
+         padding: 20px;
+      }
+
+      @include screen-desktop {
+         font-size: 3rem;
+         padding: 25px;
+      }
+
+      @include screen-xl-desktop {
+         font-size: 3.5rem;
+         padding: 30px;
+      }
+   }
+
+   &__bottom {
+      margin-top: 15px;
+
+      @include screen-mobile {
+         margin-top: 10px;
+      }
+   }
+
+   &__markdown {
+      margin-bottom: 10px;
+      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+      border-radius: 15px;
+      overflow: hidden;
+      padding: 1px;
+
+      @include screen-mobile {
+         margin-bottom: 5px;
+      }
+   }
+
+   &__btn-create-post {
+      background: $primary-color;
+      color: $white;
+      font-family: $font-family;
+      font-size: 2rem;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 10px 20px;
+      border-radius: 5px;
+      transition: opacity 0.3s;
+
+      &:hover {
+         color: $white !important;
+         opacity: 0.8;
+      }
+
+      @include screen-mobile {
+         font-size: 1.5rem;
+         padding: 8px 15px;
+      }
+
+      @include screen-tablet {
+         font-size: 1.75rem;
+         padding: 9px 18px;
+      }
+
+      @include screen-laptop {
+         font-size: 2rem;
+         padding: 10px 20px;
+      }
+
+      @include screen-desktop {
+         font-size: 2.25rem;
+         padding: 11px 22px;
+      }
+
+      @include screen-xl-desktop {
+         font-size: 2.5rem;
+         padding: 12px 24px;
+      }
+   }
 }

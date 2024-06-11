@@ -1,14 +1,19 @@
 @use '~/styles/' as *;
 .tags {
-    height: 100%;
-    &__header {
-        margin: 10px 0;
-        font-size: 2.5rem;
-        font-weight: 600;
-    }
-    &__container {
-        display: flex;
-        gap: 10px;
-        flex-wrap: wrap;
-    }
+   height: 100%;
+   padding: 0;
+   padding: 0 20px;
+   @include screen-tablet {
+      padding: 0 15px;
+   }
+   &__header {
+      margin: 10px 0;
+      font-size: 2.5rem;
+      font-weight: 600;
+   }
+   &__container {
+      display: flex;
+      gap: 10px;
+      flex-wrap: wrap;
+   }
 }

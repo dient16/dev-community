@@ -1,12 +1,11 @@
 .input-container {
     position: relative;
-    margin-bottom: 20px;
+    margin-bottom: 10px;
     display: flex;
     flex-direction: column;
     justify-content: center;
     align-items: flex-start;
     gap: 5px;
-    margin-top: 20px;
     &__text {
         font-size: 1.4rem;
         display: block;
@@ -21,14 +20,14 @@
         &:not(:placeholder-shown) ~ .input-container__label,
         &:focus ~ .input-container__label {
             opacity: 1;
-            top: -9px;
+            top: -10px;
             font-size: 1.5rem;
         }
     }
 
     &__label {
-        font-size: 1.6rem;
-        font-weight: normal;
+        font-size: 1.5rem;
+        font-weight: 400;
         position: absolute;
         pointer-events: none;
         left: 15px;
