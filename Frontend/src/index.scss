@@ -1,61 +1,61 @@
 @use './styles/' as *;
 @import url('https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap');
 * {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
+   margin: 0;
+   padding: 0;
+   box-sizing: border-box;
 }
 
 html {
-    font-size: 62.5%;
-    scroll-behavior: smooth;
+   font-size: 62.5%;
+   scroll-behavior: smooth;
 }
 body {
-    scroll-behavior: smooth;
-    font-weight: 400;
-    font-family: $font-family;
-    background-color: $bg-color;
-    color: $txt-color;
-    font-size: 1.6rem;
-    line-height: 1.5;
-    text-rendering: optimizespeed;
-    overflow-y: overlay;
+   scroll-behavior: smooth;
+   font-weight: 400;
+   font-family: $font-family;
+   background-color: $bg-color;
+   color: $txt-color;
+   font-size: 1.6rem;
+   line-height: 1.5;
+   text-rendering: optimizespeed;
+   overflow-y: overlay;
 
-    @include screen-mobile {
-        overflow-x: hidden;
-    }
+   @include screen-mobile {
+      overflow-x: hidden;
+   }
 }
 
 /* Custom scrollbar styles */
 ::-webkit-scrollbar {
-    width: 8px;
-    border-radius: 10000px;
+   width: 8px;
+   border-radius: 10000px;
 }
 
 ::-webkit-scrollbar-track {
-    background: #f1f1f1;
-    border-radius: 10000px;
+   background: #f1f1f1;
+   border-radius: 10000px;
 }
 
 ::-webkit-scrollbar-thumb {
-    background: #ccc;
-    border-radius: 1000px;
-    border: 1px solid transparent;
-    background-clip: content-box;
+   background: #ccc;
+   border-radius: 1000px;
+   border: 1px solid transparent;
+   background-clip: content-box;
 }
 
 ::-webkit-scrollbar-thumb:hover {
-    background: #b7aeae;
+   background: #b7aeae;
 }
 
 ::-webkit-scrollbar-thumb:active {
-    background: #a39e9e;
+   background: #a39e9e;
 }
 
 ::-webkit-scrollbar-corner {
-    background: transparent;
+   background: transparent;
 }
 
 button:hover {
-    cursor: pointer;
+   cursor: pointer;
 }

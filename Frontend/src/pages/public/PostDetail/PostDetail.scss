@@ -1,0 +1,263 @@
+@use '~/styles/' as *;
+
+.post-detail {
+   width: 100%;
+   margin-bottom: 100px;
+
+   &__wrapper {
+      max-width: 100%;
+      width: 100%;
+      margin: 0 auto;
+      display: flex;
+      align-items: flex-start;
+      gap: 10px;
+      border-radius: 10px;
+      flex-direction: column;
+      @include screen-tablet {
+         flex-direction: row;
+         max-width: $width-main;
+      }
+   }
+
+   &__actions {
+      margin: 10px;
+      margin-top: 65px;
+      display: flex;
+      flex-direction: column;
+      gap: 30px;
+      position: sticky;
+      top: 100px;
+      display: none;
+      width: 50px;
+      @include screen-tablet {
+         display: block;
+      }
+      @include screen-laptop {
+         margin: 30px;
+      }
+   }
+
+   &__action-like,
+   &__action-comment,
+   &__action-bookmark {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-direction: column;
+      padding: 8px 7px;
+      border-radius: 50%;
+      gap: 10px;
+      border: 1px solid transparent;
+      cursor: pointer;
+      transition: transform 0.5s ease-in-out;
+   }
+
+   &__action-bookmark {
+      .icon--active {
+         background: #ccc;
+         opacity: 0.8;
+      }
+      .icon {
+         display: flex;
+         align-items: center;
+         justify-content: center;
+         padding: 10px;
+         border-radius: 10px;
+      }
+   }
+   &__action-like--active {
+      transform: scale(1.1);
+   }
+   &__action-like {
+      height: 39px;
+      &:hover {
+         border: 1px solid red;
+      }
+   }
+
+   &__action-like--active {
+      border: 1px solid red;
+   }
+
+   &__body {
+      width: 100%;
+      box-shadow: 0 0 10px rgba(0, 0, 0, 0.03);
+      background-color: rgba(255, 255, 255, 0.5);
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      padding: 0 5px;
+      @include screen-tablet {
+         width: 88%;
+         gap: 20px;
+      }
+      @include screen-laptop {
+         max-width: 920px;
+         width: 100%;
+         gap: 30px;
+      }
+   }
+
+   &__body-image {
+      width: 100%;
+      border-radius: 10px;
+   }
+
+   &__body-author {
+      display: flex;
+      gap: 10px;
+      padding: 0 20px;
+      @include screen-tablet {
+         padding: 0 10px;
+      }
+      @include screen-laptop {
+         padding: 0 30px;
+      }
+
+      .author-avatar {
+         width: 50px;
+         height: 50px;
+         border-radius: 50%;
+         object-fit: cover;
+         cursor: pointer;
+      }
+
+      .author-wrap {
+         display: flex;
+         flex-direction: column;
+
+         .author-name {
+            font-size: 1.5rem;
+            font-weight: 700;
+            @include screen-tablet {
+               font-size: 1.7rem;
+            }
+            @include screen-laptop {
+               font-size: 1.8rem;
+            }
+         }
+      }
+   }
+
+   &__body-title {
+      font-size: 2.3rem;
+      font-weight: 700;
+      padding: 0 20px;
+      @include screen-tablet {
+         font-size: 3rem;
+         padding: 0 10px;
+      }
+      @include screen-laptop {
+         font-size: 4rem;
+         padding: 0 30px;
+      }
+   }
+
+   &__body-tags {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      flex-wrap: wrap;
+      padding: 0 20px;
+      font-size: 1.5rem;
+      @include screen-tablet {
+         font-size: 1.8rem;
+         padding: 0 10px;
+      }
+      @include screen-laptop {
+         font-size: 2rem;
+         padding: 0 30px;
+      }
+   }
+
+   &__content {
+      padding: 0 20px;
+      overflow: auto;
+      @include screen-tablet {
+         padding: 0 10px;
+      }
+      @include screen-laptop {
+         padding: 0 30px;
+      }
+
+      .wmde-markdown.wmde-markdown-color {
+         font-size: 1.6rem;
+         padding: 10px;
+         background: transparent;
+         @include screen-tablet {
+            font-size: 1.8rem;
+         }
+      }
+
+      .code-highlight {
+         background: #181c1c;
+      }
+
+      code {
+         & > .code-line {
+            filter: brightness(2.6);
+            mix-blend-mode: difference;
+            color: #ffff;
+         }
+      }
+
+      pre {
+         display: -webkit-box;
+         overflow: hidden;
+         text-overflow: ellipsis;
+         -webkit-line-clamp: 1;
+         -webkit-box-orient: vertical;
+         word-break: break-all;
+      }
+   }
+
+   &__author {
+      flex: 1;
+      min-width: 200px;
+      box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+      background-color: rgba(255, 255, 255, 0.5);
+      padding: 20px;
+      border-radius: 10px;
+      position: sticky;
+      top: 80px;
+      display: none;
+      @include screen-laptop {
+         display: block;
+      }
+   }
+
+   &__author-top {
+      .author-background {
+         position: relative;
+         height: 100px;
+         background: rgb(80, 168, 219);
+         border-radius: 10px;
+
+         .avatar-info {
+            display: flex;
+            align-items: flex-end;
+            gap: 10px;
+            position: absolute;
+            bottom: -33px;
+            left: 15px;
+
+            .author-avatar {
+               width: 60px;
+               height: 60px;
+               border-radius: 50%;
+               cursor: pointer;
+            }
+         }
+      }
+
+      .btn-follow {
+         width: 100%;
+         margin: 0;
+         margin-top: 50px;
+      }
+
+      .author-bio {
+         margin-top: 10px;
+      }
+   }
+}

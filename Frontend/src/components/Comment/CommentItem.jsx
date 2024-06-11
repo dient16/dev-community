@@ -40,7 +40,7 @@ const CommentItem = ({
         queryKey: ['replies', commentId],
         queryFn: () => apiGetReliedComment(commentId),
         enabled: isShowRelies,
-        staleTime: Infinity,
+        staleTime: 1000 * 60 * 5,
     });
     const likeMutation = useMutation({ mutationFn: apiLikeComment });
 
@@ -54,7 +54,10 @@ const CommentItem = ({
             message.error('Reply empty');
             return;
         }
-        const response = await apiAddComment(postId, { content: textReply, parentId: commentId });
+        const response = await apiAddComment(postId, {
+            content: textReply,
+            parentId: commentId,
+        });
         if (response.status === 'success') {
             if (data?.repliedComments)
                 queryClient.invalidateQueries({
@@ -101,6 +104,10 @@ const CommentItem = ({
                       queryClient.invalidateQueries({
                           queryKey: ['comments', postId],
                       });
+                      if (parentId)
+                          queryClient.invalidateQueries({
+                              queryKey: ['replies', parentId],
+                          });
                   },
               })
             : likeMutation.mutate(commentId, {
@@ -108,6 +115,10 @@ const CommentItem = ({
                       queryClient.invalidateQueries({
                           queryKey: ['comments', postId],
                       });
+                      if (parentId)
+                          queryClient.invalidateQueries({
+                              queryKey: ['replies', parentId],
+                          });
                   },
               });
     };
@@ -158,7 +169,7 @@ const CommentItem = ({
             </Flex>
 
             <Flex vertical>
-                <Flex align="center" style={{ marginTop: '0.7rem' }} gap={40}>
+                <div className="comment-item__bottom">
                     <div className="comment-item__actions">
                         <div>
                             <Flex align="center" gap={5} className="like" onClick={() => handleToggleLikeComment()}>
@@ -196,7 +207,7 @@ const CommentItem = ({
                             <MdOutlineKeyboardArrowUp size={15} />
                         </div>
                     )}
-                </Flex>
+                </div>
                 {isShowInputReply && (
                     <Flex align="end" vertical gap={5}>
                         <div ref={inputReplyRef} style={{ width: '96%' }}>

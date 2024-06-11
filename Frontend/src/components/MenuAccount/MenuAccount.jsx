@@ -1,4 +1,3 @@
-import React from 'react';
 import { Flex } from 'antd';
 import './MenuAccount.scss';
 import { Button } from '..';

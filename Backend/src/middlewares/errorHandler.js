@@ -4,13 +4,12 @@ const notFound = (req, res, next) => {
     next(error);
 };
 
-const errHandler = (error, req, res, next) => {
+const errHandler = (error, req, res) => {
     const statusCode = res.statusCode === 200 ? 500 : res.statusCode;
     console.log(error);
     return res.status(statusCode).json({
         status: 'error',
-        message: error?.message || error,
-        //message: 'Error from server',
+        message: 'Error from server',
     });
 };
 

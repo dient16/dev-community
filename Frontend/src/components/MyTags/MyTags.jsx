@@ -7,41 +7,56 @@ import { useAuth } from '~/hooks';
 
 const { RiSettingsLine } = icons;
 
-const MyTags = () => {
-    const { isLoggedIn } = useAuth();
+const MyTags = ({ setOpenSideBar }) => {
+   const { isLoggedIn } = useAuth();
 
-    const { data: myTagsData } = useQuery({
-        queryKey: ['myTags'],
-        queryFn: apiGetMyTags,
-        enabled: isLoggedIn,
-        staleTime: Infinity,
-    });
+   const { data: myTagsData } = useQuery({
+      queryKey: ['myTags'],
+      queryFn: apiGetMyTags,
+      enabled: isLoggedIn,
+      staleTime: Infinity,
+   });
 
-    const { data: popularTagsData } = useQuery({
-        queryKey: ['popularTags'],
-        queryFn: apiGetPopularTags,
-        enabled: !isLoggedIn,
-    });
+   const { data: popularTagsData } = useQuery({
+      queryKey: ['popularTags'],
+      queryFn: apiGetPopularTags,
+      enabled: !isLoggedIn,
+   });
 
-    return (
-        <div className="my-tags">
-            <div className="my-tags__header">
-                <span className="title">{isLoggedIn && myTagsData?.tags.length > 0 ? 'My tags' : 'Popular Tags'}</span>
-                <span className="icon">
-                    <RiSettingsLine size={18} />
-                </span>
-            </div>
-            <div className="my-tags__container">
-                {isLoggedIn && myTagsData?.tags.length > 0
-                    ? myTagsData?.tags?.map((tag) => (
-                          <TagSideBar key={tag._id} tagName={tag.name} color={tag.theme} postCount={tag.postsCount} />
-                      ))
-                    : popularTagsData?.tags?.map((tag) => (
-                          <TagSideBar key={tag._id} tagName={tag.name} color={tag.theme} postCount={tag.postsCount} />
-                      ))}
-            </div>
-        </div>
-    );
+   return (
+      <div className="my-tags">
+         <div className="my-tags__header">
+            <span className="title">
+               {isLoggedIn && myTagsData?.tags.length > 0 ? 'My tags' : 'Popular Tags'}
+            </span>
+            <span className="icon">
+               <RiSettingsLine size={18} />
+            </span>
+         </div>
+         <div className="my-tags__container">
+            {isLoggedIn && myTagsData?.tags.length > 0
+               ? myTagsData?.tags?.map((tag) => (
+                    <TagSideBar
+                       key={tag._id}
+                       tagId={tag._id}
+                       tagName={tag.name}
+                       color={tag.theme}
+                       postCount={tag.postsCount}
+                       setOpenSideBar={setOpenSideBar}
+                    />
+                 ))
+               : popularTagsData?.tags?.map((tag) => (
+                    <TagSideBar
+                       key={tag._id}
+                       tagName={tag.name}
+                       color={tag.theme}
+                       postCount={tag.postsCount}
+                       setOpenSideBar={setOpenSideBar}
+                    />
+                 ))}
+         </div>
+      </div>
+   );
 };
 
 export default MyTags;

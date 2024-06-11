@@ -1,29 +1,29 @@
 @mixin screen-mobile {
-    @media (min-width: 640px) {
-        @content;
-    }
+   @media (min-width: 640px) {
+      @content;
+   }
 }
 
 @mixin screen-tablet {
-    @media (min-width: 768px) {
-        @content;
-    }
+   @media (min-width: 768px) {
+      @content;
+   }
 }
 
 @mixin screen-laptop {
-    @media (min-width: 1025px) {
-        @content;
-    }
+   @media (min-width: 1024px) {
+      @content;
+   }
 }
 
 @mixin screen-desktop {
-    @media (min-width: 1280px) {
-        @content;
-    }
+   @media (min-width: 1280px) {
+      @content;
+   }
 }
 
 @mixin screen-xl-desktop {
-    @media (min-width: 1536px) {
-        @content;
-    }
+   @media (min-width: 1536px) {
+      @content;
+   }
 }

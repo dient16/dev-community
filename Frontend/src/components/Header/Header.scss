@@ -48,18 +48,33 @@
         }
     }
     &__actions {
-        width: 39%;
+        width: auto;
         display: flex;
+        justify-content: flex-end;
         gap: 3px;
         @include screen-mobile {
             width: 25%;
         }
-        .btn-actions {
+        .btn-actions-register,
+        .btn-actions-login {
             padding: 5px 10px;
             margin: 0;
             min-width: 70px;
             @include screen-mobile {
                 padding: 5px 13px;
+            }
+        }
+        .btn-actions-register {
+            display: none;
+            @include screen-mobile {
+                display: block;
+            }
+        }
+        .btn-search {
+            margin-right: 30px;
+            background: $primary-color;
+            @include screen-mobile {
+                display: none;
             }
         }
     }
@@ -91,4 +106,10 @@
 }
 .notify-wrapper {
     transition: all 200ms linear 0s;
+}
+.ant-drawer .ant-drawer-header {
+    padding: 7px 10px;
+    @include screen-mobile {
+        padding: 16px 24px;
+    }
 }

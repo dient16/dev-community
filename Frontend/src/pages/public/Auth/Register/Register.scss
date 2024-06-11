@@ -1,18 +1,45 @@
 @use '~/styles/' as *;
-
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateX(-50px);
+    }
+    to {
+        opacity: 1;
+        transform: translateX(0);
+    }
+}
 .registration {
-    width: 640px;
-    height: 100%;
-    padding: 48px;
+    width: 90%;
+    max-width: 640px;
+    padding: 24px;
     text-align: center;
-    border: 0.325rem;
+    border: 0.325rem solid transparent;
     background-color: white;
     color: $txt-color;
-    box-shadow: 0 0 0 1px rgba($color: $txt-color, $alpha: 0.1);
+    box-shadow: 0 0 0 1px rgba($txt-color, 0.1);
     border-radius: 15px;
     margin: 50px auto;
+    font-family: 'Poppins', sans-serif;
+    animation: fadeIn 0.5s ease-in-out;
     &__content {
         margin-bottom: 1.5rem;
+        h1 {
+            font-weight: 500;
+            font-size: 1.8rem;
+
+            @include screen-mobile {
+                font-size: 2rem;
+            }
+
+            @include screen-tablet {
+                font-size: 2.2rem;
+            }
+
+            @include screen-laptop {
+                font-size: 2.4rem;
+            }
+        }
     }
 
     &__actions {
@@ -32,10 +59,11 @@
                 }
             }
 
-            .facebook {
-                background-color: #3959ac;
+            .github {
+                background-color: #333;
+                color: #ffffff;
                 &:hover {
-                    background-color: #4d6ab4;
+                    background-color: #444;
                 }
             }
         }
@@ -51,21 +79,16 @@
                 font-size: 1.4rem;
             }
             label {
-                font-size: 16px;
-                font-weight: 600;
+                font-size: 1.5rem;
+                font-weight: 400;
                 display: block;
                 margin: 0.2rem 0;
             }
             input {
                 width: 100%;
-                font-size: 14px;
+                font-size: 1.4rem;
                 border-radius: 5px;
                 border: 1px solid #d6d6d7;
-                padding: 10px;
-                margin-bottom: 1rem;
-                &:focus-visible {
-                    outline: 2px solid $primary-color;
-                }
             }
 
             .error {
@@ -74,11 +97,7 @@
                 border-radius: 5px;
                 background-color: #f1d0d4;
                 border: 1px solid #dc3545;
-                padding: 10px;
                 margin-bottom: 0px !important;
-                &:focus-visible {
-                    outline: none;
-                }
             }
         }
 
@@ -86,7 +105,7 @@
             width: 100%;
             color: white;
             background-color: $primary-color;
-            font-size: 18px;
+            font-size: 1.6rem;
             font-weight: 500;
             padding: 12px 20px 12px 12px;
             border: none;
@@ -94,16 +113,23 @@
             display: flex;
             align-items: center;
             justify-content: center;
+
+            @include screen-tablet {
+                font-size: 1.8rem;
+            }
         }
 
         button[id='enter'] {
-            margin-top: 8px;
+            margin-top: 5px;
         }
     }
 
     &__hr {
         margin: 1.5rem 0;
-        font-size: 14px;
+        font-size: 1.2rem;
+        @include screen-mobile {
+            font-size: 1.4rem;
+        }
         color: #404040;
         position: relative;
         span {
@@ -127,10 +153,10 @@
             border-radius: 0.375rem;
         }
     }
-}
 
-.feedback-error {
-    color: #dc3545;
-    font-size: 12px;
-    line-height: 16px;
+    .feedback-error {
+        color: #dc3545;
+        font-size: 12px;
+        line-height: 16px;
+    }
 }

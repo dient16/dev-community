@@ -1,4 +1,3 @@
-import React, { useState } from 'react';
 import { Button, Flex, Image, Modal } from 'antd';
 import { useNavigate } from 'react-router-dom';
 import { path } from '~/utils/constant';

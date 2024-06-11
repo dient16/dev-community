@@ -1,13 +1,13 @@
 import { useForm } from 'react-hook-form';
 import './Register.scss';
-import { AiFillFacebook } from 'react-icons/ai';
+import { FaGithub } from 'react-icons/fa';
 import { FcGoogle } from 'react-icons/fc';
 import { Link, useNavigate } from 'react-router-dom';
 import { path } from '~/utils/constant';
-import clsx from 'clsx';
 import { useMutation } from '@tanstack/react-query';
 import { apiRegister } from '~/apiServices';
 import { Spin, message } from 'antd';
+import { InputForm } from '~/components';
 
 function SignUp() {
     const navigate = useNavigate();
@@ -56,65 +56,60 @@ function SignUp() {
                             <FcGoogle size={17} style={{ marginRight: '0.5rem' }} />
                             Continue with Google
                         </button>
-                        <button className="facebook">
-                            <AiFillFacebook size={17} style={{ marginRight: '0.5rem' }} />
-                            Continue with Facebook
+                        <button className="github">
+                            <FaGithub size={17} style={{ marginRight: '0.5rem' }} />
+                            Continue with Github
                         </button>
                     </div>
                     <div className="registration__hr">
                         <span>Continue with your email address</span>
                     </div>
                     <form id="email-form" className="registration__actions--email" onSubmit={handleSubmit(onSubmit)}>
-                        <div>
-                            <label htmlFor="email">Email</label>
-                            <input
-                                className={clsx(errors.email && 'error')}
-                                {...register('email', {
-                                    required: 'Email is required',
-                                    pattern: {
-                                        value: /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i,
-                                        message: 'Invalid email address',
-                                    },
-                                })}
-                                type="text"
-                            />
-                            {errors.email && <p className="error-message">{errors.email.message}</p>}
-                        </div>
+                        <InputForm
+                            id="email"
+                            label="Email"
+                            type="text"
+                            register={register}
+                            errors={errors}
+                            validate={{
+                                required: 'Email is required',
+                                pattern: {
+                                    value: /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i,
+                                    message: 'Invalid email address',
+                                },
+                            }}
+                        />
 
-                        <div>
-                            <label htmlFor="password">Password</label>
-                            <input
-                                className={clsx(errors.password && 'error')}
-                                {...register('password', {
-                                    required: 'Password is required',
-                                    minLength: {
-                                        value: 6,
-                                        message: 'Password must be at least 6 characters',
-                                    },
-                                })}
-                                type="password"
-                            />
-                            {errors.password && <p className="error-message">{errors.password.message}</p>}
-                        </div>
+                        <InputForm
+                            id="password"
+                            label="Password"
+                            type="password"
+                            register={register}
+                            errors={errors}
+                            validate={{
+                                required: 'Password is required',
+                                minLength: {
+                                    value: 6,
+                                    message: 'Password must be at least 6 characters',
+                                },
+                            }}
+                        />
 
-                        <div>
-                            <label htmlFor="confirm">Confirm Password</label>
-                            <input
-                                {...register('confirmPassword', {
-                                    required: 'Confirm password is required',
-                                    minLength: {
-                                        value: 6,
-                                        message: 'Password must be at least 6 characters',
-                                    },
-                                    validate: (value) => value === getValues('password') || 'Passwords do not match',
-                                })}
-                                className={clsx(errors.confirmPassword && 'error')}
-                                type="password"
-                            />
-                            {errors.confirmPassword && (
-                                <p className="error-message">{errors.confirmPassword.message}</p>
-                            )}
-                        </div>
+                        <InputForm
+                            id="confirmPassword"
+                            label="Confirm Password"
+                            type="password"
+                            register={register}
+                            errors={errors}
+                            validate={{
+                                required: 'Confirm password is required',
+                                minLength: {
+                                    value: 6,
+                                    message: 'Password must be at least 6 characters',
+                                },
+                                validate: (value) => value === getValues('password') || 'Passwords do not match',
+                            }}
+                        />
 
                         <button id="enter" type="submit">
                             Sign Up

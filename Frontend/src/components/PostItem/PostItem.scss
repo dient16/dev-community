@@ -1,172 +1,184 @@
 @use '~/styles/' as *;
 .post-item {
-    width: 100%;
-    display: flex;
-    flex-direction: column;
-    padding: 1px;
-    gap: 10px;
-    box-shadow: 0 3px 10px rgb(0 0 0 / 0.05);
-    margin: 5px 10px;
-    border-radius: 10px;
-    overflow: hidden;
-    cursor: pointer;
-    font-family: $font-family;
-    background: $white;
-    &__image {
-        img {
-            width: 100%;
-            height: 140px;
-            object-fit: cover;
-            @include screen-tablet {
-                height: 243px;
-            }
-        }
-    }
-    &__body {
-        display: flex;
-        flex-direction: column;
-    }
+   width: 100%;
+   display: flex;
+   flex-direction: column;
+   padding: 1px;
+   box-shadow: 0 3px 10px rgb(0 0 0 / 0.05);
+   border-radius: 10px;
+   overflow: hidden;
+   cursor: pointer;
+   font-family: $font-family;
+   background: $white;
+   &__image {
+      img {
+         width: 100%;
+         height: 140px;
+         object-fit: cover;
+         @include screen-tablet {
+            height: 243px;
+         }
+      }
+   }
+   &__body {
+      display: flex;
+      flex-direction: column;
+   }
 
-    &__author {
-        display: flex;
-        align-items: center;
-        justify-content: flex-start;
-        gap: 10px;
-        margin-left: 15px;
-        .author-avatar {
-            width: 33px;
-            height: 33px;
-            border-radius: 50%;
-            @include screen-tablet {
-                width: 40px;
-                height: 40px;
-            }
-        }
-        .post-author {
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: flex-start;
-            font-size: 1.3rem;
-            @include screen-tablet {
-                font-size: 2rem;
-            }
-            @include screen-laptop {
-                font-size: 2.5rem;
-            }
-        }
-    }
-    &__wrap-detail {
-        margin: 15px 0;
-        padding-left: 15px;
-        display: flex;
-        flex-direction: column;
-        align-items: flex-start;
-        gap: 7px;
-        .post-title {
-            font-size: 1.5rem;
+   &__author {
+      margin-top: 10px;
+      display: flex;
+      align-items: center;
+      justify-content: flex-start;
+      gap: 10px;
+      margin-left: 15px;
+      .author-avatar {
+         width: 33px;
+         height: 33px;
+         border-radius: 50%;
+         @include screen-tablet {
+            width: 40px;
+            height: 40px;
+         }
+      }
+      .post-author {
+         display: flex;
+         flex-direction: column;
+         justify-content: center;
+         align-items: flex-start;
+         font-size: 1.2rem;
+         @include screen-tablet {
+            font-size: 1.4rem;
+         }
+         @include screen-laptop {
+            font-size: 1.6rem;
+            font-weight: 400;
+         }
+         .author-name {
             font-weight: 600;
-            @include screen-tablet {
-                font-size: 2rem;
-                gap: 12px;
-            }
+         }
+         .post-time {
+            font-weight: 400;
             @include screen-laptop {
-                font-size: 2.5rem;
-                gap: 15px;
+               font-size: 1.4rem;
             }
-        }
-    }
-    &__tags {
-        display: flex;
-        gap: 5px;
-        flex-wrap: wrap;
-    }
-    &__actions {
-        padding-top: 5px;
-        margin-top: 5px;
-        width: 100%;
-        display: flex;
-        align-items: center;
-        margin-bottom: 8px;
-        border-top: 1px solid #686565;
-        font-size: 1.2rem;
-        .action-bookmark {
-            cursor: pointer;
-        }
-        @include screen-tablet {
-            padding-top: 10px;
-            margin-top: 10px;
-            margin-bottom: 15px;
-        }
-    }
-    &__action-comment,
-    &__action-like {
-        display: flex;
-        align-items: center;
-        justify-content: center;
-    }
-    &__action-like {
-        width: 33%;
-        @include screen-mobile {
-            width: 37%;
-        }
-    }
-    &__action-comment,
-    &__action-like {
-        > .comment-inner,
-        > .like-inner {
-            user-select: none;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 5px;
-            cursor: pointer;
-            border-radius: 10px;
-            height: 28px;
-            padding: 5px;
-            @include screen-mobile {
-                padding: 5px 15px;
-            }
-            @include screen-tablet {
-                height: 35px;
-            }
+         }
+      }
+   }
+   &__wrap-detail {
+      margin: 15px 0;
+      padding-left: 15px;
+      display: flex;
+      flex-direction: column;
+      align-items: flex-start;
+      gap: 7px;
+      .post-title {
+         font-size: 1.5rem;
+         font-weight: 600;
+         margin-left: 3px;
+         @include screen-mobile {
+            margin-left: 10px;
 
-            &:hover {
-                background: #ccc;
-            }
-        }
-    }
+            font-size: 2rem;
+            gap: 12px;
+         }
+         @include screen-laptop {
+            font-size: 2.5rem;
+            gap: 15px;
+         }
+      }
+   }
+   &__tags {
+      display: flex;
+      gap: 5px;
+      flex-wrap: wrap;
+   }
+   &__actions {
+      padding-top: 5px;
+      margin-top: 5px;
+      width: 100%;
+      display: flex;
+      align-items: center;
+      margin-bottom: 8px;
+      border-top: 1px solid #686565;
+      font-size: 1.2rem;
+      .action-bookmark {
+         cursor: pointer;
+      }
+      @include screen-tablet {
+         padding-top: 10px;
+         margin-top: 10px;
+         margin-bottom: 15px;
+      }
+   }
+   &__action-comment,
+   &__action-like {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+   }
+   &__action-like {
+      width: 33%;
+      @include screen-mobile {
+         width: 37%;
+      }
+   }
+   &__action-comment,
+   &__action-like {
+      > .comment-inner,
+      > .like-inner {
+         user-select: none;
+         display: flex;
+         align-items: center;
+         justify-content: center;
+         gap: 5px;
+         cursor: pointer;
+         border-radius: 10px;
+         height: 28px;
+         padding: 5px;
+         @include screen-mobile {
+            padding: 5px 15px;
+         }
+         @include screen-tablet {
+            height: 35px;
+         }
 
-    &__action-comment {
-        width: 47%;
-        @include screen-mobile {
-            width: 37%;
-        }
-        .comment-icon {
-            margin-top: 5px;
-        }
-    }
-    &__action-bookmark {
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        width: 20%;
-        @include screen-mobile {
-            width: 26%;
-        }
-        .icon--active {
+         &:hover {
             background: #ccc;
-        }
+         }
+      }
+   }
 
-        .icon {
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            padding: 8px;
-            border-radius: 5px;
-            &:hover {
-                background: #ccc;
-            }
-        }
-    }
+   &__action-comment {
+      width: 47%;
+      @include screen-mobile {
+         width: 37%;
+      }
+      .comment-icon {
+         margin-top: 5px;
+      }
+   }
+   &__action-bookmark {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      width: 20%;
+      @include screen-mobile {
+         width: 26%;
+      }
+      .icon--active {
+         background: #ccc;
+      }
+
+      .icon {
+         display: flex;
+         align-items: center;
+         justify-content: center;
+         padding: 8px;
+         border-radius: 5px;
+         &:hover {
+            background: #ccc;
+         }
+      }
+   }
 }
