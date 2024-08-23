@@ -1,7 +1,7 @@
 import { useState, useEffect, useContext } from 'react';
 import { MenuAccount, Notification, Search, SearchModal, SideBar } from '~/components';
 import './Header.scss';
-import { Avatar, Popover, Badge, Flex, Drawer, Button as BtnAnt, Tooltip, Image } from 'antd';
+import { Avatar, Popover, Badge, Flex, Drawer, Button as BtnAnt, Image } from 'antd';
 import Button from '../Buttons/Button';
 import { path } from '~/utils/constant';
 import logo from '~/assets/logo.png';

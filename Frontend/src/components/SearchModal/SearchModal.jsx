@@ -1,25 +1,26 @@
-import { Modal } from 'antd';
+import { Drawer } from 'antd';
 import './SearchModal.scss';
 import { Search } from '~/components';
 
 const SearchModal = ({ isShow, setIsShow }) => {
-   const handleCancel = () => {
+   const handleClose = () => {
       setIsShow(false);
    };
 
    return (
       <div className="search-modal">
-         <Modal
+         <Drawer
             title="Search"
+            placement="top"
+            closable={true}
+            onClose={handleClose}
             open={isShow}
-            onCancel={handleCancel}
-            footer={null}
-            style={{ top: 10 }}
+            height="100%"
             width="100%"
             className="search-modal__container"
          >
             <Search isMobile={true} />
-         </Modal>
+         </Drawer>
       </div>
    );
 };

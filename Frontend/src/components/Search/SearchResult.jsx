@@ -6,7 +6,7 @@ const SearchResult = ({ resultList, setIsOpenResult }) => {
    return (
       <div className="search-result" onClick={(e) => e.stopPropagation()}>
          <div className="search-result__container">
-            <Flex vertical>
+            <Flex vertical gap={5}>
                {resultList?.length > 0 ? (
                   resultList.map((result) => (
                      <ResultItem
