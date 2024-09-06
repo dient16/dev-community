@@ -32,16 +32,15 @@ const getPosts = async (req, res, next) => {
          query = query.sort('likes.length');
       }
 
-      let tagName = '';
-      let tagColor = '';
+      let tag = {};
       if (req.query.tag) {
          const tagId = req.query.tag;
          const [tagError, tagDetails] = await to(Tag.findById(tagId).select('name theme').exec());
          if (tagError || !tagDetails) {
             throw new Error('Could not fetch tag details, please try again');
          }
-         tagName = tagDetails.name;
-         tagColor = tagDetails.theme;
+         tag.name = tagDetails.name;
+         tag.color = tagDetails.theme;
          query = query.where('tags').equals(tagId);
       }
 
@@ -92,8 +91,8 @@ const getPosts = async (req, res, next) => {
          status: 'success',
          count: posts.length,
          posts: posts,
-         tagName: req.query.tag ? tagName : undefined,
-         tagColor: req.query.tag ? tagColor : undefined,
+         tagName: req.query.tag ? tag.name : undefined,
+         tagColor: req.query.tag ? tag.color : undefined,
       });
    } catch (error) {
       next(error);

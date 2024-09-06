@@ -111,23 +111,23 @@ const PostItem = ({ postItem, isShowImage = true }) => {
          <ModalRequireLogin open={isOpenAuthModal} setOpen={setIsOpenAuthModal} />
          <div
             className="post-item"
-            onClick={() => navigate(`/post/${postItem?.author.username}/${postItem._id}`)}
+            onClick={() => navigate(`/post/${postItem?.author?.username}/${postItem?._id}`)}
          >
             {postItem?.image && isShowImage && (
                <div className="post-item__image">
-                  <img src={postItem.image} alt="" />
+                  <img src={postItem?.image} alt="" />
                </div>
             )}
             <div className="post-item__body">
                <div className="post-item__content">
                   <div className="post-item__author">
                      <img
-                        src={postItem.author.avatar}
+                        src={postItem?.author?.avatar}
                         alt=""
                         className="author-avatar"
                         onClick={(e) => {
                            e.stopPropagation();
-                           navigate(`/${postItem.author.username}`);
+                           navigate(`/${postItem?.author?.username}`);
                         }}
                      />
                      <div className="post-author">
@@ -198,4 +198,3 @@ const PostItem = ({ postItem, isShowImage = true }) => {
 };
 
 export default PostItem;
-
