@@ -4,9 +4,9 @@
    "description": "",
    "main": "index.js",
    "scripts": {
-      "dev": "nodemon ./src/index.js",
-      "start": "node ./src/index.js",
-      "swagger": "node ./src/swagger.js"
+      "dev": "nodemon src/index.js",
+      "start": "node src/index.js",
+      "swagger": "node src/swagger.js"
    },
    "repository": {
       "type": "git",
