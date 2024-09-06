@@ -1,7 +1,5 @@
 # dev-community
 
-![dev-community Logo](path/to/logo.png)
-
 dev-community is a dynamic social media platform specifically designed for developers. It allows developers to connect, share knowledge, and stay updated on the latest trends and advancements in the tech world.
 
 ## Table of Contents
