@@ -1,7 +1,7 @@
 import { Avatar, Flex } from 'antd';
 import './Search.scss';
 import moment from 'moment';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 
 const ResultItem = ({
    avatar,
@@ -11,9 +11,19 @@ const ResultItem = ({
    username,
    postId,
    setIsOpenResult,
+   setIsShowSearch,
 }) => {
+   const navigate = useNavigate();
    return (
-      <div className="result-item" onClick={(e) => e.stopPropagation()}>
+      <div
+         className="result-item"
+         onClick={(e) => {
+            navigate(`/post/${username}/${postId}`);
+            e.stopPropagation();
+            setIsOpenResult(false);
+            setIsShowSearch(false);
+         }}
+      >
          <div className="result-item__author">
             <Avatar src={avatar} />
             <Flex vertical>
@@ -25,7 +35,10 @@ const ResultItem = ({
          <Link
             className="result-item__content"
             to={`/post/${username}/${postId}`}
-            onClick={() => setIsOpenResult(false)}
+            onClick={() => {
+               setIsOpenResult(false);
+               setIsShowSearch(false);
+            }}
          >
             {contentPost}
          </Link>

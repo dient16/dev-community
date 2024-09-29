@@ -79,7 +79,7 @@ const Header = () => {
                </Flex>
             </div>
             <div className="header__search">
-               <Search />
+               <Search setIsShowSearch={setIsShowSearch} />
             </div>
             {isLoggedIn ? (
                <div className="header__right">

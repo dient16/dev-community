@@ -2,7 +2,7 @@ import './Search.scss';
 import { Empty, Flex } from 'antd';
 import ResultItem from './ResultItem';
 
-const SearchResult = ({ resultList, setIsOpenResult }) => {
+const SearchResult = ({ resultList, setIsOpenResult, setIsShowSearch }) => {
    return (
       <div className="search-result" onClick={(e) => e.stopPropagation()}>
          <div className="search-result__container">
@@ -18,6 +18,7 @@ const SearchResult = ({ resultList, setIsOpenResult }) => {
                         username={result?.author.username}
                         contentPost={result?.title}
                         setIsOpenResult={setIsOpenResult}
+                        setIsShowSearch={setIsShowSearch}
                      />
                   ))
                ) : (
