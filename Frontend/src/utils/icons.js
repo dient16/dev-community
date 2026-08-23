@@ -3,6 +3,7 @@ import {
    BsTag,
    BsLightbulb,
    BsInfoCircle,
+   BsChevronDown,
    BsCodeSquare,
    BsCodeSlash,
    BsImage,
@@ -42,6 +43,7 @@ import { HiOutlineDotsVertical } from 'react-icons/hi';
 
 const icons = {
    RiHome4Fill,
+   BsChevronDown,
    LuClipboardList,
    BsTag,
    BsLightbulb,

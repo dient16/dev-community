@@ -8,6 +8,19 @@ import { useAuth } from '~/hooks';
 const SideBar = ({ setOpenSideBar }) => {
    const { FaTwitter, BsFacebook, FaGithub, RiInstagramFill, FaYoutube } = icons;
    const { isLoggedIn, user } = useAuth();
+
+   const socials = [
+      { id: 'twitter', label: 'Twitter', href: 'https://twitter.com', icon: <FaTwitter size={19} /> },
+      { id: 'facebook', label: 'Facebook', href: 'https://facebook.com', icon: <BsFacebook size={19} /> },
+      { id: 'github', label: 'GitHub', href: 'https://github.com', icon: <FaGithub size={19} /> },
+      {
+         id: 'instagram',
+         label: 'Instagram',
+         href: 'https://instagram.com',
+         icon: <RiInstagramFill size={19} />,
+      },
+      { id: 'youtube', label: 'YouTube', href: 'https://youtube.com', icon: <FaYoutube size={19} /> },
+   ];
    return (
       <div className="sidebar">
          <div className="sidebar__top">
@@ -37,22 +50,20 @@ const SideBar = ({ setOpenSideBar }) => {
                })}
             </div>
             <div className="sidebar__social-network">
-               <Flex align="center" gap={10} wrap="wrap">
-                  <span className="icon">
-                     <FaTwitter size={20} />
-                  </span>
-                  <span className="icon">
-                     <BsFacebook size={20} />
-                  </span>
-                  <span className="icon">
-                     <FaGithub size={20} />
-                  </span>
-                  <span className="icon">
-                     <RiInstagramFill size={20} />
-                  </span>
-                  <span className="icon">
-                     <FaYoutube size={22} />
-                  </span>
+               <Flex align="center" gap={4} wrap="wrap">
+                  {socials.map(({ id, label, href, icon }) => (
+                     <a
+                        key={id}
+                        className="icon"
+                        href={href}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        aria-label={label}
+                        title={label}
+                     >
+                        {icon}
+                     </a>
+                  ))}
                </Flex>
             </div>
          </div>

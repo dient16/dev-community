@@ -50,17 +50,16 @@ const TagItem = ({ tag }) => {
    };
 
    return (
-      <div className="tag-item">
+      <div className="tag-item" style={{ '--tag-theme': tag?.theme || '#6497b1' }}>
          <ModalRequireLogin open={isOpenAuthModal} setOpen={setIsOpenAuthModal} />
          <div className="tag-item__top">
-            <div className="tag-item__tag-name">
-               <span>#</span>
-               <Link to={`/tags/${tag._id}`} className="name">
-                  {` ${tag?.name}
-`}{' '}
-               </Link>
-            </div>
-            <span className="tag-item__count-post">{`${tag?.posts?.length} post`}</span>
+            <Link to={`/tags/${tag._id}`} className="tag-item__tag-name">
+               <span className="hash">#</span>
+               <span className="name">{tag?.name}</span>
+            </Link>
+            <span className="tag-item__count-post">
+               {`${tag?.posts?.length || 0} post${tag?.posts?.length === 1 ? '' : 's'}`}
+            </span>
          </div>
          <div className="tag-item__bottom">
             <Button

@@ -100,32 +100,45 @@ const getPosts = async (req, res, next) => {
 };
 const getPostByTagsDiscuss = async (req, res, next) => {
    try {
-      const [err, tag] = await to(
-         Tag.findOne({
-            name: 'discuss',
-         }).populate({
-            path: 'posts',
-         }),
-      );
+      const limit = Math.min(parseInt(req.query.limit, 10) || 5, 20);
 
-      if (err) {
+      const [tagErr, tag] = await to(Tag.findOne({ name: 'discuss' }).select('_id').exec());
+
+      if (tagErr) {
          return res.status(500).json({
             status: 'error',
             message: 'Error fetching tag',
-            error: err.message,
+            error: tagErr.message,
          });
       }
 
       if (!tag) {
-         return res.status(404).json({
+         return res.status(200).json({
+            status: 'success',
+            posts: [],
+         });
+      }
+
+      const [postsErr, posts] = await to(
+         Post.find({ tags: tag._id })
+            .select('title slug comments createdAt')
+            .populate({ path: 'author', select: 'username firstname lastname avatar' })
+            .sort('-createdAt')
+            .limit(limit)
+            .exec(),
+      );
+
+      if (postsErr) {
+         return res.status(500).json({
             status: 'error',
-            message: 'Tag not found',
+            message: 'Error fetching posts',
+            error: postsErr.message,
          });
       }
 
       return res.status(200).json({
          status: 'success',
-         posts: tag.posts || [],
+         posts,
       });
    } catch (error) {
       next(error);
