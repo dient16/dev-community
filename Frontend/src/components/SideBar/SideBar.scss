@@ -1,80 +1,136 @@
 @use '~/styles/' as *;
+
 .sidebar {
-    width: 100%;
-    padding: 0px 0px 10px 0;
-    min-height: 500px;
-    font-family: $font-family;
-    display: flex;
-    flex-direction: column;
-    @include screen-mobile {
-    }
-    @include screen-laptop {
-        margin-left: 20px;
-        padding: 0px 0px 10px 0;
-    }
-    &__list {
-        display: flex;
-        flex-direction: column;
-        justify-content: flex-start;
-        gap: 5px;
-        margin-top: 10px;
-    }
-    &__top {
-        height: 240px;
-        @include screen-tablet {
-            height: 300px;
-        }
-    }
-    &__item {
-        text-decoration: none;
-        color: $black;
-        font-weight: 600;
-        display: flex;
-        align-items: center;
-        padding: 5px 5px 5px 0;
-        gap: 10px;
-        border-radius: 7px;
-        color: #161823;
-        @include screen-tablet {
-            padding: 6px 6px 6px 0;
-        }
-        &--active {
+   width: 100%;
+   min-height: 500px;
+   padding: 8px 0 10px;
+   font-family: $font-family;
+   display: flex;
+   flex-direction: column;
+
+   @include screen-laptop {
+      margin-left: 20px;
+   }
+
+   &__top {
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+   }
+
+   &__list {
+      display: flex;
+      flex-direction: column;
+      gap: 2px;
+   }
+
+   &__item {
+      position: relative;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      padding: 9px 12px;
+      border-radius: 8px;
+      text-decoration: none;
+      color: #3d3d4e;
+      font-weight: 500;
+      line-height: 1;
+      transition: background-color 0.16s ease, color 0.16s ease;
+
+      // thanh chỉ báo bên trái, chỉ hiện khi active
+      &::before {
+         content: '';
+         position: absolute;
+         left: 0;
+         top: 50%;
+         width: 3px;
+         height: 0;
+         border-radius: 0 3px 3px 0;
+         background-color: $primary-color;
+         transform: translateY(-50%);
+         transition: height 0.18s ease;
+      }
+
+      &:hover {
+         background-color: rgba(100, 151, 177, 0.1);
+         color: $primary-color;
+      }
+
+      &:focus-visible {
+         outline: 2px solid $primary-color;
+         outline-offset: 2px;
+      }
+
+      &--active {
+         background-color: rgba(100, 151, 177, 0.14);
+         color: $primary-color;
+         font-weight: 600;
+
+         &::before {
+            height: 60%;
+         }
+
+         .sidebar__icon {
             color: $primary-color;
-        }
-        &:hover {
-            background: #2e386e0f;
-        }
-    }
-    &__icon {
-        font-size: 2.2rem;
-        font-weight: bold;
-        display: flex;
-        justify-content: center;
-    }
-    &__title {
-        font-size: 1.5rem;
-        @include screen-tablet {
-            font-size: 2rem;
-        }
-    }
-    &__social-network {
-        margin: 10px 0;
-        .icon {
-            padding: 5px;
-            border-radius: 5px;
-            display: flex;
-            align-self: center;
-            cursor: pointer;
-            &:hover {
-                background: #bde4e2;
-            }
-        }
-    }
-    &__my-tags {
-        max-height: 500px;
-        flex-grow: 1;
-    }
+         }
+      }
+   }
+
+   &__icon {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+      width: 22px;
+      font-size: 2rem;
+      color: #6b6b7b;
+      transition: color 0.16s ease;
+   }
+
+   &__title {
+      font-size: 1.5rem;
+      letter-spacing: 0.1px;
+      white-space: nowrap;
+
+      @include screen-tablet {
+         font-size: 1.6rem;
+      }
+   }
+
+   &__social-network {
+      padding: 6px 6px 2px;
+
+      .icon {
+         display: flex;
+         align-items: center;
+         justify-content: center;
+         width: 34px;
+         height: 34px;
+         border-radius: 50%;
+         color: #6b6b7b;
+         cursor: pointer;
+         transition: background-color 0.16s ease, color 0.16s ease, transform 0.16s ease;
+
+         &:hover {
+            background-color: rgba(100, 151, 177, 0.14);
+            color: $primary-color;
+            transform: translateY(-1px);
+         }
+
+         &:focus-visible {
+            outline: 2px solid $primary-color;
+            outline-offset: 2px;
+         }
+      }
+   }
+
+   &__my-tags {
+      max-height: 500px;
+      flex-grow: 1;
+      margin-top: 6px;
+   }
 }
+
 .ant-drawer-body:has(.sidebar) {
-    padding: 5px 5px 10px 24px;
+   padding: 5px 12px 10px 16px;
 }

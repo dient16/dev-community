@@ -97,11 +97,11 @@ const getPopularTags = async (req, res, next) => {
                $project: {
                   name: 1,
                   theme: 1,
-                  postCount: { $size: '$posts' },
+                  postsCount: { $size: '$posts' },
                },
             },
             {
-               $sort: { postCount: -1 },
+               $sort: { postsCount: -1 },
             },
             {
                $limit: 10,
@@ -122,6 +122,7 @@ const getPopularTags = async (req, res, next) => {
       next(error);
    }
 };
+
 const createTags = async (tags, post) => {
    for (const tag of tags) {
       const [error, postTag] = await to(

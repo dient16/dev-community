@@ -7,7 +7,7 @@ import { useDebounce } from '~/hooks';
 import { ClipLoader } from 'react-spinners';
 import { apiSearchPost } from '~/apiServices';
 
-const Search = ({ isMobile = false }) => {
+const Search = ({ isMobile = false, setIsShowSearch }) => {
    const { BiSearch, IoIosCloseCircle } = icons;
    const [isOpenResult, setIsOpenResult] = useState(false);
    const [searchValue, setSearchValue] = useState('');
@@ -99,7 +99,11 @@ const Search = ({ isMobile = false }) => {
                </button>
             </div>
             {isMobile && (
-               <SearchResult resultList={searchResult} setIsOpenResult={setIsOpenResult} />
+               <SearchResult
+                  resultList={searchResult}
+                  setIsOpenResult={setIsOpenResult}
+                  setIsShowSearch={setIsShowSearch}
+               />
             )}
          </div>
       </Popover>

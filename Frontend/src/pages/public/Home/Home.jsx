@@ -1,10 +1,15 @@
-import { Outlet, useNavigate } from 'react-router-dom';
+import { NavLink, Outlet } from 'react-router-dom';
 import './Home.scss';
 import { SideBar, Discuss } from '~/components';
 import { path } from '~/utils/constant';
 
+const tabs = [
+    { id: 'for-you', label: 'For you', to: `/${path.FOR_YOU}` },
+    { id: 'top', label: 'Top', to: `/${path.TOP}` },
+    { id: 'latest', label: 'Latest', to: `/${path.LATEST}` },
+];
+
 const Home = () => {
-    const navigate = useNavigate();
     return (
         <div className="home">
             <div className="home__sidebar">
@@ -13,29 +18,22 @@ const Home = () => {
                 </div>
             </div>
             <div className="home__content">
-                <div className="home__navigation">
-                    <span
-                        onClick={() => {
-                            navigate(`/${path.FOR_YOU}`);
-                        }}
-                    >
-                        For you
-                    </span>
-                    <span
-                        onClick={() => {
-                            navigate(`/${path.TOP}`);
-                        }}
-                    >
-                        Top
-                    </span>
-                    <span
-                        onClick={() => {
-                            navigate(`/${path.LATEST}`);
-                        }}
-                    >
-                        Latest
-                    </span>
-                </div>
+                <nav className="home__navigation">
+                    {tabs.map(({ id, label, to }) => (
+                        <NavLink
+                            key={id}
+                            to={to}
+                            end
+                            className={({ isActive }) =>
+                                isActive
+                                    ? 'home__nav-item home__nav-item--active'
+                                    : 'home__nav-item'
+                            }
+                        >
+                            {label}
+                        </NavLink>
+                    ))}
+                </nav>
                 <Outlet />
             </div>
             <div className="home__outstanding">

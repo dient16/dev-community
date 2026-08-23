@@ -1,7 +1,7 @@
 import { useState, useEffect, useContext } from 'react';
 import { MenuAccount, Notification, Search, SearchModal, SideBar } from '~/components';
 import './Header.scss';
-import { Avatar, Popover, Badge, Flex, Drawer, Button as BtnAnt, Tooltip, Image } from 'antd';
+import { Avatar, Popover, Badge, Flex, Drawer, Button as BtnAnt, Image } from 'antd';
 import Button from '../Buttons/Button';
 import { path } from '~/utils/constant';
 import logo from '~/assets/logo.png';
@@ -79,7 +79,7 @@ const Header = () => {
                </Flex>
             </div>
             <div className="header__search">
-               <Search />
+               <Search setIsShowSearch={setIsShowSearch} />
             </div>
             {isLoggedIn ? (
                <div className="header__right">

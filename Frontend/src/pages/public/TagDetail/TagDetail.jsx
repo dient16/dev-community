@@ -27,8 +27,8 @@ const TagDetail = () => {
    return (
       <div className="tag-detail">
          <div className="tag-detail__header">
-            <h1 className="tag-detail__title">Web Development</h1>
-            <p className="tag-detail__subtitle">Because the internet...</p>
+            <h1 className="tag-detail__title">{(data?.pages[0] || {})?.tagName?.toUpperCase()}</h1>
+            <p className="tag-detail__subtitle">Follow the tag to see posts</p>
          </div>
          <div className="tag-detail__action">
             <Button primary to={`/${path.NEW_POST}`} className="tag-detail__button">

@@ -48,6 +48,7 @@ const MyTags = ({ setOpenSideBar }) => {
                : popularTagsData?.tags?.map((tag) => (
                     <TagSideBar
                        key={tag._id}
+                       tagId={tag._id}
                        tagName={tag.name}
                        color={tag.theme}
                        postCount={tag.postsCount}

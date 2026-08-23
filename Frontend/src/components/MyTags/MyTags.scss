@@ -1,37 +1,64 @@
 @use '~/styles/' as *;
 
 .my-tags {
-    min-height: 300px;
-    height: 100%;
-    width: 100%;
-    @include screen-tablet {
-        max-width: 92%;
-    }
-    border-top: 1px solid #ccc;
-    float: left;
-    margin-top: 3px;
-    padding-top: 10px;
-    display: flex;
-    flex-direction: column;
-    font-family: $font-family;
-    &__header {
-        display: flex;
-        margin-bottom: 10px;
-        justify-content: space-between;
-        align-items: center;
-        .title {
-            font-size: 1.8rem;
-            font-weight: 600;
-        }
-    }
-    &__container {
-        width: 100%;
-        flex-grow: 1;
-        overflow-y: auto;
-        display: flex;
-        flex-direction: column;
-        align-items: flex-start;
-        gap: 10px;
-        padding-right: 15px;
-    }
+   min-height: 300px;
+   height: 100%;
+   width: 100%;
+   display: flex;
+   flex-direction: column;
+   float: left;
+   margin-top: 12px;
+   padding-top: 14px;
+   border-top: 1px solid rgba(0, 0, 0, 0.08);
+   font-family: $font-family;
+
+   @include screen-tablet {
+      max-width: 92%;
+   }
+
+   &__header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 8px;
+      margin-bottom: 12px;
+      padding: 0 2px 0 12px;
+
+      .title {
+         font-size: 1.3rem;
+         font-weight: 600;
+         letter-spacing: 0.6px;
+         text-transform: uppercase;
+         color: #6b6b7b;
+      }
+
+      .icon {
+         display: flex;
+         align-items: center;
+         justify-content: center;
+         width: 28px;
+         height: 28px;
+         border-radius: 50%;
+         color: #8b8b99;
+         cursor: pointer;
+         transition: background-color 0.16s ease, color 0.16s ease, transform 0.2s ease;
+
+         &:hover {
+            background-color: rgba(100, 151, 177, 0.14);
+            color: $primary-color;
+            transform: rotate(45deg);
+         }
+      }
+   }
+
+   &__container {
+      width: 100%;
+      flex-grow: 1;
+      overflow-y: auto;
+      display: flex;
+      flex-direction: column;
+      align-items: stretch;
+      gap: 6px;
+      padding: 0 8px 4px 0;
+   }
 }

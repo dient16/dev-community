@@ -1,19 +1,45 @@
 @use '~/styles/' as *;
+
 .tags {
-   height: 100%;
-   padding: 0;
-   padding: 0 20px;
+   max-width: 1100px;
+   margin: 0 auto;
+   padding: 24px 16px 40px;
+   font-family: $font-family;
+
    @include screen-tablet {
-      padding: 0 15px;
+      padding: 32px 24px 48px;
    }
+
    &__header {
-      margin: 10px 0;
-      font-size: 2.5rem;
-      font-weight: 600;
+      margin: 0 0 6px;
+      font-size: 2.8rem;
+      font-weight: 700;
+      color: #1f1f2b;
    }
+
+   &__subtitle {
+      margin-bottom: 24px;
+      color: #6b6b7b;
+      font-size: 1.5rem;
+   }
+
    &__container {
-      display: flex;
-      gap: 10px;
-      flex-wrap: wrap;
+      display: grid;
+      gap: 16px;
+      grid-template-columns: 1fr;
+
+      @include screen-mobile {
+         grid-template-columns: repeat(2, minmax(0, 1fr));
+      }
+      @include screen-laptop {
+         grid-template-columns: repeat(3, minmax(0, 1fr));
+      }
+   }
+
+   &__empty {
+      padding: 48px 0;
+      text-align: center;
+      color: #8b8b99;
+      font-size: 1.6rem;
    }
 }

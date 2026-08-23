@@ -2,11 +2,11 @@ import './Search.scss';
 import { Empty, Flex } from 'antd';
 import ResultItem from './ResultItem';
 
-const SearchResult = ({ resultList, setIsOpenResult }) => {
+const SearchResult = ({ resultList, setIsOpenResult, setIsShowSearch }) => {
    return (
       <div className="search-result" onClick={(e) => e.stopPropagation()}>
          <div className="search-result__container">
-            <Flex vertical>
+            <Flex vertical gap={5}>
                {resultList?.length > 0 ? (
                   resultList.map((result) => (
                      <ResultItem
@@ -18,6 +18,7 @@ const SearchResult = ({ resultList, setIsOpenResult }) => {
                         username={result?.author.username}
                         contentPost={result?.title}
                         setIsOpenResult={setIsOpenResult}
+                        setIsShowSearch={setIsShowSearch}
                      />
                   ))
                ) : (

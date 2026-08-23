@@ -1,50 +1,69 @@
 @use '~/styles/' as *;
+
 .tag-sidebar {
-    background-color: #e3e3e3;
-    border-radius: 10px;
-    padding: 6px 10px;
-    width: 100%;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    cursor: pointer;
-    transition: background-color 0.3s ease;
+   width: 100%;
+   display: flex;
+   justify-content: space-between;
+   align-items: center;
+   gap: 8px;
+   padding: 7px 10px 7px 12px;
+   border-radius: 8px;
+   background-color: transparent;
+   cursor: pointer;
+   transition: background-color 0.16s ease;
 
-    &__wrapper {
-        display: flex;
-        align-items: center;
-    }
+   &__wrapper {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      min-width: 0;
+   }
 
-    &__icon {
-        margin-right: 1px;
-        svg {
-            width: 20px;
-            height: 20px;
-        }
-    }
+   &__icon {
+      display: flex;
+      align-items: center;
+      flex-shrink: 0;
 
-    &__name {
-        font-size: 1.3rem;
-        color: $black;
-        @include screen-tablet {
-            font-size: 1.4rem;
-        }
-    }
+      svg {
+         width: 18px;
+         height: 18px;
+      }
+   }
 
-    &__post-count {
-        display: flex;
-        justify-content: space-between;
-        font-size: 1rem;
-        width: 60px;
-        font-weight: 600;
-        display: flex;
-        background-color: #3c3c3c;
-        border-radius: 9999px;
-        padding: 3px 10px;
-        color: #ffffff;
-    }
+   &__name {
+      font-size: 1.4rem;
+      font-weight: 500;
+      color: #3d3d4e;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+   }
 
-    &:hover {
-        background-color: #ccc;
-    }
+   &__post-count {
+      display: flex;
+      align-items: center;
+      gap: 3px;
+      flex-shrink: 0;
+      padding: 2px 8px;
+      border-radius: 9999px;
+      background-color: rgba(0, 0, 0, 0.06);
+      color: #6b6b7b;
+      font-size: 1.1rem;
+      font-weight: 600;
+      line-height: 1.5;
+      transition: background-color 0.16s ease, color 0.16s ease;
+   }
+
+   &:hover {
+      background-color: rgba(100, 151, 177, 0.12);
+
+      .tag-sidebar__name {
+         color: $primary-color;
+      }
+
+      .tag-sidebar__post-count {
+         background-color: rgba(100, 151, 177, 0.22);
+         color: $primary-color;
+      }
+   }
 }
